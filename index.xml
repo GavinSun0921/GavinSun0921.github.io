@@ -8,15 +8,15 @@
     <language>en</language>
     <copyright>&amp;copy; 2023 &lt;a href=&#34;https://github.com/GavinSun0921&#34;&gt;Gavin Sun&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Tue, 09 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://gavinsun0921.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 11 May 2023 18:11:41 +0800</lastBuildDate><atom:link href="https://gavinsun0921.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Post Test</title>
-      <link>https://gavinsun0921.github.io/posts/post-test/</link>
-      <pubDate>Tue, 09 May 2023 00:00:00 +0000</pubDate>
+      <title>Personal Pipeline for Deep Learning</title>
+      <link>https://gavinsun0921.github.io/posts/todo-list/</link>
+      <pubDate>Thu, 11 May 2023 18:11:41 +0800</pubDate>
       
-      <guid>https://gavinsun0921.github.io/posts/post-test/</guid>
-      <description>This is a test for post
-$$ \frac{1}{3} $$</description>
+      <guid>https://gavinsun0921.github.io/posts/todo-list/</guid>
+      <description>Weights &amp;amp; Biases: Weights &amp;amp; Biases makes it easy to track your experiments, manage &amp;amp; version your data, and collaborate with your team so you can focus on building the best models.
+Accelerate: Accelerate is a library that enables the same PyTorch code to be run across any distributed configuration by adding just four lines of code! In short, training and inference at scale made simple, efficient and adaptable.</description>
     </item>
     
   </channel>

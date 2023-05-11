@@ -2,33 +2,35 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://gavinsun0921.github.io/categories/</loc>
-    <lastmod>2023-05-09T00:00:00+00:00</lastmod>
+    <loc>https://gavinsun0921.github.io/tags/accelerate/</loc>
+    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
   </url><url>
-    <loc>https://gavinsun0921.github.io/categories/category/</loc>
-    <lastmod>2023-05-09T00:00:00+00:00</lastmod>
+    <loc>https://gavinsun0921.github.io/categories/</loc>
+    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
   </url><url>
     <loc>https://gavinsun0921.github.io/</loc>
-    <lastmod>2023-05-09T00:00:00+00:00</lastmod>
+    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
   </url><url>
-    <loc>https://gavinsun0921.github.io/posts/post-test/</loc>
-    <lastmod>2023-05-09T00:00:00+00:00</lastmod>
+    <loc>https://gavinsun0921.github.io/posts/todo-list/</loc>
+    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
   </url><url>
     <loc>https://gavinsun0921.github.io/posts/</loc>
-    <lastmod>2023-05-09T00:00:00+00:00</lastmod>
+    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
   </url><url>
-    <loc>https://gavinsun0921.github.io/series/serial/</loc>
-    <lastmod>2023-05-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://gavinsun0921.github.io/series/</loc>
-    <lastmod>2023-05-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://gavinsun0921.github.io/tags/tag/</loc>
-    <lastmod>2023-05-09T00:00:00+00:00</lastmod>
+    <loc>https://gavinsun0921.github.io/tags/pytorch/</loc>
+    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
   </url><url>
     <loc>https://gavinsun0921.github.io/tags/</loc>
-    <lastmod>2023-05-09T00:00:00+00:00</lastmod>
+    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
+  </url><url>
+    <loc>https://gavinsun0921.github.io/categories/utils/</loc>
+    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
+  </url><url>
+    <loc>https://gavinsun0921.github.io/tags/wandb/</loc>
+    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
   </url><url>
     <loc>https://gavinsun0921.github.io/authors/</loc>
+  </url><url>
+    <loc>https://gavinsun0921.github.io/series/</loc>
   </url>
 </urlset>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Home</title>
-    <link>https://gavinsun0921.github.io/posts/</link>
-    <description>Recent content in Posts on Home</description>
+    <title>wandb on Home</title>
+    <link>https://gavinsun0921.github.io/tags/wandb/</link>
+    <description>Recent content in wandb on Home</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; 2023 &lt;a href=&#34;https://github.com/GavinSun0921&#34;&gt;Gavin Sun&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Thu, 11 May 2023 18:11:41 +0800</lastBuildDate><atom:link href="https://gavinsun0921.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 11 May 2023 18:11:41 +0800</lastBuildDate><atom:link href="https://gavinsun0921.github.io/tags/wandb/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Personal Pipeline for Deep Learning</title>
       <link>https://gavinsun0921.github.io/posts/todo-list/</link>
