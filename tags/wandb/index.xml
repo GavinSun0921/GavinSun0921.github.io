@@ -11,10 +11,10 @@
     <lastBuildDate>Thu, 11 May 2023 18:11:41 +0800</lastBuildDate><atom:link href="https://gavinsun0921.github.io/tags/wandb/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Personal Pipeline for Deep Learning</title>
-      <link>https://gavinsun0921.github.io/posts/todo-list/</link>
+      <link>https://gavinsun0921.github.io/posts/personal-pipeline/</link>
       <pubDate>Thu, 11 May 2023 18:11:41 +0800</pubDate>
       
-      <guid>https://gavinsun0921.github.io/posts/todo-list/</guid>
+      <guid>https://gavinsun0921.github.io/posts/personal-pipeline/</guid>
       <description>Weights &amp;amp; Biases: Weights &amp;amp; Biases makes it easy to track your experiments, manage &amp;amp; version your data, and collaborate with your team so you can focus on building the best models.
 Accelerate: Accelerate is a library that enables the same PyTorch code to be run across any distributed configuration by adding just four lines of code! In short, training and inference at scale made simple, efficient and adaptable.</description>
     </item>
