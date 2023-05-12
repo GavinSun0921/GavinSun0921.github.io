@@ -2,35 +2,51 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://gavinsun0921.github.io/tags/accelerate/</loc>
-    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
+    <loc>https://gavinsun0921.github.io/tags/article/</loc>
+    <lastmod>2023-05-12T12:34:01+08:00</lastmod>
   </url><url>
     <loc>https://gavinsun0921.github.io/categories/</loc>
-    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
+    <lastmod>2023-05-12T12:34:01+08:00</lastmod>
+  </url><url>
+    <loc>https://gavinsun0921.github.io/posts/difference-between-introduction-and-related-work/</loc>
+    <lastmod>2023-05-12T12:34:01+08:00</lastmod>
   </url><url>
     <loc>https://gavinsun0921.github.io/</loc>
-    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
+    <lastmod>2023-05-12T12:34:01+08:00</lastmod>
   </url><url>
-    <loc>https://gavinsun0921.github.io/posts/personal-pipeline/</loc>
-    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
+    <loc>https://gavinsun0921.github.io/series/how-to-write-a-paper/</loc>
+    <lastmod>2023-05-12T12:34:01+08:00</lastmod>
   </url><url>
     <loc>https://gavinsun0921.github.io/posts/</loc>
-    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
-  </url><url>
-    <loc>https://gavinsun0921.github.io/tags/pytorch/</loc>
-    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
-  </url><url>
-    <loc>https://gavinsun0921.github.io/tags/</loc>
-    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
-  </url><url>
-    <loc>https://gavinsun0921.github.io/categories/utils/</loc>
-    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
-  </url><url>
-    <loc>https://gavinsun0921.github.io/tags/wandb/</loc>
-    <lastmod>2023-05-11T18:11:41+08:00</lastmod>
-  </url><url>
-    <loc>https://gavinsun0921.github.io/authors/</loc>
+    <lastmod>2023-05-12T12:34:01+08:00</lastmod>
   </url><url>
     <loc>https://gavinsun0921.github.io/series/</loc>
+    <lastmod>2023-05-12T12:34:01+08:00</lastmod>
+  </url><url>
+    <loc>https://gavinsun0921.github.io/tags/</loc>
+    <lastmod>2023-05-12T12:34:01+08:00</lastmod>
+  </url><url>
+    <loc>https://gavinsun0921.github.io/tags/writing/</loc>
+    <lastmod>2023-05-12T12:34:01+08:00</lastmod>
+  </url><url>
+    <loc>https://gavinsun0921.github.io/categories/writing/</loc>
+    <lastmod>2023-05-12T12:34:01+08:00</lastmod>
+  </url><url>
+    <loc>https://gavinsun0921.github.io/tags/accelerate/</loc>
+    <lastmod>2023-05-11T20:11:41+08:00</lastmod>
+  </url><url>
+    <loc>https://gavinsun0921.github.io/posts/personal-pipeline/</loc>
+    <lastmod>2023-05-11T20:11:41+08:00</lastmod>
+  </url><url>
+    <loc>https://gavinsun0921.github.io/tags/pytorch/</loc>
+    <lastmod>2023-05-11T20:11:41+08:00</lastmod>
+  </url><url>
+    <loc>https://gavinsun0921.github.io/categories/utils/</loc>
+    <lastmod>2023-05-11T20:11:41+08:00</lastmod>
+  </url><url>
+    <loc>https://gavinsun0921.github.io/tags/wandb/</loc>
+    <lastmod>2023-05-11T20:11:41+08:00</lastmod>
+  </url><url>
+    <loc>https://gavinsun0921.github.io/authors/</loc>
   </url>
 </urlset>

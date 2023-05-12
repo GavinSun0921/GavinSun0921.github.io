@@ -8,9 +8,27 @@
     <language>en</language>
     <copyright>&amp;copy; 2023 &lt;a href=&#34;https://github.com/GavinSun0921&#34;&gt;Gavin Sun&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Thu, 11 May 2023 18:11:41 +0800</lastBuildDate><atom:link href="https://gavinsun0921.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 12 May 2023 12:34:01 +0800</lastBuildDate><atom:link href="https://gavinsun0921.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>accelerate</title>
+      <title>Article</title>
+      <link>https://gavinsun0921.github.io/tags/article/</link>
+      <pubDate>Fri, 12 May 2023 12:34:01 +0800</pubDate>
+      
+      <guid>https://gavinsun0921.github.io/tags/article/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Writing</title>
+      <link>https://gavinsun0921.github.io/tags/writing/</link>
+      <pubDate>Fri, 12 May 2023 12:34:01 +0800</pubDate>
+      
+      <guid>https://gavinsun0921.github.io/tags/writing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Accelerate</title>
       <link>https://gavinsun0921.github.io/tags/accelerate/</link>
       <pubDate>Thu, 11 May 2023 18:11:41 +0800</pubDate>
       
@@ -28,7 +46,7 @@
     </item>
     
     <item>
-      <title>wandb</title>
+      <title>WandB</title>
       <link>https://gavinsun0921.github.io/tags/wandb/</link>
       <pubDate>Thu, 11 May 2023 18:11:41 +0800</pubDate>
       
