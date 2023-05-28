@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Writing on Home</title>
+    <title>Writing on Gavin&#39;s Blog</title>
     <link>https://gavinsun0921.github.io/tags/writing/</link>
-    <description>Recent content in Writing on Home</description>
+    <description>Recent content in Writing on Gavin&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; 2023 &lt;a href=&#34;https://github.com/GavinSun0921&#34;&gt;Gavin Sun&lt;/a&gt;
@@ -15,7 +15,7 @@
       <pubDate>Fri, 12 May 2023 12:34:01 +0800</pubDate>
       
       <guid>https://gavinsun0921.github.io/posts/difference-between-introduction-and-related-work/</guid>
-      <description>Question on Academia Stack Exchange Description In the writing of scientific papers, there are basically two chapters: Introduction and Related Work. This is a common issue, that many people get confused how to organize introduction and related work chapters. Because both are related to the literature review.
+      <description>Question on Academia Stack ExchangeDescription In the writing of scientific papers, there are basically two chapters: Introduction and Related Work. This is a common issue, that many people get confused how to organize introduction and related work chapters. Because both are related to the literature review.
 This post is my personal view on the issue. If you have any suggestions on this post, please leave comments below.
 What is Introduction and Related Work? This document, How to Write a Scientific Paper, is based on resources from the Université de Rennes 1 and Western Kentucky University.</description>
     </item>
