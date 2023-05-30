@@ -103,10 +103,10 @@
         "@id": "https://gavinsun0921.github.io/posts/paper-reading-01/"
     },
     "headline": "[Paper Reading] Deep Unsupervised Learning using Nonequilibrium Thermodynamics | Gavin\u0027s Blog",
-    "image": "https://gavinsun0921.github.io/images/paper-reading/paper.png",
+    "image": "https://gavinsun0921.github.io/images/paper-reading/01.png",
     "datePublished": "2023-05-29T13:53:33+08:00",
     "dateModified": "2023-05-29T13:53:33+08:00",
-    "wordCount":  1102 ,
+    "wordCount":  1250 ,
     "publisher": {
         "@type": "Person",
         "name": "Gavin Sun",
@@ -292,7 +292,7 @@
 
   
   
-    <img src="https://gavinsun0921.github.io/images/paper-reading/paper.png" class="w-full" alt="Featured Image">
+    <img src="https://gavinsun0921.github.io/images/paper-reading/01.png" class="w-full" alt="Featured Image">
   
 
   <p>This is the first post in the <a href="https://gavinsun0921.github.io/series/paper-reading/">Paper Reading</a> series. In this series I will continue to update some personal study notes on reading papers. This post will introduce the basic work of diffusion probabilistic models (DPM), including the derivation of formulas and simple code verification. If you have any suggestions on this post or would like to communicate with me, please leave comments below.</p>
@@ -372,6 +372,18 @@ $$</p>
 Fig. 4. Visualization of Jensen's inequality in logarithmic function.
 </div>
 <p>So we have the lower bound of $\mathcal{L}$, let&rsquo;s write it down as $$\mathcal{K} = \int \mathbb{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]$$</p>
+<h4 id="ast-b1-peel-off-p_theta-in-mathcalk-as-an-entropy">$\ast$ B.1 Peel off $p_\theta$ in $\mathcal{K}$ as an entropy</h4>
+<p>$$
+\begin{equation*}
+\begin{split}
+\mathcal{K} &amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]} \\
+&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \left \{ \log p_\theta(\mathbf{X}_T) + \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \right \} } \\
+&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]} + \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \log p_\theta(\mathbf{X}_T)} \\
+&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) { \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]} + \underbrace{\color{red} \int \mathrm{d}\mathbf{X}_T \ q(\mathbf{X}_T) \log p_\theta(\mathbf{X}_T)}_{\text{the entropy of }p(\mathbf{X}_T)} \\
+&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] - {\color{red} \mathcal{H}_p(\mathbf{X}_T)}
+\end{split}
+\end{equation*}
+$$</p>
 <h2 id="simple-code-verification">Simple Code Verification</h2>
 <p>The jupyter notebook is available at <a href="https://gist.github.com/GavinSun0921/ac4d07e2e64b3f102693686435e7fe9d">https://gist.github.com/GavinSun0921/ac4d07e2e64b3f102693686435e7fe9d</a>.</p>
 <p>You can click the button at the top of the notebook to open it in <strong>Colab</strong> and run the code for free.</p>
@@ -474,7 +486,11 @@ Fig. 4. Visualization of Jensen's inequality in logarithmic function.
         <li><a href="#forward-process">Forward Process</a></li>
         <li><a href="#reverse-process">Reverse Process</a></li>
         <li><a href="#generative-model">Generative Model</a></li>
-        <li><a href="#model-log-likelihood">Model Log Likelihood</a></li>
+        <li><a href="#model-log-likelihood">Model Log Likelihood</a>
+          <ul>
+            <li><a href="#ast-b1-peel-off-p_theta-in-mathcalk-as-an-entropy">$\ast$ B.1 Peel off $p_\theta$ in $\mathcal{K}$ as an entropy</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
     <li><a href="#simple-code-verification">Simple Code Verification</a></li>
