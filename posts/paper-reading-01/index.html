@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  dir="ltr"
+  
+><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>[Paper Reading] Deep Unsupervised Learning using Nonequilibrium Thermodynamics | Gavin&#39;s Blog</title>
+
+<meta name="generator" content="Hugo Eureka 0.9.3" />
+<link rel="stylesheet" href="https://gavinsun0921.github.io/css/eureka.min.9cec6350e37e534b0338fa9a085bf06855de3b0f2dcf857e792e5e97b07ea905d4d5513db554cbc26a9c3da622bae92d.css">
+<script defer src="https://gavinsun0921.github.io/js/eureka.min.e8043b71b627e3cfd9b2a5de56adf007f5af83dee672ca0c186aa2e29a10d6f648632064d0c00b2fa4d1b11e0f196af3.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload"
+  href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&amp;family=Noto&#43;Serif&#43;SC:wght@400;600;700&amp;display=swap"
+  as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.4.0/build/styles/base16/solarized-light.min.css"
+   media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.4.0/build/highlight.min.js"
+   crossorigin></script>
+  <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.4.0/build/languages/dart.min.js"
+     crossorigin></script>
+<link rel="stylesheet" href="https://gavinsun0921.github.io/css/highlightjs.min.2958991528e43eb6fc9b8c4f2b8e052f79c4010718e1d1e888a777620e9ee63021c2c57ec7417a3108019bb8c41943e6.css" media="print" onload="this.media='all';this.onload=null">
+
+
+<script defer type="text/javascript" src="https://gavinsun0921.github.io/js/fontawesome.min.8c77c7521b1f95ec2031c2a79f5c6a698aa4a0dba5ba649dfbc7f73994cddf3f494be6aac7e5724f35cbf72cfde09703.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+   integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"  media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" 
+  integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY"  crossorigin></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js"
+   integrity="sha384-&#43;XBljXPPiv&#43;OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"  crossorigin></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\\[", right: "\\]", display: true }
+      ],
+    });
+  });
+</script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/mermaid@8.14.0/dist/mermaid.min.js" 
+  integrity="sha384-atOyb0FxAgN9LyAc6PEf9BjgwLISyansgdH8/VXQH8p2o5vfrRgmGIJ2Sg22L0A0"  crossorigin></script>
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="https://gavinsun0921.github.io/images/profile_hucaa8c691112995772162609a17edd22e_212855_32x32_fill_box_center_3.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://gavinsun0921.github.io/images/profile_hucaa8c691112995772162609a17edd22e_212855_180x180_fill_box_center_3.png">
+
+<meta name="description"
+  content="Learn diffusion probabilistic models (DPM) by reading and analyzing the paper: Deep Unsupervised Learning using Nonequilibrium Thermodynamics.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1 ,
+      "name":"Posts",
+      "item":"https://gavinsun0921.github.io/posts/"},{
+      "@type": "ListItem",
+      "position": 2 ,
+      "name":"[Paper Reading] Deep Unsupervised Learning using Nonequilibrium Thermodynamics",
+      "item":"https://gavinsun0921.github.io/posts/paper-reading-01/"}]
+}
+</script>
+
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://gavinsun0921.github.io/posts/paper-reading-01/"
+    },
+    "headline": "[Paper Reading] Deep Unsupervised Learning using Nonequilibrium Thermodynamics | Gavin\u0027s Blog","datePublished": "2023-05-29T13:53:33+08:00",
+    "dateModified": "2023-05-29T13:53:33+08:00",
+    "wordCount":  1081 ,
+    "publisher": {
+        "@type": "Person",
+        "name": "Gavin Sun",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://gavinsun0921.github.io/images/profile.png"
+        }
+        },
+    "description": "Learn diffusion probabilistic models (DPM) by reading and analyzing the paper: Deep Unsupervised Learning using Nonequilibrium Thermodynamics."
+}
+</script><meta property="og:title" content="[Paper Reading] Deep Unsupervised Learning using Nonequilibrium Thermodynamics | Gavin&#39;s Blog" />
+<meta property="og:type" content="article" />
+
+
+<meta property="og:image" content="https://gavinsun0921.github.io/images/profile.png">
+
+
+<meta property="og:url" content="https://gavinsun0921.github.io/posts/paper-reading-01/" />
+
+
+
+<meta property="og:description" content="Learn diffusion probabilistic models (DPM) by reading and analyzing the paper: Deep Unsupervised Learning using Nonequilibrium Thermodynamics." />
+
+
+
+<meta property="og:locale" content="en" />
+
+
+
+
+<meta property="og:site_name" content="Gavin&#39;s Blog" />
+
+
+
+
+
+
+<meta property="article:published_time" content="2023-05-29T13:53:33&#43;08:00" />
+
+
+<meta property="article:modified_time" content="2023-05-29T13:53:33&#43;08:00" />
+
+
+
+<meta property="article:section" content="posts" />
+
+
+<meta property="article:tag" content="Diffusion" />
+
+<meta property="article:tag" content="DPM" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <body class="flex min-h-screen flex-col">
+    <header
+      class="min-h-16 pl-scrollbar bg-secondary-bg fixed z-50 flex w-full items-center shadow-sm"
+    >
+      <div class="mx-auto w-full max-w-screen-xl"><script>
+    let storageColorScheme = localStorage.getItem("lightDarkMode")
+    if (((storageColorScheme == 'Auto' || storageColorScheme == null) && window.matchMedia("(prefers-color-scheme: dark)").matches) || storageColorScheme == "Dark") {
+        document.getElementsByTagName('html')[0].classList.add('dark')
+    }
+</script>
+<nav class="flex items-center justify-between flex-wrap px-4 py-4 md:py-0">
+    <a href="/" class="me-6 text-primary-text text-xl font-bold">Gavin&#39;s Blog</a>
+    <button id="navbar-btn" class="md:hidden flex items-center px-3 py-2" aria-label="Open Navbar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div id="target"
+        class="hidden block md:flex md:grow md:justify-between md:items-center w-full md:w-auto text-primary-text z-20">
+        <div class="md:flex md:h-16 text-sm md:grow pb-4 md:pb-0 border-b md:border-b-0">
+            <a href="/posts/" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  selected-menu-item  me-4">Posts</a>
+            <a href="/categories" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  border-transparent  me-4">Categories</a>
+            <a href="/series" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  border-transparent  me-4">Series</a>
+        </div>
+
+        <div class="flex">
+            <div class="relative pt-4 md:pt-0">
+                <div class="cursor-pointer hover:text-eureka" id="lightDarkMode">
+                    <i class="fas fa-adjust"></i>
+                </div>
+                <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-30" id="is-open">
+                </div>
+                <div class="absolute flex flex-col start-0 md:start-auto end-auto md:end-0 hidden bg-secondary-bg w-48 rounded py-2 border border-tertiary-bg cursor-pointer z-40"
+                    id='lightDarkOptions'>
+                    <span class="px-4 py-1 hover:text-eureka" name="Light">Light</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Dark">Dark</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Auto">Auto</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-0" id="is-open-mobile">
+    </div>
+
+</nav>
+<script>
+    
+    let element = document.getElementById('lightDarkMode')
+    if (storageColorScheme == null || storageColorScheme == 'Auto') {
+        document.addEventListener('DOMContentLoaded', () => {
+            window.matchMedia("(prefers-color-scheme: dark)").addEventListener('change', switchDarkMode)
+        })
+    } else if (storageColorScheme == "Light") {
+        element.firstElementChild.classList.remove('fa-adjust')
+        element.firstElementChild.setAttribute("data-icon", 'sun')
+        element.firstElementChild.classList.add('fa-sun')
+    } else if (storageColorScheme == "Dark") {
+        element.firstElementChild.classList.remove('fa-adjust')
+        element.firstElementChild.setAttribute("data-icon", 'moon')
+        element.firstElementChild.classList.add('fa-moon')
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        getcolorscheme();
+        switchBurger();
+    });
+</script>
+</div>
+    </header>
+    <main class="grow pt-16">
+        <div class="pl-scrollbar">
+          <div class="mx-auto w-full max-w-screen-xl lg:px-4 xl:px-8">
+  
+  
+  <div class="grid grid-cols-2 gap-4 lg:grid-cols-8 lg:pt-12">
+    <div
+      class=" bg-secondary-bg col-span-2 rounded px-6 py-8 lg:col-span-6"
+    >
+      <article class="prose">
+  <h1 class="mb-4">[Paper Reading] Deep Unsupervised Learning using Nonequilibrium Thermodynamics</h1>
+
+  <div
+  class="text-tertiary-text not-prose mt-2 flex flex-row flex-wrap items-center"
+>
+  <div class="me-6 my-2">
+    <i class="fas fa-calendar me-1"></i>
+    <span
+      >2023-05-29</span
+    >
+  </div>
+  <div class="me-6 my-2">
+    <i class="fas fa-clock me-1"></i>
+    <span>3 min read</span>
+  </div>
+
+  
+    <div class="me-6 my-2">
+      <i class="fas fa-folder me-1"></i>
+      
+        <a href="https://gavinsun0921.github.io/categories/diffusion/" class="hover:text-eureka"
+          >Diffusion</a
+        >
+      
+    </div>
+  
+
+  
+    <div class="me-6 my-2">
+      <i class="fas fa-th-list me-1"></i>
+      
+        <a href="https://gavinsun0921.github.io/series/paper-reading/" class="hover:text-eureka"
+          >Paper Reading</a
+        >
+      
+    </div>
+  
+</div>
+
+
+  
+  
+
+  <p>This is the first post in the <a href="https://gavinsun0921.github.io/series/paper-reading/">Paper Reading</a> series. In this series I will continue to update some personal study notes on reading papers. This post will introduce the basic work of diffusion probabilistic models (DPM), including the derivation of formulas and simple code verification. If you have any suggestions on this post or would like to communicate with me, please leave comments below.</p>
+<div align="center">
+<img src="paper.png" alt="">
+Fig.1 <i>"Deep Unsupervised Learning using Nonequilibrium Thermodynamics"</i> published in 2015 by Sohl-Dickstein et al. proposed diffusion probabilistic models (DPM).
+</div>
+<h2 id="diffusion-models">Diffusion Models</h2>
+<p>What are Diffusion Models? Refer to Lil&rsquo;Log post:</p>
+<blockquote>
+<p>Diffusion models are inspired by non-equilibrium thermodynamics. They define a Markov chain of diffusion steps to slowly add random noise to data and then learn to reverse the diffusion process to construct desired data samples from the noise.</p>
+</blockquote>
+<p>My personal understanding of Diffusion Models is a framework where there are no trainable parameters in the forward process and there are training parameters in the reverse process. And there is no specific restriction on what type of neural network to use in terms of what specifically needs to be expressed implicitly in the reverse process.</p>
+<div align="center">
+<img src="Diffusion Models.png" alt=""/>
+Fig.2 Diffusion Models Framework Diagram.
+</div>
+<div align="center">
+<img src="diffusion_pgm.png" alt="" width="70%"/>
+Fig.3 Flowchart of Diffusion Models. (Image source: <a href="https://ayandas.me/blog-tut/2021/12/04/diffusion-prob-models.html" target="_blank" title="An introduction to Diffusion Probabilistic Models">Ayan Das, 2021</a>)
+</div>
+<h3 id="forward-process">Forward Process</h3>
+<p>The forward process is a <strong>Markov process</strong>. According to <a href="https://en.wikipedia.org/wiki/Markov_chain#:~:text=A%20Markov%20chain%20or%20Markov,the%20state%20of%20affairs%20now.%22">Wikipedia</a>, A Markov chain or Markov process is a stochastic model describing a sequence of possible events in which the probability of each event depends only on the state attained in the previous event. Informally, this may be thought of as, &ldquo;What happens next depends only on the state of affairs now.&rdquo;</p>
+<p>The main goal of the forward process is to gradually convert <strong>the data distribution</strong> $q(\mathbf{X}_0)$ into <strong>an analytically tractable distribution</strong> $\pi(\mathbf{y})$ by repeated application of a <strong>Markov diffusion kernel</strong> $T_\pi(\mathbf{y}|\mathbf{y}&rsquo;; \beta)$ for $\pi(\mathbf{y})$, where $\beta$ is the diffusion rate,
+$$\pi(\mathbf{y}) = \int  T_\pi(\mathbf{y}|\mathbf{y}&rsquo;; \beta) \mathrm{d}\mathbf{y}&rsquo; \tag{1}$$
+$$q(\mathbf{X}_t|\mathbf{X}_{t-1}) = T_\pi(\mathbf{X}_t|\mathbf{X}_{t-1}; \beta_t) \tag{2}$$</p>
+<p>The forward trajectory (<strong>joint distribution</strong>), corresponding to starting at the data distribution and performing T steps of diffusion, is thus
+$$q(\mathbf{X}_0, \mathbf{X}_1, \cdots, \mathbf{X}_T) = q(\mathbf{X}_{(0\cdots T)}) = q(\mathbf{X}_0)\prod_{t=1}^T q(\mathbf{X}_t | \mathbf{X}_{t-1}) \tag{3}$$</p>
+<div align="center">
+<img src="Forward Process.png" alt=""/>
+Fig.4 Illustration of forward (diffusion) trajectory.
+</div>
+<h3 id="reverse-process">Reverse Process</h3>
+<p>The reverse process also is a <strong>Markov process</strong>. The generative distribution $p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_t)$ will be trained to describe the same trajectory (also a <strong>joint distribution</strong>), but in reverse,</p>
+<p>$$p_\theta (\mathbf{X}_T) = \pi(\mathbf{X}_T) \tag{4}$$
+$$ p_\theta(\mathbf{X}_0, \mathbf{X}_1, \cdots, \mathbf{X}_T) = p_\theta(\mathbf{X}_{(0\cdots T)}) = p_\theta(\mathbf{X}_T)\prod_{t=1}^T p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t}) \tag{5}$$</p>
+<h3 id="generative-model">Generative Model</h3>
+<ul>
+<li>The forward trajectory (joint distribution): image to noise.</li>
+<li>The reverse trajectory (joint distribution): noise to image.</li>
+<li>The Model Probability (marginal distribution): the probability the generative model assigns to the data.</li>
+</ul>
+<p>The probability the generative model assigns to the data is
+$$p_\theta(\mathbf{X}_0) = \int \int \cdots \int p_\theta(\mathbf{X}_0, \mathbf{X}_1, \cdots, \mathbf{X}_T) \mathrm{d}\mathbf{X}_1 \mathrm{d}\mathbf{X}_2 \cdots \mathrm{d}\mathbf{X}_T \tag{6}$$
+For convenience, we simply denote it as:
+$$p_\theta(\mathbf{X}_0) = \int \mathrm{d}\mathbf{X}_{(1\cdots T)} \ p_\theta(\mathbf{X}_{(0\cdots T)}) \tag{7}$$</p>
+<p>But this integral (7) is intractable! We can handle this integral similarly to some of the ways in <strong>VAE</strong>. Taking a cue from <strong>annealed importance sampling</strong> and <strong>the Jarzynski equality</strong>, we instead evaluate the relative probability of the forward and reverse trajectories, averaged over forward trajectories,
+$$
+\begin{equation*}
+\begin{split}
+p_\theta(\mathbf{X}_0) &amp;= \int \mathrm{d}\mathbf{X}_{(1\cdots T)} \ p_\theta(\mathbf{X}_{(0\cdots T)}) \frac{q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0)}{q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0)} \\
+&amp;= \int \mathrm{d}\mathbf{X}_{(1\cdots T)} \ q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) \frac{\color{red} p_\theta(\mathbf{X}_{(0\cdots T)})}{\color{blue} q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0)} \\
+&amp;=  \int \mathrm{d}\mathbf{X}_{(1\cdots T)} \ q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) \frac{\color{red} p_\theta(\mathbf{X}_T) \prod_{t=1}^T p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{\color{blue} \frac{q(\mathbf{X}_0, \mathbf{X}_{(1\cdots T)})}{q(\mathbf{X}_0)}} \\
+&amp;=  \int \mathrm{d}\mathbf{X}_{(1\cdots T)} \ q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) \frac{p_\theta(\mathbf{X}_T) \prod_{t=1}^T p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{\color{blue} \frac{q(\mathbf{X}_0) \prod_{t=1}^T q(\mathbf{X}_t | \mathbf{X}_{t-1})}{q(\mathbf{X}_0)}} \\
+&amp;=  \int \mathrm{d}\mathbf{X}_{(1\cdots T)} \ q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) \frac{p_\theta(\mathbf{X}_T) \prod_{t=1}^T p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{\prod_{t=1}^T q(\mathbf{X}_t | \mathbf{X}_{t-1})} \\
+&amp;=  \int \mathrm{d}\mathbf{X}_{(1\cdots T)} \ q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \\
+\end{split}
+\end{equation*}
+\tag{8}
+$$</p>
+<h3 id="model-log-likelihood">Model Log Likelihood</h3>
+<p>We want the estimated data distribution ($p_\theta(\mathbf{X}_0)$) to be as close as possible to the actual data distribution ($q(\mathbf{X}_0)$).
+So trainning amounts to maximizing the model log likelihood,
+$$
+\begin{equation*}
+\begin{split}
+\mathcal{L} &amp;= \int \mathrm{d}\mathbf{X}_0 \ q(\mathbf{X}_0) \log p_\theta (\mathbf{X}_0) \\
+&amp;= \int \mathrm{d}\mathbf{X}_0 \ q(\mathbf{X}_0) { \log \left [ \int \mathrm{d}\mathbf{X}_{(1\cdots T)} q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]} \\
+&amp;= \int \mathrm{d}\mathbf{X}_0 \ q(\mathbf{X}_0) {\color{blue} \log \left \{{\LARGE \mathbb{E}}_{\mathbf{X}_{(1\cdots T)} \sim q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0)} \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \right \}} \\
+&amp;\geq \int \mathrm{d}\mathbf{X}_0 \ q(\mathbf{X}_0) {\color{blue} {\LARGE \mathbb{E}}_{\mathbf{X}_{(1\cdots T)} \sim q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0)} \left \{ \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \right \}} \\
+&amp;= \int \mathrm{d}\mathbf{X}_0 \ q(\mathbf{X}_0) \int \mathbb{d}\mathbf{X}_{(1\cdots T)} \  q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \\
+&amp;= \int \mathbb{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_0) q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \\
+&amp;= \int \mathbb{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \\
+\end{split}
+\end{equation*}
+\tag{9}
+$$</p>
+<p>The blue part in eq. (9) provided by <a href="https://en.wikipedia.org/wiki/Jensen%27s_inequality"><strong>Jensen&rsquo;s inequality</strong></a> as Fig. 5.</p>
+<div align="center">
+<img src="inequality.png" alt="" width="50%"/>
+Fig.5 Visualization of Jensen's inequality in logarithmic function.
+</div>
+<p>So we have the lower bound of $\mathcal{L}$, let&rsquo;s write it down as $$\mathcal{K} = \int \mathbb{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]$$</p>
+<h2 id="simple-code-verification">Simple Code Verification</h2>
+<p>The jupyter notebook is available at <a href="https://gist.github.com/GavinSun0921/ac4d07e2e64b3f102693686435e7fe9d">https://gist.github.com/GavinSun0921/ac4d07e2e64b3f102693686435e7fe9d</a>.</p>
+<p>You can click the button at the top of the notebook to open it in <strong>Colab</strong> and run the code for free.</p>
+<script src="https://gist.github.com/GavinSun0921/ac4d07e2e64b3f102693686435e7fe9d.js"></script>
+<h2 id="references">References</h2>
+<p>[1] Jascha Sohl-Dickstein <em>et al</em>. <a href="https://arxiv.org/abs/1503.03585">&ldquo;Deep Unsupervised Learning using Nonequilibrium Thermodynamics.&rdquo;</a> ICML 2015.</p>
+<p>[2] Jonathan Ho <em>et al</em>. <a href="https://arxiv.org/abs/2006.11239">&ldquo;Denoising diffusion probabilistic models.&rdquo;</a> NeurIPS 2020.</p>
+<p>[3] Jiaming Song <em>et al.</em> <a href="https://arxiv.org/abs/2010.02502">&ldquo;Denoising diffusion implicit models.&rdquo;</a> ICLR 2021.</p>
+<p>[4] Alex Nichol &amp; Prafulla Dhariwal. <a href="https://arxiv.org/abs/2102.09672">&ldquo;Improved denoising diffusion probabilistic models.&rdquo;</a> ICML 2021.</p>
+<p>[5] Weng, Lilian. (Jul 2021). <a href="(https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)">&ldquo;What are diffusion models? Lil’Log.&rdquo;</a> <a href="https://lilianweng.github.io/">https://lilianweng.github.io/</a>.</p>
+<p>[6] Ayan Das. (Dec 2021). <a href="https://ayandas.me/blog-tut/2021/12/04/diffusion-prob-models.html">&ldquo;An introduction to Diffusion Probabilistic Models.&rdquo;</a> <a href="https://ayandas.me/blogs.html">https://ayandas.me/blogs.html</a>.</p>
+<p>[7] deep_thoughts. (May 2022). <a href="https://www.bilibili.com/video/BV1b541197HX">&ldquo;54、Probabilistic Diffusion Model概率扩散模型理论与完整PyTorch代码详细解读.&rdquo;</a> <a href="https://space.bilibili.com/373596439">https://space.bilibili.com/373596439</a>.</p>
+
+</article>
+
+
+      
+        <div class="my-4">
+    
+    <a href="https://gavinsun0921.github.io/tags/diffusion/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 me-2 hover:text-eureka">#Diffusion</a>
+    
+    <a href="https://gavinsun0921.github.io/tags/dpm/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 me-2 hover:text-eureka">#DPM</a>
+    
+</div>
+      
+
+      
+
+
+
+      
+
+      
+  <div
+    class="-mx-2 mt-4 flex flex-col border-t px-2 pt-4 md:flex-row md:justify-between"
+  >
+    <div>
+      
+    </div>
+    <div class="mt-4 md:mt-0 md:text-right">
+      
+        <span class="text-primary-text block font-bold">Next</span>
+        <a href="https://gavinsun0921.github.io/posts/difference-between-introduction-and-related-work/" class="block">Difference between &#34;Introduction&#34; and &#34;Related Work&#34;</a>
+      
+    </div>
+  </div>
+
+
+      
+
+
+
+  <script id="utterances" src="https://utteranc.es/client.js"
+            issue-term=pathname
+            repo=GavinSun0921/gavinsun0921.github.io
+              theme=preferred-color-scheme
+        crossorigin="anonymous"
+        async>
+</script>
+<script>
+    if (storageColorScheme == "Light") {
+      document.getElementById('utterances').setAttribute('theme', 'github-light')
+    } else if (storageColorScheme == "Dark") {
+      document.getElementById('utterances').setAttribute('theme', 'github-dark')
+    }
+</script>
+
+    </div>
+    
+      <div class="col-span-2">
+        
+          
+<div class="bg-secondary-bg prose max-w-none rounded p-6">
+  <h3>Series of Posts</h3>
+  
+    
+      <a href="https://gavinsun0921.github.io/posts/paper-reading-01/" class="no-underline">[Paper Reading] Deep Unsupervised Learning using Nonequilibrium Thermodynamics</a>
+      <br />
+    
+  
+</div>
+
+        
+        
+          <div
+  class="
+    bg-primary-bg
+   prose sticky top-16 z-10 hidden px-6 py-4 lg:block"
+>
+  <h3>On This Page</h3>
+</div>
+<div
+  class="sticky-toc  hidden px-6 pb-6 lg:block"
+>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#diffusion-models">Diffusion Models</a>
+      <ul>
+        <li><a href="#forward-process">Forward Process</a></li>
+        <li><a href="#reverse-process">Reverse Process</a></li>
+        <li><a href="#generative-model">Generative Model</a></li>
+        <li><a href="#model-log-likelihood">Model Log Likelihood</a></li>
+      </ul>
+    </li>
+    <li><a href="#simple-code-verification">Simple Code Verification</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav>
+</div>
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    enableStickyToc();
+  });
+</script>
+
+        
+      </div>
+    
+
+    
+    
+  </div>
+
+  
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        hljs.highlightAll();
+      });
+    </script>
+
+          </div>
+        </div>
+      
+    </main>
+    <footer class="pl-scrollbar">
+      <div class="mx-auto w-full max-w-screen-xl"><div class="text-center p-6 pin-b">
+    <p class="text-sm text-tertiary-text">&copy; 2023 <a href="https://github.com/GavinSun0921">Gavin Sun</a>
+ &middot;  Powered by the <a href="https://github.com/wangchucheng/hugo-eureka" class="hover:text-eureka">Eureka</a> theme for <a href="https://gohugo.io" class="hover:text-eureka">Hugo</a></p>
+</div></div>
+    </footer>
+  </body>
+</html>
