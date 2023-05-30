@@ -106,7 +106,7 @@
     "image": "https://gavinsun0921.github.io/images/paper-reading/01.png",
     "datePublished": "2023-05-29T13:53:33+08:00",
     "dateModified": "2023-05-29T13:53:33+08:00",
-    "wordCount":  1250 ,
+    "wordCount":  1324 ,
     "publisher": {
         "@type": "Person",
         "name": "Gavin Sun",
@@ -371,19 +371,30 @@ $$</p>
 <img src="inequality.png" alt="" width="50%"/>
 Fig. 4. Visualization of Jensen's inequality in logarithmic function.
 </div>
-<p>So we have the lower bound of $\mathcal{L}$, let&rsquo;s write it down as $$\mathcal{K} = \int \mathbb{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]$$</p>
-<h4 id="ast-b1-peel-off-p_theta-in-mathcalk-as-an-entropy">$\ast$ B.1 Peel off $p_\theta$ in $\mathcal{K}$ as an entropy</h4>
-<p>$$
+<p>So we have the lower bound of $\mathcal{L}$, let&rsquo;s write it down as
+$$\mathcal{K} = \int \mathbb{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \tag{10}$$</p>
+<h4 id="ast-b1-peel-off-p_thetamathbfx_t-in-mathcalk-as-an-entropy">$\ast$ B.1 Peel off $p_\theta(\mathbf{X}_T)$ in $\mathcal{K}$ as an entropy</h4>
+<p>We can peel off the contribution from $p_\theta(\mathbf{X}_T)$, and rewrite it as an entropy,
+$$
 \begin{equation*}
 \begin{split}
 \mathcal{K} &amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]} \\
 &amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \left \{ \log p_\theta(\mathbf{X}_T) + \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \right \} } \\
 &amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]} + \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \log p_\theta(\mathbf{X}_T)} \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) { \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]} + \underbrace{\color{red} \int \mathrm{d}\mathbf{X}_T \ q(\mathbf{X}_T) \log p_\theta(\mathbf{X}_T)}_{\text{the entropy of }p(\mathbf{X}_T)} \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] - {\color{red} \mathcal{H}_p(\mathbf{X}_T)}
+&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) { \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]} + {\color{red} \int \mathrm{d}\mathbf{X}_T \ \underbrace{q(\mathbf{X}_T)}_{{\normalsize \pi}(\mathbf{X}_T)} \log \underbrace{p_\theta(\mathbf{X}_T)}_{{\normalsize \pi}(\mathbf{X}_T)}} \\
 \end{split}
 \end{equation*}
+\tag{11}
 $$</p>
+<p>By design, the cross entropy to $\pi(\mathbf{X}_T)$ is constant under our diffusion kernels, and equal to the entropy of $p_\theta(\mathbf{X}_T)$. Therefore,
+$$
+\mathcal{K} = \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] {\color{red} - \ \mathcal{H}_p(\mathbf{X}_T)}
+\tag{12}
+$$</p>
+<h4 id="ast-b2-remove-the-edge-effect-at-t0">$\ast$ B.2 Remove the edge effect at $t=0$</h4>
+<h4 id="ast-b3-rewrite-in-terms-of-qmathbfx_t-1--mathbfx_t">$\ast$ B.3 Rewrite in terms of $q(\mathbf{X}_{t-1} | \mathbf{X}_t)$</h4>
+<h4 id="ast-b4-rewrite-in-terms-of-kl-divergences-and-entropies">$\ast$ B.4 Rewrite in terms of KL divergences and entropies</h4>
+<h2 id="the-post-is-not-finished-yet">The post is not finished yet!</h2>
 <h2 id="simple-code-verification">Simple Code Verification</h2>
 <p>The jupyter notebook is available at <a href="https://gist.github.com/GavinSun0921/ac4d07e2e64b3f102693686435e7fe9d">https://gist.github.com/GavinSun0921/ac4d07e2e64b3f102693686435e7fe9d</a>.</p>
 <p>You can click the button at the top of the notebook to open it in <strong>Colab</strong> and run the code for free.</p>
@@ -488,11 +499,15 @@ $$</p>
         <li><a href="#generative-model">Generative Model</a></li>
         <li><a href="#model-log-likelihood">Model Log Likelihood</a>
           <ul>
-            <li><a href="#ast-b1-peel-off-p_theta-in-mathcalk-as-an-entropy">$\ast$ B.1 Peel off $p_\theta$ in $\mathcal{K}$ as an entropy</a></li>
+            <li><a href="#ast-b1-peel-off-p_thetamathbfx_t-in-mathcalk-as-an-entropy">$\ast$ B.1 Peel off $p_\theta(\mathbf{X}_T)$ in $\mathcal{K}$ as an entropy</a></li>
+            <li><a href="#ast-b2-remove-the-edge-effect-at-t0">$\ast$ B.2 Remove the edge effect at $t=0$</a></li>
+            <li><a href="#ast-b3-rewrite-in-terms-of-qmathbfx_t-1--mathbfx_t">$\ast$ B.3 Rewrite in terms of $q(\mathbf{X}_{t-1} | \mathbf{X}_t)$</a></li>
+            <li><a href="#ast-b4-rewrite-in-terms-of-kl-divergences-and-entropies">$\ast$ B.4 Rewrite in terms of KL divergences and entropies</a></li>
           </ul>
         </li>
       </ul>
     </li>
+    <li><a href="#the-post-is-not-finished-yet">The post is not finished yet!</a></li>
     <li><a href="#simple-code-verification">Simple Code Verification</a></li>
     <li><a href="#references">References</a></li>
   </ul>
