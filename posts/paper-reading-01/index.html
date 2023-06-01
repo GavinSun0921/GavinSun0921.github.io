@@ -106,7 +106,7 @@
     "image": "https://gavinsun0921.github.io/images/paper-reading/01.png",
     "datePublished": "2023-05-29T13:53:33+08:00",
     "dateModified": "2023-05-29T13:53:33+08:00",
-    "wordCount":  3866 ,
+    "wordCount":  3899 ,
     "publisher": {
         "@type": "Person",
         "name": "Gavin Sun",
@@ -304,7 +304,7 @@
 </blockquote>
 <div align="center">
 <img src="Diffusion Models.png" alt=""/>
-Fig. 1. Diffusion Models Framework Diagram.
+Fig. 1. Diffusion Models Framework Diagram (<i>Attention: This figure will fix soon<i/>).
 </div>
 <p>My personal understanding of Diffusion Models is a framework (Fig. 2) where there are no trainable parameters in the forward process and there are training parameters in the reverse process. And there is no specific restriction on what type of neural network to use in terms of what specifically needs to be expressed implicitly in the reverse process.</p>
 <div align="center">
@@ -593,7 +593,7 @@ $$</p>
 \end{equation*}
 \tag{34}
 $$</p>
-<p>Since $\mathbf{x}_t$ is available as input to the model, we can represent Eq. (27) to $\mathbf{x}_0 = (\mathbf{x}_t - \sqrt{1 - \bar{\alpha}_t} \bar{\bm{\epsilon}}_0) / \sqrt{\bar{\alpha}_t}$ and bring it into Eq. (34),
+<p>Thanks to the nice property, we can represent Eq. (27) to $\mathbf{x}_0 = (\mathbf{x}_t - \sqrt{1 - \bar{\alpha}_t} \bar{\bm{\epsilon}}_0) / \sqrt{\bar{\alpha}_t}$ and bring it into Eq. (34),
 $$
 \begin{equation*}
 \begin{split}
@@ -617,7 +617,7 @@ $$
 \end{equation*}
 \tag{36}
 $$</p>
-<p>The loss term $\mathcal{L}_{t-1}$ in Eq. (36) is parameterized to minimize the difference from $\bm{\mu}_t(\mathbf{x}_t)$:
+<p>Recall that we need to learn a model to approximate the conditioned probability distributions in the reverse diffusion process, $p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \bm{\mu}_\theta(\mathbf{x}_t, t), \bm{\sigma}_\theta(\mathbf{x}_t, t))$. We would like to train $\bm{\mu}_\theta(\mathbf{x}_t, t)$ to predict $\bm{\mu}_t(\mathbf{x}_t)$ in Eq. (35), and set $\bm{\sigma}_\theta(\mathbf{x}_t, t)$ is equal to $\sigma_t^2\mathbf{I}$, where $\sigma_t^2$ is equal to $\tilde{\beta}_t$ in Eq. (33) or $\beta_t$ for simplify. The loss term $\mathcal{L}_{t-1}$ in Eq. (36) is parameterized to minimize the difference from $\bm{\mu}_t(\mathbf{x}_t)$:
 $$
 \begin{equation*}
 \begin{split}
@@ -630,7 +630,7 @@ $$
 \end{equation*}
 \tag{37}
 $$</p>
-<p>Recall that we need to learn a model to approximate the conditioned probability distributions in the reverse diffusion process, $p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \bm{\mu}_\theta(\mathbf{x}_t, t), \bm{\sigma}_\theta(\mathbf{x}_t, t))$. We would like to train $\bm{\mu}_\theta(\mathbf{x}_t, t)$ to predict $\bm{\mu}_t(\mathbf{x}_t)$ in Eq. (35), and set $\bm{\sigma}_\theta(\mathbf{x}_t, t)$ is equal to $\sigma_t^2\mathbf{I}$, where $\sigma_t^2$ is equal to $\tilde{\beta}_t$ in Eq. (33) or $\beta_t$ for simplify,
+<p>Because $\mathbf{x}_t$ is available as input at training time, we can reparameterize the Gaussian noise term instead to make it predict $\bm{\epsilon}$ from the input $\mathbf{x}_t$ at time step $t$:
 $$
 \bm{\mu}_\theta(\mathbf{x}_t, t) = \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}}_t} \bm{\epsilon}_\theta(\mathbf{x}_t, t) \right )
 \tag{38}
@@ -661,13 +661,13 @@ $$
 \tag{41}
 $$</p>
 <h4 id="simplification">Simplification</h4>
-<p>Empirically, Ho et al. (2020) found that training the diffusion model works better with a simplified objective that ignores the weighting term (<strong>the green part in Eq. (41)</strong>):
+<p>Empirically, <a href="https://arxiv.org/abs/2006.11239">Ho et al. (2020)</a> found that training the diffusion model works better with a simplified objective that ignores the weighting term (<strong>the green part in Eq. (41)</strong>):
 $$
 \mathcal{L}_t^{\text{simple}} = {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bar{\bm{\epsilon}}_0 \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \left \| \bar{\bm{\epsilon}}_0 - \bm{\epsilon}_\theta(\sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \bar{\bm{\epsilon}}_0, t) \right \| ^2 \right ]
 \tag{42}
 $$</p>
 <h2 id="simple-code-verification">Simple Code Verification</h2>
-<p>The jupyter notebook is available at <a href="https://gist.github.com/GavinSun0921/ac4d07e2e64b3f102693686435e7fe9d">https://gist.github.com/GavinSun0921/ac4d07e2e64b3f102693686435e7fe9d</a>.</p>
+<p>The jupyter notebook is available at <a href="https://gist.github.com/GavinSun0921/ac4d07e2e64b3f102693686435e7fe9d"><strong>GitHub Gist</strong></a>.</p>
 <p>You can click the button at the top of the notebook to open it in <strong>Colab</strong> and run the code for free.</p>
 <script src="https://gist.github.com/GavinSun0921/ac4d07e2e64b3f102693686435e7fe9d.js"></script>
 <h2 id="references">References</h2>
