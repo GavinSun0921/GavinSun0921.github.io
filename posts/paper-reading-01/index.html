@@ -106,7 +106,7 @@
     "image": "https://gavinsun0921.github.io/images/paper-reading/01.png",
     "datePublished": "2023-05-29T13:53:33+08:00",
     "dateModified": "2023-05-29T13:53:33+08:00",
-    "wordCount":  2380 ,
+    "wordCount":  3866 ,
     "publisher": {
         "@type": "Person",
         "name": "Gavin Sun",
@@ -263,7 +263,7 @@
   </div>
   <div class="me-6 my-2">
     <i class="fas fa-clock me-1"></i>
-    <span>5 min read</span>
+    <span>8 min read</span>
   </div>
 
   
@@ -295,8 +295,8 @@
     <img src="https://gavinsun0921.github.io/images/paper-reading/01.png" class="w-full" alt="Featured Image">
   
 
-  <p>This is the first post in the <a href="https://gavinsun0921.github.io/series/paper-reading/">Paper Reading</a> series. In this series I will continue to update some personal study notes on reading papers. This post will introduce the basic work of diffusion probabilistic models (DPM), including the derivation of formulas and simple code verification. If you have any suggestions on this post or would like to communicate with me, please leave comments below.</p>
-<p><strong>Attention: If you cannot access GitHub normally, the picture may not be displayed normally. If you cannot access KaTeX normally, the formula may not be displayed normally.</strong></p>
+  <p><strong>Attention: If you cannot access GitHub, the picture may not be loaded normally. If you cannot access KaTeX, the formula may not be displayed normally.</strong></p>
+<p>This is the first post in the <a href="https://gavinsun0921.github.io/series/paper-reading/">Paper Reading</a> series. In this series I will continue to update some personal study notes on reading papers. This post will introduce the basic work of diffusion probabilistic models (DPM), including the derivation of formulas and simple code verification. If you have any suggestions on this post or would like to communicate with me, please leave comments below.</p>
 <h2 id="diffusion-models">Diffusion Models</h2>
 <p>What are Diffusion Models? Refer to <a href="https://lilianweng.github.io/posts/2021-07-11-diffusion-models/#:~:text=Diffusion%20models%20are%20inspired%20by%20non%2Dequilibrium%20thermodynamics.%20They%20define%20a%20Markov%20chain%20of%20diffusion%20steps%20to%20slowly%20add%20random%20noise%20to%20data%20and%20then%20learn%20to%20reverse%20the%20diffusion%20process%20to%20construct%20desired%20data%20samples%20from%20the%20noise.">Lil&rsquo;Log</a> post:</p>
 <blockquote>
@@ -313,19 +313,20 @@ Fig. 2. Flowchart of Diffusion Models. (Image source: <a href="https://ayandas.m
 </div>
 <h3 id="forward-process">Forward Process</h3>
 <p>The forward process is a <strong>Markov process</strong>. According to <a href="https://en.wikipedia.org/wiki/Markov_chain#:~:text=A%20Markov%20chain%20or%20Markov,the%20state%20of%20affairs%20now.%22">Wikipedia</a>, A Markov chain or Markov process is a stochastic model describing a sequence of possible events in which the probability of each event depends only on the state attained in the previous event. Informally, this may be thought of as, &ldquo;What happens next depends only on the state of affairs now.&rdquo;</p>
-<p>The main goal of the forward process is to gradually convert <strong>the data distribution</strong> $q(\mathbf{X}_0)$ into <strong>an analytically tractable distribution</strong> $\pi(\mathbf{y})$ by repeated application of a <strong>Markov diffusion kernel</strong> $T_\pi(\mathbf{y}|\mathbf{y}&rsquo;; \beta)$ for $\pi(\mathbf{y})$, where $\beta$ is the diffusion rate,
+<p>The main goal of the forward process is to gradually convert <strong>the data distribution</strong> $q(\mathbf{x}_0)$ into <strong>an analytically tractable distribution</strong> $\pi(\mathbf{y})$ by repeated application of a <strong>Markov diffusion kernel</strong> $T_\pi(\mathbf{y}|\mathbf{y}&rsquo;; \beta)$ for $\pi(\mathbf{y})$, where $\beta$ is the diffusion rate,
 $$\pi(\mathbf{y}) = \int  T_\pi(\mathbf{y}|\mathbf{y}&rsquo;; \beta) \mathrm{d}\mathbf{y}&rsquo; \tag{1}$$
-$$q(\mathbf{X}_t|\mathbf{X}_{t-1}) = T_\pi(\mathbf{X}_t|\mathbf{X}_{t-1}; \beta_t) \tag{2}$$</p>
+$$q(\mathbf{x}_t|\mathbf{x}_{t-1}) = T_\pi(\mathbf{x}_t|\mathbf{x}_{t-1}; \beta_t) \tag{2}$$</p>
 <p>The forward trajectory (<strong>joint distribution</strong>), corresponding to starting at the data distribution and performing T steps of diffusion, is thus
-$$q(\mathbf{X}_0, \mathbf{X}_1, \cdots, \mathbf{X}_T) = q(\mathbf{X}_{(0\cdots T)}) = q(\mathbf{X}_0)\prod_{t=1}^T q(\mathbf{X}_t | \mathbf{X}_{t-1}) \tag{3}$$</p>
+$$q(\mathbf{x}_0, \mathbf{x}_1, \cdots, \mathbf{x}_T) = q(\mathbf{x}_{(0\cdots T)}) = q(\mathbf{x}_0)\prod_{t=1}^T q(\mathbf{x}_t | \mathbf{x}_{t-1}) \tag{3}$$</p>
 <div align="center">
 <img src="Forward Process.png" alt=""/>
 Fig. 3. Illustration of forward (diffusion) trajectory.
 </div>
 <h3 id="reverse-process">Reverse Process</h3>
-<p>The reverse process also is a <strong>Markov process</strong>. The generative distribution $p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_t)$ will be trained to describe the same trajectory (also a <strong>joint distribution</strong>), but in reverse,</p>
-<p>$$p_\theta (\mathbf{X}_T) = \pi(\mathbf{X}_T) \tag{4}$$
-$$ p_\theta(\mathbf{X}_0, \mathbf{X}_1, \cdots, \mathbf{X}_T) = p_\theta(\mathbf{X}_{(0\cdots T)}) = p_\theta(\mathbf{X}_T)\prod_{t=1}^T p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t}) \tag{5}$$</p>
+<p>The reverse process also is a <strong>Markov process</strong>. If we can reverse the above process and sample from $q(\mathbf{x}_{t-1} | \mathbf{x}_t)$, we will be able to recreate the true sample from a Gaussian noise input, $\mathbf{x}_T \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$. Unfortunately, we cannot easily estimate $q(\mathbf{x}_{t-1} | \mathbf{x}_t)$ and there fore we need to learn a model $p_\theta$ to approximate these conditional probabilites in order to run the reverse process. We want $p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t)$ to approximate $q(\mathbf{x}_{t-1} | \mathbf{x}_t)$ as closely as possible for all t.</p>
+<p>The generative distribution $p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t)$ will be trained to describe the same trajectory (also a <strong>joint distribution</strong>), but in reverse,</p>
+<p>$$p_\theta (\mathbf{x}_T) = \pi(\mathbf{x}_T) \tag{4}$$
+$$ p_\theta(\mathbf{x}_0, \mathbf{x}_1, \cdots, \mathbf{x}_T) = p_\theta(\mathbf{x}_{(0\cdots T)}) = p_\theta(\mathbf{x}_T)\prod_{t=1}^T p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t}) \tag{5}$$</p>
 <h3 id="generative-model">Generative Model</h3>
 <ul>
 <li>The forward trajectory (joint distribution): image to noise.</li>
@@ -333,36 +334,36 @@ $$ p_\theta(\mathbf{X}_0, \mathbf{X}_1, \cdots, \mathbf{X}_T) = p_\theta(\mathbf
 <li>The Model Probability (marginal distribution): the probability the generative model assigns to the data.</li>
 </ul>
 <p>The probability the generative model assigns to the data is
-$$p_\theta(\mathbf{X}_0) = \int \int \cdots \int p_\theta(\mathbf{X}_0, \mathbf{X}_1, \cdots, \mathbf{X}_T) \mathrm{d}\mathbf{X}_1 \mathrm{d}\mathbf{X}_2 \cdots \mathrm{d}\mathbf{X}_T \tag{6}$$
+$$p_\theta(\mathbf{x}_0) = \int \int \cdots \int p_\theta(\mathbf{x}_0, \mathbf{x}_1, \cdots, \mathbf{x}_T) \mathrm{d}\mathbf{x}_1 \mathrm{d}\mathbf{x}_2 \cdots \mathrm{d}\mathbf{x}_T \tag{6}$$
 For convenience, we simply denote it as:
-$$p_\theta(\mathbf{X}_0) = \int \mathrm{d}\mathbf{X}_{(1\cdots T)} \ p_\theta(\mathbf{X}_{(0\cdots T)}) \tag{7}$$</p>
+$$p_\theta(\mathbf{x}_0) = \int \mathrm{d}\mathbf{x}_{(1\cdots T)} \ p_\theta(\mathbf{x}_{(0\cdots T)}) \tag{7}$$</p>
 <p>But this integral (7) is intractable! We can handle this integral similarly to some of the ways in <strong>VAE</strong>. Taking a cue from <strong>annealed importance sampling</strong> and <strong>the Jarzynski equality</strong>, we instead evaluate the relative probability of the forward and reverse trajectories, averaged over forward trajectories,
 $$
 \begin{equation*}
 \begin{split}
-p_\theta(\mathbf{X}_0) &amp;= \int \mathrm{d}\mathbf{X}_{(1\cdots T)} \ p_\theta(\mathbf{X}_{(0\cdots T)}) \frac{q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0)}{q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0)} \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(1\cdots T)} \ q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) \frac{\color{red} p_\theta(\mathbf{X}_{(0\cdots T)})}{\color{blue} q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0)} \\
-&amp;=  \int \mathrm{d}\mathbf{X}_{(1\cdots T)} \ q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) \frac{\color{red} p_\theta(\mathbf{X}_T) \prod_{t=1}^T p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{\color{blue} \frac{q(\mathbf{X}_0, \mathbf{X}_{(1\cdots T)})}{q(\mathbf{X}_0)}} \\
-&amp;=  \int \mathrm{d}\mathbf{X}_{(1\cdots T)} \ q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) \frac{p_\theta(\mathbf{X}_T) \prod_{t=1}^T p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{\color{blue} \frac{q(\mathbf{X}_0) \prod_{t=1}^T q(\mathbf{X}_t | \mathbf{X}_{t-1})}{q(\mathbf{X}_0)}} \\
-&amp;=  \int \mathrm{d}\mathbf{X}_{(1\cdots T)} \ q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) \frac{p_\theta(\mathbf{X}_T) \prod_{t=1}^T p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{\prod_{t=1}^T q(\mathbf{X}_t | \mathbf{X}_{t-1})} \\
-&amp;=  \int \mathrm{d}\mathbf{X}_{(1\cdots T)} \ q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \\
+p_\theta(\mathbf{x}_0) &amp;= \int \mathrm{d}\mathbf{x}_{(1\cdots T)} \ p_\theta(\mathbf{x}_{(0\cdots T)}) \frac{q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0)}{q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0)} \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(1\cdots T)} \ q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0) \frac{\color{red} p_\theta(\mathbf{x}_{(0\cdots T)})}{\color{blue} q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0)} \\
+&amp;=  \int \mathrm{d}\mathbf{x}_{(1\cdots T)} \ q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0) \frac{\color{red} p_\theta(\mathbf{x}_T) \prod_{t=1}^T p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{\color{blue} \frac{q(\mathbf{x}_0, \mathbf{x}_{(1\cdots T)})}{q(\mathbf{x}_0)}} \\
+&amp;=  \int \mathrm{d}\mathbf{x}_{(1\cdots T)} \ q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0) \frac{p_\theta(\mathbf{x}_T) \prod_{t=1}^T p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{\color{blue} \frac{q(\mathbf{x}_0) \prod_{t=1}^T q(\mathbf{x}_t | \mathbf{x}_{t-1})}{q(\mathbf{x}_0)}} \\
+&amp;=  \int \mathrm{d}\mathbf{x}_{(1\cdots T)} \ q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0) \frac{p_\theta(\mathbf{x}_T) \prod_{t=1}^T p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{\prod_{t=1}^T q(\mathbf{x}_t | \mathbf{x}_{t-1})} \\
+&amp;=  \int \mathrm{d}\mathbf{x}_{(1\cdots T)} \ q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0) p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \\
 \end{split}
 \end{equation*}
 \tag{8}
 $$</p>
 <h3 id="model-log-likelihood">Model Log Likelihood</h3>
-<p>We want the estimated data distribution ($p_\theta(\mathbf{X}_0)$) to be as close as possible to the actual data distribution ($q(\mathbf{X}_0)$).
+<p>We want the estimated data distribution ($p_\theta(\mathbf{x}_0)$) to be as close as possible to the actual data distribution ($q(\mathbf{x}_0)$).
 So trainning amounts to maximizing the model log likelihood,
 $$
 \begin{equation*}
 \begin{split}
-\mathcal{L} &amp;= \int \mathrm{d}\mathbf{X}_0 \ q(\mathbf{X}_0) \log p_\theta (\mathbf{X}_0) \\
-&amp;= \int \mathrm{d}\mathbf{X}_0 \ q(\mathbf{X}_0) { \log \left [ \int \mathrm{d}\mathbf{X}_{(1\cdots T)} q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]} \\
-&amp;= \int \mathrm{d}\mathbf{X}_0 \ q(\mathbf{X}_0) {\color{blue} \log \left \{{\LARGE \mathbb{E}}_{\mathbf{X}_{(1\cdots T)} \sim q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0)} \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \right \}} \\
-&amp;\geq \int \mathrm{d}\mathbf{X}_0 \ q(\mathbf{X}_0) {\color{blue} {\LARGE \mathbb{E}}_{\mathbf{X}_{(1\cdots T)} \sim q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0)} \left \{ \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \right \}} \\
-&amp;= \int \mathrm{d}\mathbf{X}_0 \ q(\mathbf{X}_0) \int \mathbb{d}\mathbf{X}_{(1\cdots T)} \  q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \\
-&amp;= \int \mathbb{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_0) q(\mathbf{X}_{(1\cdots T)} | \mathbf{X}_0) \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \\
-&amp;= \int \mathbb{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \\
+\mathcal{L} &amp;= \int \mathrm{d}\mathbf{x}_0 \ q(\mathbf{x}_0) \log p_\theta (\mathbf{x}_0) \\
+&amp;= \int \mathrm{d}\mathbf{x}_0 \ q(\mathbf{x}_0) { \log \left [ \int \mathrm{d}\mathbf{x}_{(1\cdots T)} q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0) p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ]} \\
+&amp;= \int \mathrm{d}\mathbf{x}_0 \ q(\mathbf{x}_0) {\color{blue} \log \left \{{\LARGE \mathbb{E}}_{\mathbf{x}_{(1\cdots T)} \sim q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0)} \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \right \}} \\
+&amp;\geq \int \mathrm{d}\mathbf{x}_0 \ q(\mathbf{x}_0) {\color{blue} {\LARGE \mathbb{E}}_{\mathbf{x}_{(1\cdots T)} \sim q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0)} \left \{ \log \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \right \}} \\
+&amp;= \int \mathrm{d}\mathbf{x}_0 \ q(\mathbf{x}_0) \int \mathbb{d}\mathbf{x}_{(1\cdots T)} \  q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0) \log \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \\
+&amp;= \int \mathbb{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_0) q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0) \log \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \\
+&amp;= \int \mathbb{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \log \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \\
 \end{split}
 \end{equation*}
 \tag{9}
@@ -373,101 +374,101 @@ $$</p>
 Fig. 4. Visualization of Jensen's inequality in logarithmic function.
 </div>
 <p>So we have the lower bound of $\mathcal{L}$, let&rsquo;s write it down as
-$$\mathcal{K} = \int \mathbb{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \tag{10}$$</p>
-<h4 id="ast-b1-peel-off-p_thetamathbfx_t-in-mathcalk-as-an-entropy">$\ast$ B.1 Peel off $p_\theta(\mathbf{X}_T)$ in $\mathcal{K}$ as an entropy</h4>
-<p>We can peel off the contribution from $p_\theta(\mathbf{X}_T)$, and rewrite it as an entropy,
+$$\mathcal{K} = \int \mathbb{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \log \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \tag{10}$$</p>
+<h4 id="ast-b1-peel-off-p_thetamathbfx_t-in-mathcalk-as-an-entropy">$\ast$ B.1 Peel off $p_\theta(\mathbf{x}_T)$ in $\mathcal{K}$ as an entropy</h4>
+<p>We can peel off the contribution from $p_\theta(\mathbf{x}_T)$, and rewrite it as an entropy,
 $$
 \begin{equation*}
 \begin{split}
-\mathcal{K} &amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \log \left [ p_\theta(\mathbf{X}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]} \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \left \{ \log p_\theta(\mathbf{X}_T) + \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] \right \} } \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]} + \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \log p_\theta(\mathbf{X}_T)} \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) { \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]} + {\color{red} \int \mathrm{d}\mathbf{X}_T \ q(\mathbf{X}_T) \log \underbrace{p_\theta(\mathbf{X}_T)}_{{\normalsize \pi}(\mathbf{X}_T)}} \\
+\mathcal{K} &amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) {\color{blue} \log \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ]} \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) {\color{blue} \left \{ \log p_\theta(\mathbf{x}_T) + \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \right \} } \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) {\color{blue} \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ]} + \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) {\color{blue} \log p_\theta(\mathbf{x}_T)} \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) { \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ]} + {\color{red} \int \mathrm{d}\mathbf{x}_T \ q(\mathbf{x}_T) \log \underbrace{p_\theta(\mathbf{x}_T)}_{{\normalsize \pi}(\mathbf{x}_T)}} \\
 \end{split}
 \end{equation*}
 \tag{11}
 $$</p>
-<p>By design, the cross entropy to $\pi(\mathbf{X}_T)$ is constant under our diffusion kernels, and equal to the entropy of $p_\theta(\mathbf{X}_T)$. Therefore,
+<p>By design, the cross entropy to $\pi(\mathbf{x}_T)$ is constant under our diffusion kernels, and equal to the entropy of $p_\theta(\mathbf{x}_T)$. Therefore,
 $$
-\mathcal{K} = \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] {\color{red} - \ \mathcal{H}_p(\mathbf{X}_T)}
+\mathcal{K} = \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] {\color{red} - \ \mathcal{H}_p(\mathbf{x}_T)}
 \tag{12}
 $$</p>
 <h4 id="ast-b2-remove-the-edge-effect-at-t0">$\ast$ B.2 Remove the edge effect at $t=0$</h4>
 <p>In order to avoid edge effects, we set the final step of the reverse trajectory to be identical to the corresponding forward diffusion step,
-$$p_\theta(\mathbf{X}_0 | \mathbf{X}_1) = q(\mathbf{X}_1 | \mathbf{X}_0) \frac{\pi(\mathbf{X}_{0})}{\pi(\mathbf{X}_{1})} = T_\pi(\mathbf{X}_0 | \mathbf{X}_1 ; \beta) \tag{13}$$</p>
+$$p_\theta(\mathbf{x}_0 | \mathbf{x}_1) = q(\mathbf{x}_1 | \mathbf{x}_0) \frac{\pi(\mathbf{x}_{0})}{\pi(\mathbf{x}_{1})} = T_\pi(\mathbf{x}_0 | \mathbf{x}_1 ; \beta) \tag{13}$$</p>
 <p>We then use this equivalence to remove the contribution of <strong>the first time-step</strong> in the sum,
 $$
 \begin{equation*}
 \begin{split}
-\mathcal{K} &amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]}  - \mathcal{H}_p(\mathbf{X}_T) \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ]} + \underbrace{\int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) {\color{blue} \log \frac{p_\theta(\mathbf{X}_0 | \mathbf{X}_1)}{q(\mathbf{X}_1 | \mathbf{X}_0)}}}_{ {\large \mathbb{E}}_{\mathbf{X}_{(0\cdots T)} \sim q(\mathbf{X}_{(0\cdots T)})} {\normalsize \log \frac{p_\theta(\mathbf{X}_0 | \mathbf{X}_1)}{q(\mathbf{X}_1 | \mathbf{X}_0)}}} - \mathcal{H}_p(\mathbf{X}_T) \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] + \int \mathrm{d}\mathbf{X}_{(0, 1)} \ q(\mathbf{X}_{(0, 1)}) \log \frac{\color{red} p_\theta(\mathbf{X}_0 | \mathbf{X}_1)}{q(\mathbf{X}_1 | \mathbf{X}_0)} - \mathcal{H}_p(\mathbf{X}_T) \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] + \int \mathrm{d}\mathbf{X}_{(0, 1)} \ q(\mathbf{X}_{(0, 1)}) \log \frac{\color{red} q(\mathbf{X}_1 | \mathbf{X}_0) \pi(\mathbf{X}_0)}{q(\mathbf{X}_1 | \mathbf{X}_0) {\color{red} \pi(\mathbf{X}_1)}} - \mathcal{H}_p(\mathbf{X}_T) \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] + {\color{green} \int \mathrm{d}\mathbf{X}_{(0, 1)} \ q(\mathbf{X}_{(0, 1)}) \log \frac{\pi(\mathbf{X}_0)}{\pi(\mathbf{X}_1)}} - \mathcal{H}_p(\mathbf{X}_T) \\
+\mathcal{K} &amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) {\color{blue} \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ]}  - \mathcal{H}_p(\mathbf{x}_T) \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) {\color{blue} \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ]} + \underbrace{\int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) {\color{blue} \log \frac{p_\theta(\mathbf{x}_0 | \mathbf{x}_1)}{q(\mathbf{x}_1 | \mathbf{x}_0)}}}_{ {\large \mathbb{E}}_{\mathbf{x}_{(0\cdots T)} \sim q(\mathbf{x}_{(0\cdots T)})} {\normalsize \log \frac{p_\theta(\mathbf{x}_0 | \mathbf{x}_1)}{q(\mathbf{x}_1 | \mathbf{x}_0)}}} - \mathcal{H}_p(\mathbf{x}_T) \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] + \int \mathrm{d}\mathbf{x}_{(0, 1)} \ q(\mathbf{x}_{(0, 1)}) \log \frac{\color{red} p_\theta(\mathbf{x}_0 | \mathbf{x}_1)}{q(\mathbf{x}_1 | \mathbf{x}_0)} - \mathcal{H}_p(\mathbf{x}_T) \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] + \int \mathrm{d}\mathbf{x}_{(0, 1)} \ q(\mathbf{x}_{(0, 1)}) \log \frac{\color{red} q(\mathbf{x}_1 | \mathbf{x}_0) \pi(\mathbf{x}_0)}{q(\mathbf{x}_1 | \mathbf{x}_0) {\color{red} \pi(\mathbf{x}_1)}} - \mathcal{H}_p(\mathbf{x}_T) \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] + {\color{green} \int \mathrm{d}\mathbf{x}_{(0, 1)} \ q(\mathbf{x}_{(0, 1)}) \log \frac{\pi(\mathbf{x}_0)}{\pi(\mathbf{x}_1)}} - \mathcal{H}_p(\mathbf{x}_T) \\
 \end{split}
 \end{equation*}
 \tag{14}
 $$</p>
-<p>For ease of presentation, the green part of Eq. (14) is derived separately,
+<p>For ease of presentation, <strong>the green part of Eq. (14)</strong> is derived separately,
 $$
 \begin{equation*}
 \begin{split}
-{\color{green} \int \mathrm{d}\mathbf{X}_{(0, 1)} \ q(\mathbf{X}_{(0, 1)}) \log \frac{\pi(\mathbf{X}_0)}{\pi(\mathbf{X}_1)}} &amp;= \int \mathrm{d}\mathbf{X}_{(0, 1)} \ q(\mathbf{X}_{(0, 1)}) \left [ \log \pi(\mathbf{X}_0) - \log \pi(\mathbf{X}_1) \right ] \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0, 1)} \ q(\mathbf{X}_{(0, 1)}) \log \pi(\mathbf{X}_0) - \int \mathrm{d}\mathbf{X}_{(0, 1)} \ q(\mathbf{X}_{(0, 1)}) \log \pi(\mathbf{X}_1) \\
-&amp;= {\color{red} \int \mathrm{d}\mathbf{X}_{(0)} \ q(\mathbf{X}_{(0)}) \log \pi(\mathbf{X}_0)} - {\color{red} \int \mathrm{d}\mathbf{X}_{(1)} \ q(\mathbf{X}_{(1)}) \log \pi(\mathbf{X}_1)} \\
-&amp;= {\color{red} \mathcal{H}_p(\mathbf{X}_T)} - {\color{red} \mathcal{H}_p(\mathbf{X}_T)} \\
+{\color{green} \int \mathrm{d}\mathbf{x}_{(0, 1)} \ q(\mathbf{x}_{(0, 1)}) \log \frac{\pi(\mathbf{x}_0)}{\pi(\mathbf{x}_1)}} &amp;= \int \mathrm{d}\mathbf{x}_{(0, 1)} \ q(\mathbf{x}_{(0, 1)}) \left [ \log \pi(\mathbf{x}_0) - \log \pi(\mathbf{x}_1) \right ] \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(0, 1)} \ q(\mathbf{x}_{(0, 1)}) \log \pi(\mathbf{x}_0) - \int \mathrm{d}\mathbf{x}_{(0, 1)} \ q(\mathbf{x}_{(0, 1)}) \log \pi(\mathbf{x}_1) \\
+&amp;= {\color{red} \int \mathrm{d}\mathbf{x}_{(0)} \ q(\mathbf{x}_{(0)}) \log \pi(\mathbf{x}_0)} - {\color{red} \int \mathrm{d}\mathbf{x}_{(1)} \ q(\mathbf{x}_{(1)}) \log \pi(\mathbf{x}_1)} \\
+&amp;= {\color{red} \mathcal{H}_p(\mathbf{x}_T)} - {\color{red} \mathcal{H}_p(\mathbf{x}_T)} \\
 &amp;= 0 \\
 \end{split}
 \end{equation*}
 \tag{15}
 $$</p>
-<p>where we again used the fact that by design $\color{red} -\int \mathrm{d}\mathbf{X}_t \ q(\mathbf{X}_t) \log \pi(\mathbf{X}_t) = \mathcal{H}_p(\mathbf{X}_T)$ is a constant for all $t$.</p>
+<p>where we again used the fact that by design $\color{red} -\int \mathrm{d}\mathbf{x}_t \ q(\mathbf{x}_t) \log \pi(\mathbf{x}_t) = \mathcal{H}_p(\mathbf{x}_T)$ is a constant for all $t$.</p>
 <p>Therefore, the lower bound in Eq. (14) becomes
-$$\mathcal{K} = \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_t | \mathbf{X}_{t-1})} \right ] - \mathcal{H}_p(\mathbf{X}_T) \tag{16}$$</p>
-<h4 id="ast-b3-rewrite-in-terms-of-qmathbfx_t-1--mathbfx_t">$\ast$ B.3 Rewrite in terms of $q(\mathbf{X}_{t-1} | \mathbf{X}_t)$</h4>
+$$\mathcal{K} = \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] - \mathcal{H}_p(\mathbf{x}_T) \tag{16}$$</p>
+<h4 id="ast-b3-rewrite-in-terms-of-qmathbfx_t-1--mathbfx_t">$\ast$ B.3 Rewrite in terms of $q(\mathbf{x}_{t-1} | \mathbf{x}_t)$</h4>
 <p>Because the forward trajectory is a Markov process,
 $$
 \begin{equation*}
-q(\mathbf{X}_t | \mathbf{X}_{t-1}) = \left \{
+q(\mathbf{x}_t | \mathbf{x}_{t-1}) = \left \{
 \begin{matrix}
-q(\mathbf{X}_t | \mathbf{X}_{t-1}, \mathbf{X}_0) &amp; , t &gt; 1 \\
-q(\mathbf{X}_1 | \mathbf{X}_{0}, \mathbf{X}_0) = q(\mathbf{X}_1 | \mathbf{X}_{0}) &amp; , t = 1
+q(\mathbf{x}_t | \mathbf{x}_{t-1}, \mathbf{x}_0) &amp; , t &gt; 1 \\
+q(\mathbf{x}_1 | \mathbf{x}_{0}, \mathbf{x}_0) = q(\mathbf{x}_1 | \mathbf{x}_{0}) &amp; , t = 1
 \end{matrix}
 \right .
 \end{equation*}
 \tag{17}
 $$</p>
 <p>$$
-\mathcal{K} = \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{\color{blue} q(\mathbf{X}_t | \mathbf{X}_{t-1}, \mathbf{X}_0)} \right ] - \mathcal{H}_p(\mathbf{X}_T)
+\mathcal{K} = \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{\color{blue} q(\mathbf{x}_t | \mathbf{x}_{t-1}, \mathbf{x}_0)} \right ] - \mathcal{H}_p(\mathbf{x}_T)
 \tag{18}
 $$</p>
 <p>Using Bayes’ rule we can rewrite this in terms of a posterior and marginals from the forward trajectory,
 $$
-\mathcal{K} = \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{\color{blue} q(\mathbf{X}_{t-1} | \mathbf{X}_{t}, \mathbf{X}_0)} \frac{\color{blue} q(\mathbf{X}_{t-1} | \mathbf{X}_0)}{\color{blue} q(\mathbf{X}_{t} | \mathbf{X}_0)} \right ] - \mathcal{H}_p(\mathbf{X}_T)
+\mathcal{K} = \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{\color{blue} q(\mathbf{x}_{t-1} | \mathbf{x}_{t}, \mathbf{x}_0)} \frac{\color{blue} q(\mathbf{x}_{t-1} | \mathbf{x}_0)}{\color{blue} q(\mathbf{x}_{t} | \mathbf{x}_0)} \right ] - \mathcal{H}_p(\mathbf{x}_T)
 \tag{19}
 $$</p>
 <h4 id="ast-b4-rewrite-in-terms-of-kl-divergences-and-entropies">$\ast$ B.4 Rewrite in terms of KL divergences and entropies</h4>
 <p>$$
 \begin{equation*}
 \begin{split}
-\mathcal{K} &amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_{t-1} | \mathbf{X}_{t}, \mathbf{X}_0)} \frac{q(\mathbf{X}_{t-1} | \mathbf{X}_0)}{q(\mathbf{X}_{t} | \mathbf{X}_0)} \right ] - \mathcal{H}_p(\mathbf{X}_T) \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=2}^T \left [ \log \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_{t-1} | \mathbf{X}_{t}, \mathbf{X}_0)} + \log \frac{q(\mathbf{X}_{t-1} | \mathbf{X}_0)}{q(\mathbf{X}_{t} | \mathbf{X}_0)} \right ] - \mathcal{H}_p(\mathbf{X}_T) \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=2}^T \log \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_{t-1} | \mathbf{X}_{t}, \mathbf{X}_0)} \\
-&amp;\quad + {\color{green} \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=2}^T \log \frac{q(\mathbf{X}_{t-1} | \mathbf{X}_0)}{q(\mathbf{X}_{t} | \mathbf{X}_0)}} - \mathcal{H}_p(\mathbf{X}_T) \\
+\mathcal{K} &amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \sum_{t=2}^T \log \left [ \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_{t-1} | \mathbf{x}_{t}, \mathbf{x}_0)} \frac{q(\mathbf{x}_{t-1} | \mathbf{x}_0)}{q(\mathbf{x}_{t} | \mathbf{x}_0)} \right ] - \mathcal{H}_p(\mathbf{x}_T) \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \sum_{t=2}^T \left [ \log \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_{t-1} | \mathbf{x}_{t}, \mathbf{x}_0)} + \log \frac{q(\mathbf{x}_{t-1} | \mathbf{x}_0)}{q(\mathbf{x}_{t} | \mathbf{x}_0)} \right ] - \mathcal{H}_p(\mathbf{x}_T) \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \sum_{t=2}^T \log \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_{t-1} | \mathbf{x}_{t}, \mathbf{x}_0)} \\
+&amp;\quad + {\color{green} \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \sum_{t=2}^T \log \frac{q(\mathbf{x}_{t-1} | \mathbf{x}_0)}{q(\mathbf{x}_{t} | \mathbf{x}_0)}} - \mathcal{H}_p(\mathbf{x}_T) \\
 \end{split}
 \end{equation*}
 \tag{20}
 $$</p>
-<p>For ease of presentation, the green part of Eq. (20) is derived separately,
+<p>For ease of presentation, <strong>the green part of Eq. (20)</strong> is derived separately,
 $$
 \begin{equation*}
 \begin{split}
-{\color{green} \int \mathrm{d}\mathbf{X}_{(0\cdots T)}} &amp;\ {\color{green} q(\mathbf{X}_{(0\cdots T)}) \sum_{t=2}^T \log \frac{q(\mathbf{X}_{t-1} | \mathbf{X}_0)}{q(\mathbf{X}_{t} | \mathbf{X}_0)}} \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \log {\color{blue} \prod_{t=2}^T \frac{q(\mathbf{X}_{t-1} | \mathbf{X}_0)}{q(\mathbf{X}_{t} | \mathbf{X}_0)}} \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \log {\color{blue} \frac{q(\mathbf{X}_{1} | \mathbf{X}_0)}{q(\mathbf{X}_{T} | \mathbf{X}_0)}} \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \left [ \log q(\mathbf{X}_{1} | \mathbf{X}_0) - \log q(\mathbf{X}_{T} | \mathbf{X}_0) \right ] \\
-&amp;= \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \log q(\mathbf{X}_{1} | \mathbf{X}_0) - \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \log q(\mathbf{X}_{T} | \mathbf{X}_0) \\
-&amp;= {\color{red} \int \mathrm{d}\mathbf{X}_{(0,1)} \ q(\mathbf{X}_{(0,1)}) \log q(\mathbf{X}_{1} | \mathbf{X}_0)} - {\color{red} \int \mathrm{d}\mathbf{X}_{(0,T)} \ q(\mathbf{X}_{(0,T)}) \log q(\mathbf{X}_{T} | \mathbf{X}_0)} \\
+{\color{green} \int \mathrm{d}\mathbf{x}_{(0\cdots T)}} &amp;\ {\color{green} q(\mathbf{x}_{(0\cdots T)}) \sum_{t=2}^T \log \frac{q(\mathbf{x}_{t-1} | \mathbf{x}_0)}{q(\mathbf{x}_{t} | \mathbf{x}_0)}} \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \log {\color{blue} \prod_{t=2}^T \frac{q(\mathbf{x}_{t-1} | \mathbf{x}_0)}{q(\mathbf{x}_{t} | \mathbf{x}_0)}} \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \log {\color{blue} \frac{q(\mathbf{x}_{1} | \mathbf{x}_0)}{q(\mathbf{x}_{T} | \mathbf{x}_0)}} \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \left [ \log q(\mathbf{x}_{1} | \mathbf{x}_0) - \log q(\mathbf{x}_{T} | \mathbf{x}_0) \right ] \\
+&amp;= \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \log q(\mathbf{x}_{1} | \mathbf{x}_0) - \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \log q(\mathbf{x}_{T} | \mathbf{x}_0) \\
+&amp;= {\color{red} \int \mathrm{d}\mathbf{x}_{(0,1)} \ q(\mathbf{x}_{(0,1)}) \log q(\mathbf{x}_{1} | \mathbf{x}_0)} - {\color{red} \int \mathrm{d}\mathbf{x}_{(0,T)} \ q(\mathbf{x}_{(0,T)}) \log q(\mathbf{x}_{T} | \mathbf{x}_0)} \\
 &amp;= {\color{red} \mathcal{H}_q(\mathcal{X}_T | \mathcal{X}_0)} - {\color{red} \mathcal{H}_q(\mathcal{X}_1 | \mathcal{X}_0)}
 \end{split}
 \end{equation*}
@@ -475,25 +476,25 @@ $$
 $$</p>
 <p>Therefore, the lower bound in Eq. (20) becomes
 $$
-\mathcal{K} = {\color{green} \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \sum_{t=2}^T \log \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_{t-1} | \mathbf{X}_{t}, \mathbf{X}_0)}} + \mathcal{H}_q(\mathcal{X}_T | \mathcal{X}_0) - \mathcal{H}_q(\mathcal{X}_1 | \mathcal{X}_0) - \mathcal{H}_p(\mathbf{X}_T)
+\mathcal{K} = {\color{green} \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \sum_{t=2}^T \log \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_{t-1} | \mathbf{x}_{t}, \mathbf{x}_0)}} + \mathcal{H}_q(\mathbf{x}_T | \mathbf{x}_0) - \mathcal{H}_q(\mathbf{x}_1 | \mathbf{x}_0) - \mathcal{H}_p(\mathbf{x}_T)
 \tag{22}
 $$</p>
-<p>For ease of presentation, the green part of Eq. (22) is derived separately,
+<p>For ease of presentation, <strong>the green part of Eq. (22)</strong> is derived separately,
 $$
 \begin{equation*}
 \begin{split}
-{\color{green} \int \mathrm{d}\mathbf{X}_{(0\cdots T)}} &amp; \ {\color{green} q(\mathbf{X}_{(0\cdots T)}) \sum_{t=2}^T \log \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_{t-1} | \mathbf{X}_{t}, \mathbf{X}_0)}} \\
-&amp;= \sum_{t=2}^T \int \mathrm{d}\mathbf{X}_{(0\cdots T)} \ q(\mathbf{X}_{(0\cdots T)}) \log \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_{t-1} | \mathbf{X}_{t}, \mathbf{X}_0)} \\
-&amp;= \sum_{t=2}^T \int \mathrm{d}\mathbf{X}_{0}\mathrm{d}\mathbf{X}_{t-1}\mathrm{d}\mathbf{X}_{t} \ {\color{blue} q(\mathbf{X}_0, \mathbf{X}_{t-1}, \mathbf{X}_t)} \log \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_{t-1} | \mathbf{X}_{t}, \mathbf{X}_0)} \\
-&amp;= \sum_{t=2}^T \int \mathrm{d}\mathbf{X}_{0}\mathrm{d}\mathbf{X}_{t-1}\mathrm{d}\mathbf{X}_{t} \ {\color{blue} q(\mathbf{X}_0, \mathbf{X}_t) q(\mathbf{X}_{t-1}| \mathbf{X}_t, \mathbf{X}_0)} \log \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_{t-1} | \mathbf{X}_{t}, \mathbf{X}_0)} \\
-&amp;= \sum_{t=2}^T \int \mathrm{d}\mathbf{X}_{0}\mathrm{d}\mathbf{X}_{t} \ q(\mathbf{X}_0, \mathbf{X}_t) \underbrace{\color{red} \left \{ \int \mathrm{d}\mathbf{X}_{t-1} \ q(\mathbf{X}_{t-1}| \mathbf{X}_t, \mathbf{X}_0) \log \frac{p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_{t})}{q(\mathbf{X}_{t-1} | \mathbf{X}_{t}, \mathbf{X}_0)} \right \} }_{
+{\color{green} \int \mathrm{d}\mathbf{x}_{(0\cdots T)}} &amp; \ {\color{green} q(\mathbf{x}_{(0\cdots T)}) \sum_{t=2}^T \log \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_{t-1} | \mathbf{x}_{t}, \mathbf{x}_0)}} \\
+&amp;= \sum_{t=2}^T \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \log \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_{t-1} | \mathbf{x}_{t}, \mathbf{x}_0)} \\
+&amp;= \sum_{t=2}^T \int \mathrm{d}\mathbf{x}_{0}\mathrm{d}\mathbf{x}_{t-1}\mathrm{d}\mathbf{x}_{t} \ {\color{blue} q(\mathbf{x}_0, \mathbf{x}_{t-1}, \mathbf{x}_t)} \log \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_{t-1} | \mathbf{x}_{t}, \mathbf{x}_0)} \\
+&amp;= \sum_{t=2}^T \int \mathrm{d}\mathbf{x}_{0}\mathrm{d}\mathbf{x}_{t-1}\mathrm{d}\mathbf{x}_{t} \ {\color{blue} q(\mathbf{x}_0, \mathbf{x}_t) q(\mathbf{x}_{t-1}| \mathbf{x}_t, \mathbf{x}_0)} \log \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_{t-1} | \mathbf{x}_{t}, \mathbf{x}_0)} \\
+&amp;= \sum_{t=2}^T \int \mathrm{d}\mathbf{x}_{0}\mathrm{d}\mathbf{x}_{t} \ q(\mathbf{x}_0, \mathbf{x}_t) \underbrace{\color{red} \left \{ \int \mathrm{d}\mathbf{x}_{t-1} \ q(\mathbf{x}_{t-1}| \mathbf{x}_t, \mathbf{x}_0) \log \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_{t-1} | \mathbf{x}_{t}, \mathbf{x}_0)} \right \} }_{
 \begin{array}{c}
 \small
 \text{KL Divergence (also called relative entropy)} \\
 {\color{violet} \mathcal{D}_{KL}(P \| Q) = \int_{-\infty}^{+\infty} p(x) \log \frac{p(x)}{q(x)} \mathrm{d}x}
 \end{array}
 } \\
-&amp;= {\color{red} -} \sum_{t=2}^T \int \mathrm{d}\mathbf{X}_{0}\mathrm{d}\mathbf{X}_{t} \ q(\mathbf{X}_0, \mathbf{X}_t) {\color{red} \mathcal{D}_{KL}(q(\mathbf{X}_{t-1} | \mathbf{X}_t, \mathbf{X}_0) \| p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_t))}
+&amp;= {\color{red} -} \sum_{t=2}^T \int \mathrm{d}\mathbf{x}_{0}\mathrm{d}\mathbf{x}_{t} \ q(\mathbf{x}_0, \mathbf{x}_t) {\color{red} \mathcal{D}_{KL}(q(\mathbf{x}_{t-1} | \mathbf{x}_t, \mathbf{x}_0) \| p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t))}
 \end{split}
 \end{equation*}
 \tag{23}
@@ -502,17 +503,168 @@ $$</p>
 $$
 \begin{equation*}
 \begin{split}
-\mathcal{K} = &amp;- \sum_{t=2}^T \int \mathrm{d}\mathbf{X}_{0}\mathrm{d}\mathbf{X}_{t} \ q(\mathbf{X}_0, \mathbf{X}_t) \mathcal{D}_{KL}(q(\mathbf{X}_{t-1} | \mathbf{X}_t, \mathbf{X}_0) \| p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_t)) \\
-&amp;+ \mathcal{H}_q(\mathcal{X}_T | \mathcal{X}_0) - \mathcal{H}_q(\mathcal{X}_1 | \mathcal{X}_0) - \mathcal{H}_p(\mathbf{X}_T)
+\mathcal{K} = &amp;- \sum_{t=2}^T \int \mathrm{d}\mathbf{x}_{0}\mathrm{d}\mathbf{x}_{t} \ q(\mathbf{x}_0, \mathbf{x}_t) \mathcal{D}_{KL}(q(\mathbf{x}_{t-1} | \mathbf{x}_t, \mathbf{x}_0) \| p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t)) \\
+&amp;+ \mathcal{H}_q(\mathbf{x}_T | \mathbf{x}_0) - \mathcal{H}_q(\mathbf{x}_1 | \mathbf{x}_0) - \mathcal{H}_p(\mathbf{x}_T)
 \end{split}
 \end{equation*}
 \tag{24}
 $$</p>
-<p>Note that the entropies can be analytically computed, and the KL divergence can be analytically computed given $\mathbf{X}_0$ and $\mathbf{X}_t$.</p>
+<p>Note that the entropies can be analytically computed, and the KL divergence can be analytically computed given $\mathbf{x}_0$ and $\mathbf{x}_t$.</p>
 <p>Training consists of finding the reverse Markov transitions which maximize this lower bound on the log likelihood,
 $$
-p_\theta(\mathbf{X}_{t-1} | \mathbf{X}_t) = \argmax_{\theta} \mathcal{K}
+p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \argmax_{\theta} \mathcal{K}
 \tag{25}
+$$</p>
+<h2 id="specific-diffusion-kernel">Specific Diffusion Kernel</h2>
+<h3 id="forward-process-1">Forward Process</h3>
+<p>Specify that the <strong>Markov diffusion kernel</strong> in Eq. (2) is subject to a Gaussian distribution,
+$$
+q(\mathbf{x}_t | \mathbf{x}_{t-1}) = T_\pi(\mathbf{x}_t | \mathbf{x}_{t-1}; \beta_t) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \beta_t} \mathbf{x}_{t-1}, \beta_t \mathbf{I})
+\tag{26}
+$$</p>
+<p>A nice property of the above process is that we can sample $\mathbf{x}_t$ at any arbitrary time step $t$ in a closed form using <a href="https://lilianweng.github.io/posts/2018-08-12-vae/#reparameterization-trick">reparameterization trick</a>. Let $\alpha_t = 1 - \beta_t$ and $\bar{\alpha}_t = \prod_{i=1}^t \alpha_i$ :
+$$
+\begin{equation*}
+\begin{split}
+\mathbf{x}_t &amp;= \sqrt{\alpha_t} {\color{blue} \mathbf{x}_{t-1}} + \sqrt{1 - \alpha_t} \bm{\epsilon}_{t-1} \\
+&amp;= \sqrt{\alpha_t} {\color{blue} (\sqrt{\alpha_{t-1}} \mathbf{x}_{t-2} + \sqrt{1 - \alpha_{t-1}} \bm{\epsilon}_{t-2})} + \sqrt{1 - \alpha_t} \bm{\epsilon}_{t-1} \\
+&amp;= \sqrt{\alpha_t \alpha_{t-1}} \mathbf{x}_{t-2} + {\color{red} \sqrt{\alpha_t - \alpha_t \alpha_{t-1}} \bm{\epsilon}_{t-2} + \sqrt{1 - \alpha_t} \bm{\epsilon}_{t-1}} \\
+&amp;= \sqrt{\alpha_t \alpha_{t-1}} \mathbf{x}_{t-2} + {\color{red} \sqrt{\sqrt{\alpha_t - \alpha_t \alpha_{t-1}}^2 + \sqrt{1 - \alpha_t}^2} \bar{\bm{\epsilon}}_{t-2}} \\
+&amp;= \sqrt{\alpha_t \alpha_{t-1}} \mathbf{x}_{t-2} + \sqrt{1 - \alpha_t \alpha_{t-1}} \bar{\bm{\epsilon}}_{t-2} \\
+&amp;= \cdots \\
+&amp;= \sqrt{\bar{\alpha}_t} \mathbf{x}_{0} + \sqrt{1 - \bar{\alpha}_t} \bar{\bm{\epsilon}}_{0} \\
+\end{split}
+\end{equation*}
+\tag{27}
+$$
+where $\bm{\epsilon}_{t-1}, \bm{\epsilon}_{t-2}, \cdots \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$.</p>
+<p>Recall <strong>the red part of Eq. (27)</strong> when we merge two Gaussians with different variance, $\mathcal{N}(\mathbf{0}, \sigma_1^2\mathbf{I})$ and $\mathcal{N}(\mathbf{0}, \sigma_2^2\mathbf{I})$, the new distribution is $\mathcal{N}(\mathbf{0}, (\sigma_1^2 + \sigma_2^2)\mathbf{I})$.</p>
+<p>Thus, we have
+$$
+q(\mathbf{x}_t | \mathbf{x}_0) = \mathcal{N}(\mathbf{x}_t; \sqrt{\bar{\alpha}_t} \mathbf{x}_0, (1 - \bar{\alpha}_t) \mathbf{I})
+\tag{28}
+$$</p>
+<p>Usually, we can afford a larger update step when the sample gets noisier, so $\beta_1 &lt; \beta_2 &lt; \cdots &lt; \beta_T$ and therefore $\bar{\alpha}_1 &gt; \bar{\alpha}_2 &gt; \cdots &gt; \bar{\alpha}_T$.</p>
+<h3 id="reverse-process-1">Reverse Process</h3>
+<p>According to Eq. (26),
+$$
+p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \bm{\mu}_\theta(\mathbf{x}_t, t), \bm{\sigma}_\theta(\mathbf{x}_t, t))
+\tag{29}
+$$</p>
+<p>It is noteworthy that the reverse conditional probability is tractable when conditioned on $\mathbf{x}_0$:
+$$
+q(\mathbf{x}_{t-1} | \mathbf{x}_t, \mathbf{x}_0) = \mathcal{N}(\mathbf{x}_{t-1}; { \bm{\tilde{\mu}}_t(\mathbf{x}_t, \mathbf{x}_0)}, { \tilde{\beta}_t \mathbf{I}})
+\tag{30}
+$$</p>
+<p>Using Bayes&rsquo; rule, we have:
+$$
+\begin{equation*}
+\begin{split}
+q(\mathbf{x}_{t-1} | \mathbf{x}_t, \mathbf{x}_0) &amp;= q(\mathbf{x}_{t} | \mathbf{x}_{t-1}, \mathbf{x}_0) \frac{q(\mathbf{x}_{t-1}) | q(\mathbf{x}_0)}{q(\mathbf{x}_{t}) | q(\mathbf{x}_0)} \quad ; \text{bringing in Eq. (26) and Eq. (28)} \\
+&amp;\propto \exp \left ( -\frac{1}{2}(\frac{(\mathbf{x}_t - \sqrt{\alpha_t} \mathbf{x}_{t-1})^2}{\beta_t}) \right ) \frac{\displaystyle \exp \left ( -\frac{1}{2}( \frac{(\mathbf{x}_{t-1} - \sqrt{\bar{\alpha}_{t-1}} \mathbf{x}_0)^2}{1 - \bar{\alpha}_{t-1}} ) \right ) }{\displaystyle \exp \left ( -\frac{1}{2}( \frac{(\mathbf{x}_{t} - \sqrt{\bar{\alpha}_{t}} \mathbf{x}_0)^2}{1 - \bar{\alpha}_{t}} ) \right ) } \\
+&amp;= \exp \left ( -\frac{1}{2} ( \frac{(\mathbf{x}_t - \sqrt{\alpha_t} \mathbf{x}_{t-1})^2}{\beta_t} + \frac{(\mathbf{x}_{t-1} - \sqrt{\bar{\alpha}_{t-1}} \mathbf{x}_0)^2}{1 - \bar{\alpha}_{t-1}} - \frac{(\mathbf{x}_{t} - \sqrt{\bar{\alpha}_{t}} \mathbf{x}_0)^2}{1 - \bar{\alpha}_{t}} ) \right ) \\
+&amp;= \exp \left ( -\frac{1}{2}( \frac{ \mathbf{x}_t^2 - 2\sqrt{\alpha_t} \mathbf{x}_t {\color{blue} \mathbf{x}_{t-1}} + \alpha_t {\color{red} \mathbf{x}_{t-1}^2} }{\beta_t} + \frac{ {\color{red} \mathbf{x}_{t-1}^2} -2\sqrt{\bar{\alpha}_{t-1}}\mathbf{x}_0 {\color{blue} \mathbf{x}_{t-1}} + \bar{\alpha}_{t-1} \mathbf{x}_0^2 }{1 - \bar{\alpha}_{t-1}} \right. \\
+&amp;\quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \left.  - \ \frac{(\mathbf{x}_{t} - \sqrt{\bar{\alpha}_{t}} \mathbf{x}_0)^2}{1 - \bar{\alpha}_{t}} ) \right ) \\
+&amp;= \exp \left ( -\frac{1}{2} {\Large (} (\frac{\alpha_t}{\beta_t} + \frac{1}{1 - \bar{\alpha}_{t-1}}) {\color{red} \mathbf{x}_{t-1}^2} - (\frac{2\sqrt{\alpha_t}}{\beta_t} \mathbf{x}_t + \frac{2\sqrt{\bar{\alpha}_{t-1}}}{1 - \bar{\alpha}_{t-1}} \mathbf{x}_t) {\color{blue} \mathbf{x}_{t-1}} + C(\mathbf{x}_t, \mathbf{x}_0) {\Large )} \right )
+\end{split}
+\end{equation*}
+\tag{31}
+$$
+where $C(\mathbf{x}_t, \mathbf{x}_0)$ is some function not involving $\mathbf{x}_{t-1}$ and details are omitted.</p>
+<p>Following the general form of $\mathcal{N}(\mu, \sigma^2)$ <strong>probability density function</strong> $f(x) = \frac{1}{\sigma \sqrt{2 \pi}} \exp \left ( -\frac{1}{2} (\frac{x - \mu}{\sigma})^2 \right )$,
+$$
+(\frac{\alpha_t}{\beta_t} + \frac{1}{1 - \bar{\alpha}_{t-1}}) {\color{red} \mathbf{x}_{t-1}^2} - (\frac{2\sqrt{\alpha_t}}{\beta_t} \mathbf{x}_t + \frac{2\sqrt{\bar{\alpha}_{t-1}}}{1 - \bar{\alpha}_{t-1}} \mathbf{x}_t) {\color{blue} \mathbf{x}_{t-1}} + C(\mathbf{x}_t, \mathbf{x}_0) = (\frac{x-\mu}{\sigma})^2 = \frac{{\color{red} x^2} - 2\mu {\color{blue} x} + \mu^2}{\sigma^2}
+\tag{32}
+$$</p>
+<p>The <strong>variance</strong> $(\tilde{\beta}_t \mathbf{I})$ and <strong>mean</strong> $(\bm{\tilde{\mu}}_t(\mathbf{x}_t, \mathbf{x}_0))$ in Eq. (30) can be parameterized as follows:
+$$
+\begin{equation*}
+\begin{split}
+\tilde{\beta}_t = 1 / (\frac{\alpha_t}{\beta_t} + \frac{1}{1 - \bar{\alpha}_{t-1}}) = \frac{1 - \bar{\alpha}_{t-1}}{1 - \bar{\alpha}_{t}} \beta_t
+\end{split}
+\end{equation*}
+\tag{33}
+$$</p>
+<p>$$
+\begin{equation*}
+\begin{split}
+\bm{\tilde{\mu}}_t(\mathbf{x}_t, \mathbf{x}_0) &amp;= \frac{(\frac{2\sqrt{\alpha_t}}{\beta_t} \mathbf{x}_t + \frac{2\sqrt{\bar{\alpha}_{t-1}}}{1 - \bar{\alpha}_{t-1}} \mathbf{x}_t) \tilde{\beta}_t }{-2} = \frac{\sqrt{\alpha}_t (1 - \bar{\alpha}_{t-1})}{1 - \bar{\alpha}_t} \mathbf{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1}} \beta_t}{1 - \bar{\alpha}_t} \mathbf{x}_0
+\end{split}
+\end{equation*}
+\tag{34}
+$$</p>
+<p>Since $\mathbf{x}_t$ is available as input to the model, we can represent Eq. (27) to $\mathbf{x}_0 = (\mathbf{x}_t - \sqrt{1 - \bar{\alpha}_t} \bm{\epsilon}_t) / \sqrt{\bar{\alpha}_t}$ and bring it into Eq. (34),
+$$
+\begin{equation*}
+\begin{split}
+\bm{\mu}_t(\mathbf{x}_t) &amp;= \bm{\tilde{\mu}}_t\left (\mathbf{x}_t, (\mathbf{x}_t - \sqrt{1 - \bar{\alpha}_t} \bm{\epsilon}_t) / \sqrt{\bar{\alpha}_t} \right ) \\
+&amp;= \frac{\sqrt{\alpha}_t (1 - \bar{\alpha}_{t-1})}{1 - \bar{\alpha}_t} \mathbf{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1}} \beta_t}{1 - \bar{\alpha}_t} (\frac{(\mathbf{x}_t - \sqrt{1 - \bar{\alpha}_t} \bm{\epsilon}_t)}{\sqrt{\bar{\alpha}_t}}) \\
+&amp;= {\color{red} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \bm{\epsilon}_t \right ) }
+\end{split}
+\end{equation*}
+\tag{35}
+$$</p>
+<h3 id="loss-function">Loss Function</h3>
+<p>We define the lower bound of the negative log likelihood as the variational lower bound loss function,
+$$
+\begin{equation*}
+\begin{split}
+\mathcal{L}_{VLB} &amp;= - \mathcal{K} \\
+&amp;= \sum_{t=2}^T \int \mathrm{d}\mathbf{x}_{0}\mathrm{d}\mathbf{x}_{t} \ q(\mathbf{x}_0, \mathbf{x}_t) {\color{blue} \mathcal{D}_{KL}(q(\mathbf{x}_{t-1} | \mathbf{x}_t, \mathbf{x}_0) \| p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t))} \\
+&amp;\quad - \mathcal{H}_q(\mathbf{x}_T | \mathbf{x}_0) + \mathcal{H}_q(\mathbf{x}_1 | \mathbf{x}_0) + \mathcal{H}_p(\mathbf{x}_T) \\
+&amp;= {\LARGE \mathbb{E}}_{\mathbf{x}_0, \mathbf{x}_T \sim q(\mathbf{x}_0, \mathbf{x}_T)} {\Large [} \underbrace{\color{blue} \mathcal{D}_{KL}(q(\mathbf{x}_{t-1} | \mathbf{x}_t, \mathbf{x}_0) \| p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t))}_{\color{blue} \mathcal{L}_{t-1}} {\Large ]} - \mathcal{H}_q(\mathbf{x}_T | \mathbf{x}_0) + \mathcal{H}_q(\mathbf{x}_1 | \mathbf{x}_0) + \mathcal{H}_p(\mathbf{x}_T)
+\end{split}
+\end{equation*}
+\tag{36}
+$$</p>
+<p>The loss term $\mathcal{L}_{t-1}$ in Eq. (36) is parameterized to minimize the difference from $\bm{\mu}_t(\mathbf{x}_t)$:
+$$
+\begin{equation*}
+\begin{split}
+\mathcal{L}_{t-1} &amp;= \mathcal{D}_{KL}(q(\mathbf{x}_{t-1} | \mathbf{x}_t, \mathbf{x}_0) \| p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t)) \\
+&amp;= \int \mathrm{d}\mathbf{x}_{t-1} \ q(\mathbf{x}_{t-1} | \mathbf{x}_t, \mathbf{x}_0) \log \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_(t))}{q(\mathbf{x}_{t-1} | \mathbf{x}_(t), \mathbf{x}_0)} \\
+&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_{t-1} \sim q(\mathbf{x}_{t-1} | \mathbf{x}_t, \mathbf{x}_0)} \left [ \log \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_(t))}{q(\mathbf{x}_{t-1} | \mathbf{x}_(t), \mathbf{x}_0)} \right ] \\
+&amp;\propto {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| {\color{blue} \bm{\mu}_t(\mathbf{x}_t)} - {\color{red} \bm{\mu}_\theta(\mathbf{x}_t, t)} \right \| ^2 \right ] \\
+&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| {\color{blue} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \bm{\epsilon}_t \right )} - {\color{red} \bm{\mu}_\theta(\mathbf{x}_t, t)} \right \| ^2 \right ]
+\end{split}
+\end{equation*}
+\tag{37}
+$$</p>
+<p>Recall that we need to learn a model to approximate the conditioned probability distributions in the reverse diffusion process, $p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \bm{\mu}_\theta(\mathbf{x}_t, t), \bm{\sigma}_\theta(\mathbf{x}_t, t))$. We would like to train $\bm{\mu}_\theta(\mathbf{x}_t, t)$ to predict $\bm{\mu}_t(\mathbf{x}_t)$ in Eq. (35), and set $\bm{\sigma}_\theta(\mathbf{x}_t, t)$ is equal to $\sigma_t^2\mathbf{I}$, where $\sigma_t^2$ is equal to $\tilde{\beta}_t$ in Eq. (33) or $\beta_t$ for simplify,
+$$
+\bm{\mu}_\theta(\mathbf{x}_t, t) = \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}}_t} \bm{\epsilon}_\theta(\mathbf{x}_t, t) \right )
+\tag{38}
+$$
+where $\bm{\epsilon}_\theta$ is <strong>a function approximator (the model)</strong> intended to predict $\bm{\epsilon}$ from $\mathbf{x}_t$.</p>
+<p>Thus, Eq. (29) can be written as
+$$
+p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t}) = \mathcal{N} \left ( \mathbf{x}_{t-1} ; \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}}_t} \bm{\epsilon}_\theta(\mathbf{x}_t, t) \right ) , \tilde{\beta}_t \mathbf{I} \right )
+\tag{39}
+$$</p>
+<p>According to Eq. (39), sampling $\mathbf{x}_{t-1} \sim p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})$ is:
+$$
+\mathbf{x}_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}}_t} \bm{\epsilon}_\theta(\mathbf{x}_t, t) \right ) + \sqrt{\tilde{\beta}_t} \bm{\epsilon}^*
+\tag{40}
+$$
+where $\bm{\epsilon}^* \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$.</p>
+<p>Furthermore, with the parameterization Eq. (38), the $\mathcal{L}_{t-1}$ in Eq. (37) simplifies to:
+$$
+\begin{equation*}
+\begin{split}
+\mathcal{L}_{t-1} &amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| {\color{blue} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \bm{\epsilon}_t \right )} - {\color{red} \bm{\mu}_\theta(\mathbf{x}_t, t)} \right \| ^2 \right ] \\
+&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| {\color{blue} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \bm{\epsilon}_t \right )} - {\color{red} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}}_t} \bm{\epsilon}_\theta(\mathbf{x}_t, t) \right )} \right \| ^2 \right ] \\
+&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| \frac{1}{\sqrt{\alpha_t}} \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \left (\bm{\epsilon}_t - \bm{\epsilon}_\theta(\mathbf{x}_t, t) \right ) \right \| ^2 \right ] \\
+&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{\beta_t^2}{2 \alpha_t (1 - \alpha_t) \sigma_t^2} \left \| \bm{\epsilon}_t - \bm{\epsilon}_\theta({\color{orange} \mathbf{x}_t}, t) \right \| ^2 \right ] \quad ; \text{bringing in Eq. (27)} \\
+&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ {\color{green} \frac{\beta_t^2}{2 \alpha_t (1 - \alpha_t) \sigma_t^2}} \left \| \bm{\epsilon}_t - \bm{\epsilon}_\theta({\color{orange} \sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \bar{\bm{\epsilon}}_0}, t) \right \| ^2 \right ] \\
+\end{split}
+\end{equation*}
+\tag{41}
+$$</p>
+<h4 id="simplification">Simplification</h4>
+<p>Empirically, Ho et al. (2020) found that training the diffusion model works better with a simplified objective that ignores the weighting term (<strong>the green part in Eq. (41)</strong>):
+$$
+\mathcal{L}_t^{\text{simple}} = {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \left \| \bm{\epsilon}_t - \bm{\epsilon}_\theta(\sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \bar{\bm{\epsilon}}_0, t) \right \| ^2 \right ]
+\tag{42}
 $$</p>
 <h2 id="simple-code-verification">Simple Code Verification</h2>
 <p>The jupyter notebook is available at <a href="https://gist.github.com/GavinSun0921/ac4d07e2e64b3f102693686435e7fe9d">https://gist.github.com/GavinSun0921/ac4d07e2e64b3f102693686435e7fe9d</a>.</p>
@@ -618,10 +770,21 @@ $$</p>
         <li><a href="#generative-model">Generative Model</a></li>
         <li><a href="#model-log-likelihood">Model Log Likelihood</a>
           <ul>
-            <li><a href="#ast-b1-peel-off-p_thetamathbfx_t-in-mathcalk-as-an-entropy">$\ast$ B.1 Peel off $p_\theta(\mathbf{X}_T)$ in $\mathcal{K}$ as an entropy</a></li>
+            <li><a href="#ast-b1-peel-off-p_thetamathbfx_t-in-mathcalk-as-an-entropy">$\ast$ B.1 Peel off $p_\theta(\mathbf{x}_T)$ in $\mathcal{K}$ as an entropy</a></li>
             <li><a href="#ast-b2-remove-the-edge-effect-at-t0">$\ast$ B.2 Remove the edge effect at $t=0$</a></li>
-            <li><a href="#ast-b3-rewrite-in-terms-of-qmathbfx_t-1--mathbfx_t">$\ast$ B.3 Rewrite in terms of $q(\mathbf{X}_{t-1} | \mathbf{X}_t)$</a></li>
+            <li><a href="#ast-b3-rewrite-in-terms-of-qmathbfx_t-1--mathbfx_t">$\ast$ B.3 Rewrite in terms of $q(\mathbf{x}_{t-1} | \mathbf{x}_t)$</a></li>
             <li><a href="#ast-b4-rewrite-in-terms-of-kl-divergences-and-entropies">$\ast$ B.4 Rewrite in terms of KL divergences and entropies</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#specific-diffusion-kernel">Specific Diffusion Kernel</a>
+      <ul>
+        <li><a href="#forward-process-1">Forward Process</a></li>
+        <li><a href="#reverse-process-1">Reverse Process</a></li>
+        <li><a href="#loss-function">Loss Function</a>
+          <ul>
+            <li><a href="#simplification">Simplification</a></li>
           </ul>
         </li>
       </ul>
