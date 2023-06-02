@@ -375,7 +375,7 @@ Fig. 4. Visualization of Jensen's inequality in logarithmic function.
 </div>
 <p>So we have the lower bound of $\mathcal{L}$, let&rsquo;s write it down as
 $$\mathcal{K} = \int \mathbb{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \log \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \tag{10}$$</p>
-<p><strong>1) Peel off $p_\theta(\mathbf{x}_T)$ in $\mathcal{K}$ as an entropy.</strong></p>
+<p><strong>1) Peel off $p_\theta(\mathbf{x}_T)$ in $\mathcal{K}$ as an entropy</strong></p>
 <p>We can peel off the contribution from $p_\theta(\mathbf{x}_T)$, and rewrite it as an entropy,
 $$
 \begin{equation*}
@@ -393,7 +393,7 @@ $$
 \mathcal{K} = \int \mathrm{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \sum_{t=1}^T \log \left [ \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] {\color{red} - \ \mathcal{H}_p(\mathbf{x}_T)}
 \tag{12}
 $$</p>
-<p><strong>2) Remove the edge effect at $t=0$.</strong></p>
+<p><strong>2) Remove the edge effect at $t=0$</strong></p>
 <p>In order to avoid edge effects, we set the final step of the reverse trajectory to be identical to the corresponding forward diffusion step,
 $$p_\theta(\mathbf{x}_0 | \mathbf{x}_1) = q(\mathbf{x}_1 | \mathbf{x}_0) \frac{\pi(\mathbf{x}_{0})}{\pi(\mathbf{x}_{1})} = T_\pi(\mathbf{x}_0 | \mathbf{x}_1 ; \beta) \tag{13}$$</p>
 <p>We then use this equivalence to remove the contribution of <strong>the first time-step</strong> in the sum,
