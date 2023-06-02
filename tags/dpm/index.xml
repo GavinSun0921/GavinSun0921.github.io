@@ -15,7 +15,7 @@
       <pubDate>Mon, 29 May 2023 13:53:33 +0800</pubDate>
       
       <guid>https://gavinsun0921.github.io/posts/paper-reading-01/</guid>
-      <description>Attention: If you cannot access GitHub, the picture may not be loaded normally. If you cannot access KaTeX, the formula may not be displayed normally. This is the first post in the Paper Reading series. In this series I will continue to update some personal study notes on reading papers. This post will introduce the basic work of diffusion probabilistic models (DPM), including the derivation of formulas and simple code verification. If you have any</description>
+      <description>This is the first post in the Paper Reading series. In this series I will continue to update some personal study notes on reading papers. This post will introduce the basic work of diffusion probabilistic models (DPM), including the derivation of formulas and simple code verification. If you have any suggestions on this post or would like to communicate with me, please leave comments below. Attention: If you cannot access GitHub, the picture may not</description>
     </item>
     
   </channel>
