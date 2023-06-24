@@ -106,7 +106,7 @@
     "image": "https://gavinsun0921.github.io/images/paper-reading/01.png",
     "datePublished": "2023-05-29T13:53:33+08:00",
     "dateModified": "2023-05-29T13:53:33+08:00",
-    "wordCount":  3804 ,
+    "wordCount":  3826 ,
     "publisher": {
         "@type": "Person",
         "name": "Gavin Sun",
@@ -536,12 +536,13 @@ $$
 &amp;= \sqrt{\alpha_t \alpha_{t-1}} \mathbf{x}_{t-2} + {\color{red} \sqrt{\sqrt{\alpha_t - \alpha_t \alpha_{t-1}}^2 + \sqrt{1 - \alpha_t}^2} \bar{\bm{\epsilon}}_{t-2}} \\
 &amp;= \sqrt{\alpha_t \alpha_{t-1}} \mathbf{x}_{t-2} + \sqrt{1 - \alpha_t \alpha_{t-1}} \bar{\bm{\epsilon}}_{t-2} \\
 &amp;= \cdots \\
-&amp;= \sqrt{\bar{\alpha}_t} \mathbf{x}_{0} + \sqrt{1 - \bar{\alpha}_t} \bar{\bm{\epsilon}}_{0} \\
+&amp;= \sqrt{\bar{\alpha}_t} \mathbf{x}_{0} + \sqrt{1 - \bar{\alpha}_t} \bar{\bm{\epsilon}}_0 \\
+&amp;= \sqrt{\bar{\alpha}_t} \mathbf{x}_{0} + \sqrt{1 - \bar{\alpha}_t} {\color{green} \bm{\epsilon}_{t}} \quad \text{; to correspond to the subscript of } \mathbf{x}_t \\
 \end{split}
 \end{equation*}
 \tag{27}
 $$
-where $\bm{\epsilon}_{t-1}, \bm{\epsilon}_{t-2}, \cdots \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$.</p>
+where ${\color{green} \bm{\epsilon}_{t}}, \bm{\epsilon}_{t-1}, \bm{\epsilon}_{t-2}, \cdots \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$.</p>
 <p>Recall <strong>the red part of Eq. (27)</strong> when we merge two Gaussians with different variance, $\mathcal{N}(\mathbf{0}, \sigma_1^2\mathbf{I})$ and $\mathcal{N}(\mathbf{0}, \sigma_2^2\mathbf{I})$, the new distribution is $\mathcal{N}(\mathbf{0}, (\sigma_1^2 + \sigma_2^2)\mathbf{I})$.</p>
 <p>Thus, we have
 $$
@@ -597,13 +598,13 @@ $$</p>
 \end{equation*}
 \tag{34}
 $$</p>
-<p>Thanks to the nice property, we can represent Eq. (27) to $\mathbf{x}_0 = (\mathbf{x}_t - \sqrt{1 - \bar{\alpha}_t} \bar{\bm{\epsilon}}_0) / \sqrt{\bar{\alpha}_t}$ and bring it into Eq. (34),
+<p>Thanks to the nice property, we can represent Eq. (27) to $\mathbf{x}_0 = (\mathbf{x}_t - \sqrt{1 - \bar{\alpha}_t} \bm{\epsilon}_t) / \sqrt{\bar{\alpha}_t}$ and bring it into Eq. (34),
 $$
 \begin{equation*}
 \begin{split}
-\bm{\mu}_t(\mathbf{x}_t) &amp;= \bm{\tilde{\mu}}_t\left (\mathbf{x}_t, (\mathbf{x}_t - \sqrt{1 - \bar{\alpha}_t} \bar{\bm{\epsilon}}_0) / \sqrt{\bar{\alpha}_t} \right ) \\
-&amp;= \frac{\sqrt{\alpha}_t (1 - \bar{\alpha}_{t-1})}{1 - \bar{\alpha}_t} \mathbf{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1}} \beta_t}{1 - \bar{\alpha}_t} (\frac{(\mathbf{x}_t - \sqrt{1 - \bar{\alpha}_t} \bar{\bm{\epsilon}}_0)}{\sqrt{\bar{\alpha}_t}}) \\
-&amp;= {\color{red} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \bar{\bm{\epsilon}}_0 \right ) }
+\bm{\mu}_t(\mathbf{x}_t) &amp;= \bm{\tilde{\mu}}_t\left (\mathbf{x}_t, (\mathbf{x}_t - \sqrt{1 - \bar{\alpha}_t} \bm{\epsilon}_t) / \sqrt{\bar{\alpha}_t} \right ) \\
+&amp;= \frac{\sqrt{\alpha}_t (1 - \bar{\alpha}_{t-1})}{1 - \bar{\alpha}_t} \mathbf{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1}} \beta_t}{1 - \bar{\alpha}_t} (\frac{(\mathbf{x}_t - \sqrt{1 - \bar{\alpha}_t} \bm{\epsilon}_t)}{\sqrt{\bar{\alpha}_t}}) \\
+&amp;= {\color{red} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \bm{\epsilon}_t \right ) }
 \end{split}
 \end{equation*}
 \tag{35}
@@ -628,8 +629,8 @@ $$
 \mathcal{L}_{t-1} &amp;= \mathcal{D}_{KL}(q(\mathbf{x}_{t-1} | \mathbf{x}_t, \mathbf{x}_0) \| p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t)) \\
 &amp;= \int \mathrm{d}\mathbf{x}_{t-1} \ q(\mathbf{x}_{t-1} | \mathbf{x}_t, \mathbf{x}_0) \log \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_(t))}{q(\mathbf{x}_{t-1} | \mathbf{x}_(t), \mathbf{x}_0)} \\
 &amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_{t-1} \sim q(\mathbf{x}_{t-1} | \mathbf{x}_t, \mathbf{x}_0)} \left [ \log \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_(t))}{q(\mathbf{x}_{t-1} | \mathbf{x}_(t), \mathbf{x}_0)} \right ] \\
-&amp;\propto {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bar{\bm{\epsilon}}_0 \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| {\color{blue} \bm{\mu}_t(\mathbf{x}_t)} - {\color{red} \bm{\mu}_\theta(\mathbf{x}_t, t)} \right \| ^2 \right ] \\
-&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bar{\bm{\epsilon}}_0 \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| {\color{blue} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \bar{\bm{\epsilon}}_0 \right )} - {\color{red} \bm{\mu}_\theta(\mathbf{x}_t, t)} \right \| ^2 \right ]
+&amp;\propto {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| {\color{blue} \bm{\mu}_t(\mathbf{x}_t)} - {\color{red} \bm{\mu}_\theta(\mathbf{x}_t, t)} \right \| ^2 \right ] \\
+&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| {\color{blue} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \bm{\epsilon}_t \right )} - {\color{red} \bm{\mu}_\theta(\mathbf{x}_t, t)} \right \| ^2 \right ]
 \end{split}
 \end{equation*}
 \tag{37}
@@ -655,11 +656,11 @@ where $\bm{\epsilon}^* \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$.</p>
 $$
 \begin{equation*}
 \begin{split}
-\mathcal{L}_{t-1} &amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bar{\bm{\epsilon}}_0 \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| {\color{blue} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \bar{\bm{\epsilon}}_0 \right )} - {\color{red} \bm{\mu}_\theta(\mathbf{x}_t, t)} \right \| ^2 \right ] \\
-&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bar{\bm{\epsilon}}_0 \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| {\color{blue} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \bar{\bm{\epsilon}}_0 \right )} - {\color{red} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}}_t} \bm{\epsilon}_\theta(\mathbf{x}_t, t) \right )} \right \| ^2 \right ] \\
-&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bar{\bm{\epsilon}}_0 \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| \frac{1}{\sqrt{\alpha_t}} \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \left (\bar{\bm{\epsilon}}_0 - \bm{\epsilon}_\theta(\mathbf{x}_t, t) \right ) \right \| ^2 \right ] \\
-&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bar{\bm{\epsilon}}_0 \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{\beta_t^2}{2 \alpha_t (1 - \alpha_t) \sigma_t^2} \left \| \bar{\bm{\epsilon}}_0 - \bm{\epsilon}_\theta({\color{orange} \mathbf{x}_t}, t) \right \| ^2 \right ] \quad ; \text{bringing in Eq. (27)} \\
-&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bar{\bm{\epsilon}}_0 \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ {\color{green} \frac{\beta_t^2}{2 \alpha_t (1 - \alpha_t) \sigma_t^2}} \left \| \bar{\bm{\epsilon}}_0 - \bm{\epsilon}_\theta({\color{orange} \sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \bar{\bm{\epsilon}}_0}, t) \right \| ^2 \right ] \\
+\mathcal{L}_{t-1} &amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| {\color{blue} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \bm{\epsilon}_t \right )} - {\color{red} \bm{\mu}_\theta(\mathbf{x}_t, t)} \right \| ^2 \right ] \\
+&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| {\color{blue} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \bm{\epsilon}_t \right )} - {\color{red} \frac{1}{\sqrt{\alpha_t}} \left ( \mathbf{x}_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}}_t} \bm{\epsilon}_\theta(\mathbf{x}_t, t) \right )} \right \| ^2 \right ] \\
+&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{1}{2\sigma_t^2} \left \| \frac{1}{\sqrt{\alpha_t}} \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \left (\bm{\epsilon}_t - \bm{\epsilon}_\theta(\mathbf{x}_t, t) \right ) \right \| ^2 \right ] \\
+&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \frac{\beta_t^2}{2 \alpha_t (1 - \alpha_t) \sigma_t^2} \left \| \bm{\epsilon}_t - \bm{\epsilon}_\theta({\color{orange} \mathbf{x}_t}, t) \right \| ^2 \right ] \quad ; \text{bringing in Eq. (27)} \\
+&amp;= {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ {\color{green} \frac{\beta_t^2}{2 \alpha_t (1 - \alpha_t) \sigma_t^2}} \left \| \bm{\epsilon}_t - \bm{\epsilon}_\theta({\color{orange} \sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \bm{\epsilon}_t}, t) \right \| ^2 \right ] \\
 \end{split}
 \end{equation*}
 \tag{41}
@@ -667,7 +668,7 @@ $$</p>
 <h4 id="simplification">Simplification</h4>
 <p>Empirically, <a href="https://arxiv.org/abs/2006.11239">Ho et al. (2020)</a> found that training the diffusion model works better with a simplified objective that ignores the weighting term (<strong>the green part in Eq. (41)</strong>):
 $$
-\mathcal{L}_t^{\text{simple}} = {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bar{\bm{\epsilon}}_0 \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \left \| \bar{\bm{\epsilon}}_0 - \bm{\epsilon}_\theta(\sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \bar{\bm{\epsilon}}_0, t) \right \| ^2 \right ]
+\mathcal{L}_t^{\text{simple}} = {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \left \| \bm{\epsilon}_t - \bm{\epsilon}_\theta(\sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \bm{\epsilon}_t, t) \right \| ^2 \right ]
 \tag{42}
 $$</p>
 <h2 id="simple-code-verification">Simple Code Verification</h2>
