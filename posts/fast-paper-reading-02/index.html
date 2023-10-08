@@ -106,7 +106,7 @@
     "image": "https://gavinsun0921.github.io/images/fast-paper-reading/02.png",
     "datePublished": "2023-08-05T13:53:33+08:00",
     "dateModified": "2023-08-05T13:53:33+08:00",
-    "wordCount":  886 ,
+    "wordCount":  1021 ,
     "publisher": {
         "@type": "Person",
         "name": "Gavin Sun",
@@ -393,6 +393,8 @@ Fig. 3. Comparison of different methods on the 16$\times$16 $\to$ 128$\times$128
 Fig. 4. Results of a SR3 model (64$\times$64 $\to$ 512$\times$512), trained on FFHQ, and applied to <br>images outside of the training set, along with enlarged patches to show finer details. <br>(Image source: <a href="https://ieeexplore.ieee.org/document/9887996">Saharia et al., 2023</a>)
 </div>
 <p>Fig. 4 shows that the image obtained by SR3 has more details (high-frequency information of the image) compared to the regression model.</p>
+<h2 id="summary">Summary</h2>
+<p>SR3 employs a completely novel approach to super-resolution, distinct from previous approaches based on GANs and CNNs. It primarily generates high-resolution images by denoising progressively from low resolution images conditioned on diffusion models. In the experimental section, the PSNR and SSIM metrics show relatively less impressive performance compared to other methods. However, it outperforms the Regression model in terms of FID and IS metrics, which would be more convincing if PULSE and FSRGAN also be evaluated. Personally, I find the consistency metric not very meaningful. Still, its remarkable performance in proxy task compared to the Regression model is worth attention (through there is still a lack of experimental comparisons with PULSE and FSRGAN). The approach of using diffusion models for image super-resolution is effective, and there is potential for further research in the future.</p>
 <h2 id="reference">Reference</h2>
 <p>[1] Chitwan Saharia et al. <a href="https://ieeexplore.ieee.org/document/9887996">&ldquo;Image Super-Resolution via Iterative Refinement.&rdquo;</a> TPAMI 2023.</p>
 <p>[2] Ethan Perez et al. <a href="https://ojs.aaai.org/index.php/AAAI/article/view/11671">&ldquo;FiLM: Visual Reasoning with a General Conditioning Layer.&rdquo;</a> AAAI 2018.</p>
@@ -519,6 +521,7 @@ Fig. 4. Results of a SR3 model (64$\times$64 $\to$ 512$\times$512), trained on F
         <li><a href="#visualization">Visualization</a></li>
       </ul>
     </li>
+    <li><a href="#summary">Summary</a></li>
     <li><a href="#reference">Reference</a></li>
   </ul>
 </nav>
