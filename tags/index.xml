@@ -8,11 +8,11 @@
     <language>en</language>
     <copyright>&amp;copy; 2023 &lt;a href=&#34;https://github.com/GavinSun0921&#34;&gt;Gavin Sun&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Sat, 29 Jul 2023 13:53:33 +0800</lastBuildDate><atom:link href="https://gavinsun0921.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 05 Aug 2023 13:53:33 +0800</lastBuildDate><atom:link href="https://gavinsun0921.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Computer Vision</title>
       <link>https://gavinsun0921.github.io/tags/computer-vision/</link>
-      <pubDate>Sat, 29 Jul 2023 13:53:33 +0800</pubDate>
+      <pubDate>Sat, 05 Aug 2023 13:53:33 +0800</pubDate>
       
       <guid>https://gavinsun0921.github.io/tags/computer-vision/</guid>
       <description></description>
@@ -21,7 +21,7 @@
     <item>
       <title>Deep Learning</title>
       <link>https://gavinsun0921.github.io/tags/deep-learning/</link>
-      <pubDate>Sat, 29 Jul 2023 13:53:33 +0800</pubDate>
+      <pubDate>Sat, 05 Aug 2023 13:53:33 +0800</pubDate>
       
       <guid>https://gavinsun0921.github.io/tags/deep-learning/</guid>
       <description></description>
@@ -30,7 +30,7 @@
     <item>
       <title>Diffusion</title>
       <link>https://gavinsun0921.github.io/tags/diffusion/</link>
-      <pubDate>Sat, 29 Jul 2023 13:53:33 +0800</pubDate>
+      <pubDate>Sat, 05 Aug 2023 13:53:33 +0800</pubDate>
       
       <guid>https://gavinsun0921.github.io/tags/diffusion/</guid>
       <description></description>
@@ -39,9 +39,18 @@
     <item>
       <title>DPM</title>
       <link>https://gavinsun0921.github.io/tags/dpm/</link>
-      <pubDate>Sat, 29 Jul 2023 13:53:33 +0800</pubDate>
+      <pubDate>Sat, 05 Aug 2023 13:53:33 +0800</pubDate>
       
       <guid>https://gavinsun0921.github.io/tags/dpm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Low-level Vision</title>
+      <link>https://gavinsun0921.github.io/tags/low-level-vision/</link>
+      <pubDate>Sat, 05 Aug 2023 13:53:33 +0800</pubDate>
+      
+      <guid>https://gavinsun0921.github.io/tags/low-level-vision/</guid>
       <description></description>
     </item>
     

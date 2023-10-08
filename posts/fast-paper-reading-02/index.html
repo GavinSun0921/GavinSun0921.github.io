@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<title>[Skim-read] Deblurring via Stochastic Refinement | Gavin&#39;s Blog</title>
+<title>[Skim-read] Image Super-Resolution via Iterative Refinement | Gavin&#39;s Blog</title>
 
 <meta name="generator" content="Hugo Eureka 0.9.3" />
 <link rel="stylesheet" href="https://gavinsun0921.github.io/css/eureka.min.9cec6350e37e534b0338fa9a085bf06855de3b0f2dcf857e792e5e97b07ea905d4d5513db554cbc26a9c3da622bae92d.css">
@@ -75,7 +75,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="https://gavinsun0921.github.io/images/profile_hucaa8c691112995772162609a17edd22e_212855_180x180_fill_box_center_3.png">
 
 <meta name="description"
-  content="Image deblurring with &#34;predict-and-refine&#34; conditional diffusion model. An brand new strategy for ill-posed problem.">
+  content="Image super-resolution with conditional diffusion model.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -87,8 +87,8 @@
       "item":"https://gavinsun0921.github.io/posts/"},{
       "@type": "ListItem",
       "position": 2 ,
-      "name":"[Skim-read] Deblurring via Stochastic Refinement",
-      "item":"https://gavinsun0921.github.io/posts/fast-paper-reading-01/"}]
+      "name":"[Skim-read] Image Super-Resolution via Iterative Refinement",
+      "item":"https://gavinsun0921.github.io/posts/fast-paper-reading-02/"}]
 }
 </script>
 
@@ -100,13 +100,13 @@
     "@type": "Article",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://gavinsun0921.github.io/posts/fast-paper-reading-01/"
+        "@id": "https://gavinsun0921.github.io/posts/fast-paper-reading-02/"
     },
-    "headline": "[Skim-read] Deblurring via Stochastic Refinement | Gavin\u0027s Blog",
-    "image": "https://gavinsun0921.github.io/images/fast-paper-reading/01.png",
-    "datePublished": "2023-07-29T13:53:33+08:00",
-    "dateModified": "2023-07-29T13:53:33+08:00",
-    "wordCount":  693 ,
+    "headline": "[Skim-read] Image Super-Resolution via Iterative Refinement | Gavin\u0027s Blog",
+    "image": "https://gavinsun0921.github.io/images/fast-paper-reading/02.png",
+    "datePublished": "2023-08-05T13:53:33+08:00",
+    "dateModified": "2023-08-05T13:53:33+08:00",
+    "wordCount":  886 ,
     "publisher": {
         "@type": "Person",
         "name": "Gavin Sun",
@@ -115,20 +115,20 @@
             "url": "https://gavinsun0921.github.io/images/profile.png"
         }
         },
-    "description": "Image deblurring with \u0022predict-and-refine\u0022 conditional diffusion model. An brand new strategy for ill-posed problem."
+    "description": "Image super-resolution with conditional diffusion model."
 }
-</script><meta property="og:title" content="[Skim-read] Deblurring via Stochastic Refinement | Gavin&#39;s Blog" />
+</script><meta property="og:title" content="[Skim-read] Image Super-Resolution via Iterative Refinement | Gavin&#39;s Blog" />
 <meta property="og:type" content="article" />
 
 
 <meta property="og:image" content="https://gavinsun0921.github.io/images/profile.png">
 
 
-<meta property="og:url" content="https://gavinsun0921.github.io/posts/fast-paper-reading-01/" />
+<meta property="og:url" content="https://gavinsun0921.github.io/posts/fast-paper-reading-02/" />
 
 
 
-<meta property="og:description" content="Image deblurring with &#34;predict-and-refine&#34; conditional diffusion model. An brand new strategy for ill-posed problem." />
+<meta property="og:description" content="Image super-resolution with conditional diffusion model." />
 
 
 
@@ -144,10 +144,10 @@
 
 
 
-<meta property="article:published_time" content="2023-07-29T13:53:33&#43;08:00" />
+<meta property="article:published_time" content="2023-08-05T13:53:33&#43;08:00" />
 
 
-<meta property="article:modified_time" content="2023-07-29T13:53:33&#43;08:00" />
+<meta property="article:modified_time" content="2023-08-05T13:53:33&#43;08:00" />
 
 
 
@@ -172,9 +172,9 @@
 
 
 
-<meta property="og:see_also" content="https://gavinsun0921.github.io/posts/fast-paper-reading-02/" />
 
 
+<meta property="og:see_also" content="https://gavinsun0921.github.io/posts/fast-paper-reading-01/" />
 
 
 
@@ -264,7 +264,7 @@
       class=" bg-secondary-bg col-span-2 rounded px-6 py-8 lg:col-span-6"
     >
       <article class="prose">
-  <h1 class="mb-4">[Skim-read] Deblurring via Stochastic Refinement</h1>
+  <h1 class="mb-4">[Skim-read] Image Super-Resolution via Iterative Refinement</h1>
 
   <div
   class="text-tertiary-text not-prose mt-2 flex flex-row flex-wrap items-center"
@@ -272,12 +272,12 @@
   <div class="me-6 my-2">
     <i class="fas fa-calendar me-1"></i>
     <span
-      >2023-07-29</span
+      >2023-08-05</span
     >
   </div>
   <div class="me-6 my-2">
     <i class="fas fa-clock me-1"></i>
-    <span>4 min read</span>
+    <span>5 min read</span>
   </div>
 
   
@@ -306,28 +306,25 @@
 
   
   
-    <img src="https://gavinsun0921.github.io/images/fast-paper-reading/01.png" class="w-full" alt="Featured Image">
+    <img src="https://gavinsun0921.github.io/images/fast-paper-reading/02.png" class="w-full" alt="Featured Image">
   
 
   <ul>
-<li><strong><a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html"><strong>This paper</strong></a> is published in CVPR 2022.</strong></li>
+<li><strong><a href="https://ieeexplore.ieee.org/document/9887996"><strong>This paper</strong></a> is published in TPAMI 2023.</strong></li>
 </ul>
 <h2 id="overview">Overview</h2>
 <h3 id="problem">Problem</h3>
 <ul>
-<li>Image deblurring is an ill-posed problem, and most existing mothods are ineffective because they produce a deterministic estimate of the clean image.</li>
-<li>Point-estimators that directly minimize a distortion loss suffers from the problem of &ldquo;regression to the mean&rdquo;.</li>
+<li>In the field of image super-resolution, existing approaches often suffer from various limitations; e.g., autoregressive models are prohibitively expensive for high-resolution image generation, Normalizing Flows (NFs) and variational autoencoders (VAEs) often yield sub-optimal sample quality, and GANs require carefully designed regularization and optimization tricks to tame optimization instability and model collapse.</li>
 </ul>
 <h3 id="solution">Solution</h3>
 <ul>
-<li>Present a new framework for blind deblurring based on conditional diffusion models.</li>
-<li>Porducing a diverse set of plausible reconstructions for a given input.</li>
+<li>Present <strong>SR3</strong>, an approach to image super-resolution via repeated refinement based on DDPM.</li>
 </ul>
 <h3 id="results">Results</h3>
 <ul>
-<li>A significant improvement in perceptual qulity over existing state-of-the-art methods across multiple standard benchmarks.</li>
-<li>Much more efficient sampling compared to typical diffusion models.</li>
-<li>Challenging the widely used strategy of producing a single, deterministic reconstruction.</li>
+<li>The high-frequency information of the image can be well resored compared to other methods.</li>
+<li>Despite mediocre performance in SSIM and PSNR metrics, visualization and consistency are good.</li>
 </ul>
 <h2 id="related-work">Related Work</h2>
 <h3 id="diffusion-probabilistic-models">Diffusion Probabilistic Models</h3>
@@ -335,60 +332,74 @@
 <ul>
 <li><a href="https://gavinsun0921.github.io/posts/paper-reading-01/">A Breif Exploration to Diffusion Probabilistic Models with Code Implementation</a>.</li>
 </ul>
-<h3 id="the-perception-distortion-tradeoff">The Perception-Distortion Tradeoff</h3>
-<div align="center">
-<img src="P-D-tradeoff.png" style="zoom:40%" alt=""/>
-Fig. 1. The perception-distortion tradeoff. (Image source: <br><a href="https://openaccess.thecvf.com/content_cvpr_2018/html/Blau_The_Perception-Distortion_Tradeoff_CVPR_2018_paper.html">Blau et al., 2018</a> with a few additional annotations)
-</div>
-<p>The ability of a model on a curve is the same. When perceptual metrics get better (smaller y-axis), distortion metrics get worse (bigger x-axis), and vice versa. Usually non-GAN models will tend to be more towards the upper left corner, while GAN models will tend to be more towards the lower right corner.</p>
 <h2 id="method">Method</h2>
-<p>This paper introduce a <strong>&ldquo;predict-and-refine&rdquo; conditional diffusion model</strong>, where a deterministic data-adaptive predictor is jointly trained with a stochastic sampler that refines the output of the said predictor (see Fig. 2).</p>
 <div align="center">
-<img src="diagram.png" style="zoom:30%" alt=""/>
-Fig. 2. Diagram of dual-network architechture. (Image source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay et al., 2022</a>)
+<img src="conditional.png" style="zoom:40%" alt=""/>
+Fig. 1. The forward diffusion process $q$ (left to right) gradually adds <br>Gaussian noise to the target image. The reverse inference process <br>$p$ (right to left) iteratively denoises the target image conditioned <br>on a source image x. (Image source: <a href="https://ieeexplore.ieee.org/document/9887996">Saharia et al., 2023</a>)
 </div>
-The method in this paper is to use an initial predictor $g_\theta$ to process the blurry image to get the initial prediction, and then models the residual of ground truth and initial prediction using a conditional diffusion model.
-<div align="center">
-<img src="unet.png" style="zoom:70%" alt=""/>
-Fig. 3. Diagram of U-Net architechture used for both the denoiser network and <br>the initial predictor. Note that the input and output depicted here are for the <br>denoiser network. (Image source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay et al., 2022</a>)
-</div>
-<p>The loss function of <strong>predict-and-refine diffusion model</strong> in paper is Eq. (6).
-$$
-L_{\text{Ours}}(\theta) = \mathbb{E} \left \| \mathbf{\epsilon} - f_\theta \left ( \sqrt{\bar{\alpha}} (\underbrace{ \mathbf{x}_0 - g_\theta({\color{red} \mathbf{x}_0})}_{\text{residual}}) + \sqrt{1 - \bar{\alpha}} \epsilon, \bar{\alpha}, \mathbf{y} \right ) \right \| \tag{6}
-$$
-<strong>Gaution! The red part of Eq. (6) is wrong.</strong> Here, $\mathbf{x}_0$ and $g_\theta$ stands for ground truth and initial predictor. The residual portion in the lower brackets should be the residual of ground truth and initial prediction. Therefore, the input to $g_\theta$ should be the blurry image $\mathbf{y}$.</p>
-<h2 id="experimental-study">Experimental Study</h2>
+<p>SR3 is a model obtained by improving on DDPM. Instead of randomly generating images, low resolution images are used as conditions to generate images. The main changes in SR3 are:</p>
+<ol>
+<li>The low resolution image is concatenated to the original input (x_t-1) after bicubic interpolation to get a 6-channel tensor as the new input to the DDPM.
+<blockquote>
+<p>We experimented with more sophisticated methods of conditioning, such as using FiLM (<a href="https://ojs.aaai.org/index.php/AAAI/article/view/11671">Perez et al., 2018</a>), but we found that the simple concatenation yielded similar generation quality.</p>
+</blockquote>
+</li>
+<li>Instead of sampling $\bar{\alpha}_t$ directly using timestep $t$ to compute the correlation variable and loss, a random value is sampled from the distribution $\bar{\alpha} \sim p(\bar{\alpha}) = U(\bar{\alpha}_{t-1}, \bar{\alpha}_{t})$. (Section 2.4 in <a href="https://ieeexplore.ieee.org/document/9887996">Saharia et al., 2023</a>)</li>
+<li>The model receives noise level $\bar{\alpha}_t$ directly instead of timestamp $t$. This allows flexibility in adjusting the noise level and the number of sampling steps during inferring.</li>
+</ol>
+<h2 id="experrimental-study">Experrimental Study</h2>
+<h3 id="new-metric-consistency">New metric: Consistency</h3>
+<blockquote>
+<p>As a measure of the consistentcy of the superresolution outputs, we compute MSE between the downsampled outputs and the low resolution inputs.</p>
+</blockquote>
+<h3 id="new-metric-classification-accuracy">New metric: Classification Accuracy</h3>
+<p>In the field of low-level vision, metrics often do not comprehensively represent the quality of images. Therefore the effectiveness of low-level models is often evaluated in terms of proxy tasks.</p>
+<p>This paper mirror the evalution setup of <a href="https://openaccess.thecvf.com/content_ECCV_2018/html/Yulun_Zhang_Image_Super-Resolution_Using_ECCV_2018_paper.html">Zhang et al., 2018</a> and apply 4$\times$ superresolution models to 56$\times$56 center crops from the validation set of ImageNet.</p>
 <h3 id="quantitative-results">Quantitative Results</h3>
-<p>The &ldquo;SA&rdquo; suffix in the table stands for Sample Averaging, i.e. averaging over multiple samples. This operation can significantly improve the distortion metrics at the expense of the perception metrics.</p>
+<p>Compared to PULSE (<a href="https://openaccess.thecvf.com/content_CVPR_2020/html/Menon_PULSE_Self-Supervised_Photo_Upsampling_via_Latent_Space_Exploration_of_Generative_CVPR_2020_paper.html">Menon et al., 2020</a>), FSRGAN (<a href="https://openaccess.thecvf.com/content_cvpr_2018/html/Chen_FSRNet_End-to-End_Learning_CVPR_2018_paper.html">Chen et al., 2018</a>), and Regressive models, the results in terms of PSNR and SSIM are relatively average. This is because traditional super-resolution models are typically trained based on PSNR, which SR3 is not. Therefore, it is normal for the metrics to be relatively low. However, the consistency metrics, on the other hand, perform very well.</p>
 <div align="center">
-Table 1. Image deblurring results on the GoPro dataset (<a href="https://openaccess.thecvf.com/content_cvpr_2017/papers/Nah_Deep_Multi-Scale_Convolutional_CVPR_2017_paper.pdf">Nah et al., 2017</a>). <br><span style="background-color:#D9D9FF;">Best values</span> and <span style="background-color:#D9FFD9;">second-best values</span> for each metric are color-coded. <br>(Table source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay et al., 2022</a> as a screenshot)
-<img src="table1.png" style="zoom:50%" alt=""/>
+Table 1. PSNR & SSIM on 16$\times$16 $\to$ 128$\times$128 face superresolution. <br>Consistency measures MSE ($\times10^{−5}$) between the lowresolution <br>inputs and the down-sampled super-resolution outputs. (Table <br>source: <a href="https://ieeexplore.ieee.org/document/9887996">Saharia et al., 2023</a> as a screenshot)
+<img src="table1.png" style="zoom:30%" alt=""/>
 </div>
 <div align="center">
-Table 2. Image deblurring results on the HIDE dataset (<a href="https://openaccess.thecvf.com/content_ICCV_2019/papers/Shen_Human-Aware_Motion_Deblurring_ICCV_2019_paper.pdf">Shen et al., 2019</a>). <br><span style="background-color:#D9D9FF;">Best values</span> and <span style="background-color:#D9FFD9;">second-best values</span> for each metric are color-coded. <br>(Table source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay et al., 2022</a> as a screenshot)
-<img src="table2.png" style="zoom:50%" alt=""/>
+Table 2. Performance comparison between SR3 and Regression <br>baseline on natural image super-resolution using standard <br>metrics computed on the ImageNet validation set. (Table <br>source: <a href="https://ieeexplore.ieee.org/document/9887996">Saharia et al., 2023</a> as a screenshot)
+<img src="table2.png" style="zoom:33%" alt=""/>
 </div>
-<p>The model in this paper achieves state-of-the-art performance across <strong>all perceptual metrics</strong> while maintaining competitive PSNR and SSIM to existing methods.</p>
-<h3 id="p-d-tradeoff">P-D tradeoff</h3>
+<h3 id="evaluation-of-proxy-task">Evaluation of Proxy Task</h3>
 <ul>
-<li>Inference steps (T): 10, 20, 30, 50, 100, 200, 300, 500.</li>
+<li>Object recognition baseline: ResNet-50 (<a href="https://www.cv-foundation.org/openaccess/content_cvpr_2016/html/He_Deep_Residual_Learning_CVPR_2016_paper.html">He et al., 2016</a>).</li>
 </ul>
 <div align="center">
-<img src="trade-off.png" style="zoom:80%" alt=""/>
-Fig. 4. Additional Perception-Distortion plots with respect to different metrics. <br>Left column contains perceptual metrics vs. PSNR, and the right column <br>contains SSIM comparisons.(Image source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay et al., 2022</a>)
+Table 3. Comparison of classification accuracy scores for 4$\times$ natural <br>image super-resolution on the first 1K images from the ImageNet <br>Validation set. (Table source: <a href="https://ieeexplore.ieee.org/document/9887996">Saharia et al., 2023</a> as a screenshot)
+<img src="table3.png" style="zoom:35%" alt=""/>
 </div>
-<p>Traversing the Perception-Distortion curve: The more steps sampled, the better the subjective quality, and vice versa for the objective quality.</p>
-<h3 id="network-architecture-ablation-study">Network Architecture Ablation Study</h3>
+<h3 id="human-evaluation-2afc">Human Evaluation (2AFC)</h3>
+<p>This paper use a 2-alternative forced-choice (2AFC) paradigm to measure how well humans can discriminate true images from those generated from a model.</p>
 <div align="center">
-Table 3. Ablation study on the effects of various hyperparameters. <br>(Table source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay et al., 2022</a> as a screenshot)
-<img src="table3.png" style="zoom:50%" alt=""/>
+<img src="human1.png" style="zoom:45%" alt=""/>
+Fig. 2. Face super-resolution human fool rates (higher is better, <br>photo-realistic samples yield a fool rate of 50%). Outputs of 4 <br>models are compared against ground truth. (top) Subjects are <br>shown low-resolution inputs. (bottom) Inputs are not shown. <br>(Image source: <a href="https://ieeexplore.ieee.org/document/9887996">Saharia et al., 2023</a>)
 </div>
-<p>As the results show, all three hyperparameters were critical to the model&rsquo;s performance.</p>
-<h2 id="references">References</h2>
-<p>[1] Whang Jay et al. <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">&ldquo;Deblurring via Stochastic Refinement.&rdquo;</a> CVPR 2022.</p>
-<p>[2] Yochai Blau &amp; Tomer Michaeli. <a href="https://openaccess.thecvf.com/content_cvpr_2018/html/Blau_The_Perception-Distortion_Tradeoff_CVPR_2018_paper.html">&ldquo;The Perception-Distortion Tradeoff.&rdquo;</a> CVPR 2018.</p>
-<p>[3] Seungjun Nah et al. <a href="https://openaccess.thecvf.com/content_cvpr_2017/html/Nah_Deep_Multi-Scale_Convolutional_CVPR_2017_paper.html">&ldquo;Deep Multi-Scale Convolutional Neural Network for Dynamic Scene Deblurring.&rdquo;</a> CVPR 2017.</p>
-<p>[4] Ziyi Shen et al. <a href="https://openaccess.thecvf.com/content_ICCV_2019/html/Shen_Human-Aware_Motion_Deblurring_ICCV_2019_paper.html">&ldquo;Human-Aware Motion Deblurring.&rdquo;</a> ICCV 2019.</p>
+<div align="center">
+<img src="human2.png" style="zoom:45%" alt=""/>
+Fig. 3. ImageNet super-resolution fool rates (higher is better, <br>photo-realistic samples yield a fool rate of 50%). SR3 and Regression <br>outputs are compared against ground truth. (top) Subjects are shown <br>low-resolution inputs. (bottom) Inputs are not shown. (Image source: <br><a href="https://ieeexplore.ieee.org/document/9887996">Saharia et al., 2023</a>)
+</div>
+<h3 id="visualization">Visualization</h3>
+<div align="center">
+<img src="vision1.png" style="zoom:45%" alt=""/>
+Fig. 3. Comparison of different methods on the 16$\times$16 $\to$ 128$\times$128 face <br>super-resolution task. Reference image has not been included because <br>of privacy concerns. (Image source: <a href="https://ieeexplore.ieee.org/document/9887996">Saharia et al., 2023</a>)
+</div>
+<div align="center">
+<img src="vision2.png" style="zoom:75%" alt=""/>
+Fig. 4. Results of a SR3 model (64$\times$64 $\to$ 512$\times$512), trained on FFHQ, and applied to <br>images outside of the training set, along with enlarged patches to show finer details. <br>(Image source: <a href="https://ieeexplore.ieee.org/document/9887996">Saharia et al., 2023</a>)
+</div>
+<p>Fig. 4 shows that the image obtained by SR3 has more details (high-frequency information of the image) compared to the regression model.</p>
+<h2 id="reference">Reference</h2>
+<p>[1] Chitwan Saharia et al. <a href="https://ieeexplore.ieee.org/document/9887996">&ldquo;Image Super-Resolution via Iterative Refinement.&rdquo;</a> TPAMI 2023.</p>
+<p>[2] Ethan Perez et al. <a href="https://ojs.aaai.org/index.php/AAAI/article/view/11671">&ldquo;FiLM: Visual Reasoning with a General Conditioning Layer.&rdquo;</a> AAAI 2018.</p>
+<p>[3] Yulun Zhang et al. <a href="https://openaccess.thecvf.com/content_ECCV_2018/html/Yulun_Zhang_Image_Super-Resolution_Using_ECCV_2018_paper.html">&ldquo;Image Super-Resolution Using Very Deep Residual Channel Attention Networks.&rdquo;</a> ECCV 2018.</p>
+<p>[4] Sachit Menon et al. <a href="https://openaccess.thecvf.com/content_CVPR_2020/html/Menon_PULSE_Self-Supervised_Photo_Upsampling_via_Latent_Space_Exploration_of_Generative_CVPR_2020_paper.html">&ldquo;PULSE: Self-Supervised Photo Upsampling via Latent Space Exploration of Generative Models.&rdquo;</a> CVPR 2020.</p>
+<p>[5] Yu Chen et al. <a href="https://openaccess.thecvf.com/content_cvpr_2018/html/Chen_FSRNet_End-to-End_Learning_CVPR_2018_paper.html">&ldquo;FSRNet: End-to-End Learning Face Super-Resolution With Facial Priors.&rdquo;</a> CVPR 2018.</p>
+<p>[6] Kaiming He et al. <a href="https://www.cv-foundation.org/openaccess/content_cvpr_2016/html/He_Deep_Residual_Learning_CVPR_2016_paper.html">&ldquo;Deep residual learning for image recognition.&rdquo;</a> CVPR 2016.</p>
 
 </article>
 
@@ -421,16 +432,11 @@ Table 3. Ablation study on the effects of various hyperparameters. <br>(Table so
   >
     <div>
       
-        <span class="text-primary-text block font-bold"
-          >Previous</span
-        >
-        <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-02/" class="block">[Skim-read] Image Super-Resolution via Iterative Refinement</a>
-      
     </div>
     <div class="mt-4 md:mt-0 md:text-right">
       
         <span class="text-primary-text block font-bold">Next</span>
-        <a href="https://gavinsun0921.github.io/posts/paper-reading-01/" class="block">A Breif Exploration to Diffusion Probabilistic Models with Code Implementation</a>
+        <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-01/" class="block">[Skim-read] Deblurring via Stochastic Refinement</a>
       
     </div>
   </div>
@@ -500,18 +506,20 @@ Table 3. Ablation study on the effects of various hyperparameters. <br>(Table so
     <li><a href="#related-work">Related Work</a>
       <ul>
         <li><a href="#diffusion-probabilistic-models">Diffusion Probabilistic Models</a></li>
-        <li><a href="#the-perception-distortion-tradeoff">The Perception-Distortion Tradeoff</a></li>
       </ul>
     </li>
     <li><a href="#method">Method</a></li>
-    <li><a href="#experimental-study">Experimental Study</a>
+    <li><a href="#experrimental-study">Experrimental Study</a>
       <ul>
+        <li><a href="#new-metric-consistency">New metric: Consistency</a></li>
+        <li><a href="#new-metric-classification-accuracy">New metric: Classification Accuracy</a></li>
         <li><a href="#quantitative-results">Quantitative Results</a></li>
-        <li><a href="#p-d-tradeoff">P-D tradeoff</a></li>
-        <li><a href="#network-architecture-ablation-study">Network Architecture Ablation Study</a></li>
+        <li><a href="#evaluation-of-proxy-task">Evaluation of Proxy Task</a></li>
+        <li><a href="#human-evaluation-2afc">Human Evaluation (2AFC)</a></li>
+        <li><a href="#visualization">Visualization</a></li>
       </ul>
     </li>
-    <li><a href="#references">References</a></li>
+    <li><a href="#reference">Reference</a></li>
   </ul>
 </nav>
 </div>
@@ -531,6 +539,9 @@ Table 3. Ablation study on the effects of various hyperparameters. <br>(Table so
         class=" bg-secondary-bg prose col-span-2 rounded p-6 lg:col-span-6"
       >
         <h3>See Also</h3>
+        
+          <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-01/" class="no-underline">[Skim-read] Deblurring via Stochastic Refinement</a>
+          <br />
         
           <a href="https://gavinsun0921.github.io/posts/paper-reading-01/" class="no-underline">A Breif Exploration to Diffusion Probabilistic Models with Code Implementation</a>
           <br />
