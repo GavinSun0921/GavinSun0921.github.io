@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  dir="ltr"
+  
+><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>[Skim-read] Generative Modeling by Estimating Gradients of the Data Distribution | Gavin&#39;s Blog</title>
+
+<meta name="generator" content="Hugo Eureka 0.9.3" />
+<link rel="stylesheet" href="https://gavinsun0921.github.io/css/eureka.min.9cec6350e37e534b0338fa9a085bf06855de3b0f2dcf857e792e5e97b07ea905d4d5513db554cbc26a9c3da622bae92d.css">
+<script defer src="https://gavinsun0921.github.io/js/eureka.min.e8043b71b627e3cfd9b2a5de56adf007f5af83dee672ca0c186aa2e29a10d6f648632064d0c00b2fa4d1b11e0f196af3.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload"
+  href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&amp;family=Noto&#43;Serif&#43;SC:wght@400;600;700&amp;display=swap"
+  as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.4.0/build/styles/base16/solarized-light.min.css"
+   media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.4.0/build/highlight.min.js"
+   crossorigin></script>
+  <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.4.0/build/languages/dart.min.js"
+     crossorigin></script>
+<link rel="stylesheet" href="https://gavinsun0921.github.io/css/highlightjs.min.2958991528e43eb6fc9b8c4f2b8e052f79c4010718e1d1e888a777620e9ee63021c2c57ec7417a3108019bb8c41943e6.css" media="print" onload="this.media='all';this.onload=null">
+
+
+<script defer type="text/javascript" src="https://gavinsun0921.github.io/js/fontawesome.min.8c77c7521b1f95ec2031c2a79f5c6a698aa4a0dba5ba649dfbc7f73994cddf3f494be6aac7e5724f35cbf72cfde09703.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+   integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"  media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" 
+  integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY"  crossorigin></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js"
+   integrity="sha384-&#43;XBljXPPiv&#43;OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"  crossorigin></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\\[", right: "\\]", display: true }
+      ],
+    });
+  });
+</script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/mermaid@8.14.0/dist/mermaid.min.js" 
+  integrity="sha384-atOyb0FxAgN9LyAc6PEf9BjgwLISyansgdH8/VXQH8p2o5vfrRgmGIJ2Sg22L0A0"  crossorigin></script>
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="https://gavinsun0921.github.io/images/profile_hucaa8c691112995772162609a17edd22e_212855_32x32_fill_box_center_3.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://gavinsun0921.github.io/images/profile_hucaa8c691112995772162609a17edd22e_212855_180x180_fill_box_center_3.png">
+
+<meta name="description"
+  content="This paper introduce a new generative model where samples are produced via Langevin dynamics using gradients of the data distribution estimated with score matching. And it is important to learn Score-Based generative network and Ito diffusion SDE.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1 ,
+      "name":"Posts",
+      "item":"https://gavinsun0921.github.io/posts/"},{
+      "@type": "ListItem",
+      "position": 2 ,
+      "name":"[Skim-read] Generative Modeling by Estimating Gradients of the Data Distribution",
+      "item":"https://gavinsun0921.github.io/posts/fast-paper-reading-03/"}]
+}
+</script>
+
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://gavinsun0921.github.io/posts/fast-paper-reading-03/"
+    },
+    "headline": "[Skim-read] Generative Modeling by Estimating Gradients of the Data Distribution | Gavin\u0027s Blog",
+    "image": "https://gavinsun0921.github.io/images/fast-paper-reading/03.png",
+    "datePublished": "2023-08-25T13:53:33+08:00",
+    "dateModified": "2023-08-25T13:53:33+08:00",
+    "wordCount":  1998 ,
+    "publisher": {
+        "@type": "Person",
+        "name": "Gavin Sun",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://gavinsun0921.github.io/images/profile.png"
+        }
+        },
+    "description": "This paper introduce a new generative model where samples are produced via Langevin dynamics using gradients of the data distribution estimated with score matching. And it is important to learn Score-Based generative network and Ito diffusion SDE."
+}
+</script><meta property="og:title" content="[Skim-read] Generative Modeling by Estimating Gradients of the Data Distribution | Gavin&#39;s Blog" />
+<meta property="og:type" content="article" />
+
+
+<meta property="og:image" content="https://gavinsun0921.github.io/images/profile.png">
+
+
+<meta property="og:url" content="https://gavinsun0921.github.io/posts/fast-paper-reading-03/" />
+
+
+
+<meta property="og:description" content="This paper introduce a new generative model where samples are produced via Langevin dynamics using gradients of the data distribution estimated with score matching. And it is important to learn Score-Based generative network and Ito diffusion SDE." />
+
+
+
+<meta property="og:locale" content="en" />
+
+
+
+
+<meta property="og:site_name" content="Gavin&#39;s Blog" />
+
+
+
+
+
+
+<meta property="article:published_time" content="2023-08-25T13:53:33&#43;08:00" />
+
+
+<meta property="article:modified_time" content="2023-08-25T13:53:33&#43;08:00" />
+
+
+
+<meta property="article:section" content="posts" />
+
+
+<meta property="article:tag" content="Diffusion" />
+
+<meta property="article:tag" content="DPM" />
+
+<meta property="article:tag" content="Computer Vision" />
+
+<meta property="article:tag" content="Image Generation" />
+
+<meta property="article:tag" content="Deep Learning" />
+
+
+
+
+
+
+
+
+
+
+
+<meta property="og:see_also" content="https://gavinsun0921.github.io/posts/fast-paper-reading-02/" />
+
+
+
+<meta property="og:see_also" content="https://gavinsun0921.github.io/posts/fast-paper-reading-01/" />
+
+
+
+<meta property="og:see_also" content="https://gavinsun0921.github.io/posts/paper-reading-01/" />
+
+
+
+
+
+
+  <body class="flex min-h-screen flex-col">
+    <header
+      class="min-h-16 pl-scrollbar bg-secondary-bg fixed z-50 flex w-full items-center shadow-sm"
+    >
+      <div class="mx-auto w-full max-w-screen-xl"><script>
+    let storageColorScheme = localStorage.getItem("lightDarkMode")
+    if (((storageColorScheme == 'Auto' || storageColorScheme == null) && window.matchMedia("(prefers-color-scheme: dark)").matches) || storageColorScheme == "Dark") {
+        document.getElementsByTagName('html')[0].classList.add('dark')
+    }
+</script>
+<nav class="flex items-center justify-between flex-wrap px-4 py-4 md:py-0">
+    <a href="/" class="me-6 text-primary-text text-xl font-bold">Gavin&#39;s Blog</a>
+    <button id="navbar-btn" class="md:hidden flex items-center px-3 py-2" aria-label="Open Navbar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div id="target"
+        class="hidden block md:flex md:grow md:justify-between md:items-center w-full md:w-auto text-primary-text z-20">
+        <div class="md:flex md:h-16 text-sm md:grow pb-4 md:pb-0 border-b md:border-b-0">
+            <a href="/posts/" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  selected-menu-item  me-4">Posts</a>
+            <a href="/categories" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  border-transparent  me-4">Categories</a>
+            <a href="/series" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  border-transparent  me-4">Series</a>
+        </div>
+
+        <div class="flex">
+            <div class="relative pt-4 md:pt-0">
+                <div class="cursor-pointer hover:text-eureka" id="lightDarkMode">
+                    <i class="fas fa-adjust"></i>
+                </div>
+                <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-30" id="is-open">
+                </div>
+                <div class="absolute flex flex-col start-0 md:start-auto end-auto md:end-0 hidden bg-secondary-bg w-48 rounded py-2 border border-tertiary-bg cursor-pointer z-40"
+                    id='lightDarkOptions'>
+                    <span class="px-4 py-1 hover:text-eureka" name="Light">Light</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Dark">Dark</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Auto">Auto</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-0" id="is-open-mobile">
+    </div>
+
+</nav>
+<script>
+    
+    let element = document.getElementById('lightDarkMode')
+    if (storageColorScheme == null || storageColorScheme == 'Auto') {
+        document.addEventListener('DOMContentLoaded', () => {
+            window.matchMedia("(prefers-color-scheme: dark)").addEventListener('change', switchDarkMode)
+        })
+    } else if (storageColorScheme == "Light") {
+        element.firstElementChild.classList.remove('fa-adjust')
+        element.firstElementChild.setAttribute("data-icon", 'sun')
+        element.firstElementChild.classList.add('fa-sun')
+    } else if (storageColorScheme == "Dark") {
+        element.firstElementChild.classList.remove('fa-adjust')
+        element.firstElementChild.setAttribute("data-icon", 'moon')
+        element.firstElementChild.classList.add('fa-moon')
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        getcolorscheme();
+        switchBurger();
+    });
+</script>
+</div>
+    </header>
+    <main class="grow pt-16">
+        <div class="pl-scrollbar">
+          <div class="mx-auto w-full max-w-screen-xl lg:px-4 xl:px-8">
+  
+  
+  <div class="grid grid-cols-2 gap-4 lg:grid-cols-8 lg:pt-12">
+    <div
+      class=" bg-secondary-bg col-span-2 rounded px-6 py-8 lg:col-span-6"
+    >
+      <article class="prose">
+  <h1 class="mb-4">[Skim-read] Generative Modeling by Estimating Gradients of the Data Distribution</h1>
+
+  <div
+  class="text-tertiary-text not-prose mt-2 flex flex-row flex-wrap items-center"
+>
+  <div class="me-6 my-2">
+    <i class="fas fa-calendar me-1"></i>
+    <span
+      >2023-08-25</span
+    >
+  </div>
+  <div class="me-6 my-2">
+    <i class="fas fa-clock me-1"></i>
+    <span>10 min read</span>
+  </div>
+
+  
+    <div class="me-6 my-2">
+      <i class="fas fa-folder me-1"></i>
+      
+        <a href="https://gavinsun0921.github.io/categories/computer-vision/" class="hover:text-eureka"
+          >Computer Vision</a
+        >
+      
+    </div>
+  
+
+  
+    <div class="me-6 my-2">
+      <i class="fas fa-th-list me-1"></i>
+      
+        <a href="https://gavinsun0921.github.io/series/paper-reading/" class="hover:text-eureka"
+          >Paper Reading</a
+        >
+      
+    </div>
+  
+</div>
+
+
+  
+  
+    <img src="https://gavinsun0921.github.io/images/fast-paper-reading/03.png" class="w-full" alt="Featured Image">
+  
+
+  <h2 id="overview">Overview</h2>
+<p><strong>This paper introduce a new generative model where samples are produced via Langevin dynamics using gradients of the data distribution estimated with score matching. And it is important to learn Score-Based generative network and Ito diffusion SDE.</strong> In this paper, the training and inference phases are analyzed separately and solutions are proposed for different problems. Different levels of noise are used during training to overcome the problem that gradients can be ill-defined and hard to estimate when the data resides on low-dimensional manifolds. For sampling, we propose an annealed Langevin dynamics where we use gradients corresponding to gradually decreasing noise levels as the sampling process gets closer to the data manifold. The models in this paper produce samples comparable to GANs on MNIST, CelebA and CIFAR-10 datasets, achieving a new state-of-the-art inception score of 8.87 on CIFAR-10.</p>
+<h2 id="score-based-generative-modeling">Score-based Generative Modeling</h2>
+<h3 id="defination-of-score">Defination of Score</h3>
+<p>Suppose our dataset consists of i.i.d. samples $\{ \mathbf{x}_i \in \mathbb{R}^D \} _ {i=1} ^N$ from an unknown data distribution $p_\text{data}(\mathbf{x})$.</p>
+<ul>
+<li>We define the score of a probability density $p(\mathbf{x})$ to be $\nabla_\mathbf{x}\log p(\mathbf{x})$.</li>
+<li>The score network $\mathbf{s}_\mathbf{\theta}:\mathbb{R}^D \to \mathbb{R}^D$ is a neural network parameterized by $\mathbf{\theta}$, which will be trained to approximate the score of $p_\text{data}(\mathbf{x})$</li>
+</ul>
+<p>The goal of generative modeling is to use the dataset to learn a model for generating new samples from $p_\text{data}(\mathbf{x})$.
+The framework of score-based generative modeling has two ingredients: <strong>score matching</strong> and <strong>Langevin dynamics</strong>.</p>
+<h3 id="score-matching-for-score-estimation">Score Matching for Score Estimation</h3>
+<p>Score matching (<a href="https://jmlr.org/papers/v6/hyvarinen05a.html">Aapo Hyvärinen, 2005</a>) is originally designed for learning non-normalized statistical models based on i.i.d. samples from an unknown data distribution. Following <a href="http://auai.org/uai2019/proceedings/papers/204.pdf">Song <em>et al.</em> (2019)</a>, authors repurpose it for score estimation.
+<strong>Using score matching, authors can directly train a score network $\mathbf{s}_\mathbf{\theta}(\mathbf{x})$ to estimate $\nabla_\mathbf{x}\log p_\text{data}(\mathbf{x})$ without training a model to estimate $p_\text{data}(\mathbf{x})$ first.</strong> Different from the typical usage of score matching, authors opt not to use the gradient of an energy-based model as the score network to avoid extra computation due to higher-order gradients.</p>
+<p>The objective minimizes $\frac{1}{2}\mathbb{E}_{p_\text{data}(\mathbf{x})}\left[\left \| \mathbf{s}_\mathbf{\theta}(\mathbf{x}) - \nabla_\mathbf{x} \log p_\text{data}(\mathbf{x}) \right \|^2_2 \right]$, which can be shown equivalent to the following up to a constant
+$$
+\frac{1}{2}\mathbb{E}_{p_\text{data}(\mathbf{x})}\left[ \text{tr}(\nabla _\mathbf{x} \mathbf{s}_\mathbf{\theta}(\mathbf{x})) + \frac{1}{2} \left \| \mathbf{s}_\mathbf{\theta}(\mathbf{x}) \right \|^2_2 \right] \tag{1}
+$$
+where $\nabla _\mathbf{x} \mathbf{s}_\mathbf{\theta}(\mathbf{x})$ denotes the <span style="background-color:#eea2a4;">Jacobian of $\mathbf{s}_\mathbf{\theta}(\mathbf{x})$</span>. <strong>However, score matching is not scalable to deep networks and high dimensional data due to the computation of $\text{tr}(\nabla _\mathbf{x} \mathbf{s}_\mathbf{\theta}(\mathbf{x}))$.</strong> Below authors discuss two popular methods for large scale score mathing.</p>
+<h4 id="denoising-score-mathcing">Denoising Score Mathcing</h4>
+<p><em>This is the main method used by the authors in the methodology below.</em></p>
+<p>Denoising score mathcing (<a href="https://ieeexplore.ieee.org/document/6795935">Pascal Vincent, 2011</a>) is a variant of score matching that completely circumvents $\text{tr}(\nabla _\mathbf{x} \mathbf{s}_\mathbf{\theta}(\mathbf{x}))$. It first perturbs the data point $\mathbf{x}$ with a pre-specified noise distribution $q_\sigma(\tilde{\mathbf{x}} \mid \mathbf{x})$ and then employs score matching to estimate the score of the perturbed data distribution $q_\sigma(\tilde{\mathbf{x}}) \triangleq \int q_\sigma (\tilde{\mathbf{x}} \mid \mathbf{x}) \mathrm{d}\mathbf{x}$. The objective was proved equivalent to the following:
+$$
+\frac{1}{2}\mathbb{E}_{q_\sigma(\tilde{\mathbf{x}} \mid \mathbf{x}) p_\text{data}(\mathbf{x}) } \left [ \| \mathbf{s}_\mathbf{\theta}(\tilde{\mathbf{x}}) - \nabla_{\tilde{\mathbf{x}}} \log q_\sigma (\tilde{\mathbf{x}} \mid \mathbf{x}) \|^2_2 \right ] \tag{2}
+$$
+<strong>However, $\mathbf{s}_\mathbf{\theta}^{*} = \nabla_\mathbf{x} \log q_\sigma(\mathbf{x}) \approx \nabla_\mathbf{x} \log p_{\text{data}}(\mathbf{x})$ is true only when the noise is small enough such that $q_\sigma(\mathbf{x}) \approx p_\text{data}(\mathbf{x})$.</strong></p>
+<h4 id="sliced-score-matching">Sliced Score Matching</h4>
+<p>Sliced score matching (<a href="http://auai.org/uai2019/proceedings/papers/204.pdf">Song <em>et al.</em> 2019</a>) uses random projections to approximate $\text{tr}(\nabla _\mathbf{x} \mathbf{s}_\mathbf{\theta}(\mathbf{x}))$ in score matching. The objective is
+$$
+\mathbb{E}_{p_\mathbf{v}}\mathbb{E}_{p_\text{data}} \left [ \mathbf{v}^\top \nabla_\mathbf{x}\mathbf{s}_\mathbf{\theta}(\mathbf{x})\mathbf{v} + \frac{1}{2} \| \mathbf{s}_\mathbf{\theta}(\mathbf{x}) \|^2_2 \right ] \tag{3}
+$$
+where $p_\mathbf{v}$ is a simple ditribution of random vectors, <em>e.g.</em>, the multivariate standard normal. The term $\mathbf{v}^\top \nabla_\mathbf{x}\mathbf{s}_\mathbf{\theta}(\mathbf{x})\mathbf{v}$ can be efficiently computed by forward mode auto-differentiation. <strong>Unlike denoising score matching which estimates the scores of perturbed data, sliced score matching provides score estimation for the original unperturbed data distribution, but requires around four times more computations due to the forward mode auto-differentiation.</strong></p>
+<h3 id="sampling-with-langevin-dynamics">Sampling with Langevin Dynamics</h3>
+<p>Langevin dynamics can produce samples from a probability density $p(\mathbf{x})$ using only the score function $\nabla_\mathbf{x} \log p(\mathbf{x})$. Given a fixed step size $\epsilon &gt; 0$, and an initial value $\tilde{\mathbf{x}}_0 \sim \pi(\mathbf{x})$ with $\pi$ being a prior distribution (arbitrary), the Langevin method recursively computes the following
+$$
+\tilde{\mathbf{x}}_t = \tilde{\mathbf{x}}_{t-1} + \frac{\epsilon}{2} \nabla_\mathbf{x} \log p(\tilde{\mathbf{x}}_{t-1}) + \sqrt{\epsilon} \mathbf{z}_t \tag{4}
+$$
+where $\mathbf{z}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$. The distribution of $\tilde{\mathbf{x}}_T$ equals $p(\mathbf{x})$ when $\epsilon \to 0$ and $T \to \infin$, in which case $\tilde{x}_T$ becomes an exact sample from $p(\mathbf{x})$ under some regularity conditions. When $\epsilon &gt; 0$ and $T &lt; \infin$, a Metropolis-Hastings update is needed to correct the error of Eq. (4), but it can often be ignored in practice. <strong>In this work, authors assume this error is negligible when $\epsilon$ is small and $T$ is large.</strong></p>
+<p>The authors give the goals and reasons for network modeling. Sampling from Eq. (4) only requires the score function $\nabla_\mathbf{x} \log p(\mathbf{x})$. Therefore, in order to obtain samples from $p_\text{data}(\mathbf{x})$, authors first train score network such that $\mathbf{s}_\theta(\mathbf{x}) \approx \nabla_\mathbf{x} \log p_\text{data}(\mathbf{x})$ and then approximately obtain samples with Langevin dynamics using $\mathbf{s}_\mathbf{\theta}(\mathbf{x})$. <strong>This is the key idea of our framework of score-based generative modeling.</strong></p>
+<h3 id="challenges-of-low-data-density-regions">Challenges of Low Data Density Regions</h3>
+<p>In regions of low data density, score matching may not have enough evidence to estimate score functions accurately, due to the lack of data samples. When sampling with Langevin dynamics, our initial sample is highly likely in low density regions when data reside in a high dimensional space. Therefore, having an inaccurate score-based model will derail Langevin dynamics from the very beginning of the procedure, preventing it from generating high quality samples that are representative of the data.</p>
+<div align="center">
+<img src="01.jpg" style="zoom:20%" alt=""/>
+Fig. 1. Estimated scores are only accurate in high density regions. (Image source: <a href="https://yang-song.net/blog/2021/score/">Yang Song' blog, 2021</a>)
+</div>
+<p>Authors solution is to perturb data points with noise and train score-based models on the noisy data points instead. When the noise magnitude is sufficiently large, it can populate low data density regions to improve the accuracy of estimated scores. For example, here is what happens when we perturb a mixture of two Gaussians perturbed by additional Gaussian noise.</p>
+<div align="center">
+<img src="02.jpg" style="zoom:20%" alt=""/>
+Fig. 2. Estimated scores are accurate everywhere for the noise-perturbed data distribution due to reduced low data density regions. (Image source: <a href="https://yang-song.net/blog/2021/score/">Yang Song' blog, 2021</a>)
+</div>
+<p>Yet another question remains: how to choose an appropriate noise scale for the perturbation process? Larger noise can obviously cover more low density regions for better score estimation, but it over-corrupts the data and alters it significantly from the original distribution. Smaller noise, on the other hand, causes less corruption of the original data distribution, but does not cover the low density regions as well as we would like. <strong>To achieve the best of both worlds, authors use multiple scales of noise perturbations simultaneously.</strong></p>
+<h3 id="noise-conditional-score-networks">Noise Conditional Score Networks</h3>
+<ul>
+<li>Perturbing the data using various levels of noise;</li>
+<li>Simultaneously estimating scores corresponding all noise levels by training a <strong>single</strong> conditional score network.</li>
+<li>After training, when using Langevin dynamics to generate samples, we initially use scores corresponding to large noise, and gradually anneal down the noise level.</li>
+<li><strong>Note that conditional in NCSN is for noise and remains unconditional for the image generation task.</strong></li>
+</ul>
+<h4 id="define-noise-condtional-score-networks">Define Noise Condtional Score Networks</h4>
+<p>Let $ \{ \sigma_i \} _{i=1}^L $ be a positive geometric sequence that satisfies $\frac{\sigma_1}{\sigma_2} = \cdots = \frac{\sigma_{L-1}}{\sigma_{L}} &gt; 1$.</p>
+<p>Let $q_\sigma(\mathbf{x}) \triangleq \int p_\text{data}(\mathbf{t}) \mathcal{N}(\mathbf{x} \mid \mathbf{t}, \sigma^2 \mathbf{I}) \mathrm(d) \mathbf{t}$ denote the perturbed data distribution.</p>
+<p>Authors choose the noise levels $\{ \sigma_i \}_{i=1}^L$ such that $\sigma_1$ is large enough to mitigate the difficulties discussed in Eq. (4), and $\sigma_L$ is small enough to minimize the effect on data.</p>
+<p>Authors aim to train a conditional score network to jointly estimate the scores of all perturbed data distributions, <em>i.e.</em>, $\forall \sigma \in \{ \sigma_i \}_{i=1}^L : \mathbf{s}_\mathbf{\theta}(\mathbf{x}, \sigma) \approx \nabla_\mathbf{x} \log q_\sigma(\mathbf{x})$. Note that $\mathbf{s}_\mathbf{\theta}(\mathbf{x}, \sigma) \in \mathbb{R}^D$ when $\mathbf{x} \in \mathbb{R}^D$. Authors call $\mathbf{s}_\mathbf{\theta}(\mathbf{x}, \sigma)$ a <em>Noise Conditional Score Network (NCSN)</em>.</p>
+<h4 id="training-ncsns-via-score-matching">Training NCSNs via score matching</h4>
+<p><em>Both sliced and denoising score matching can train NCSNs.</em> Authors adopt denoising score matching as it is slightly faster and naturally fits the task of estimating scores of noise-perturbed data distributions.</p>
+<p>Authors choose the noise distribution to be $q_\sigma(\tilde{\mathbf{x}} \mid \mathbf{x}) = \mathcal{N}(\tilde{\mathbf{x}} \mid \mathbf{x}, \sigma^2\mathbf{I})$; therefore $\nabla_{\tilde{\mathbf{x}}} \log q_\sigma (\tilde{\mathbf{x}} \mid \mathbf{x}) = - \frac{\tilde{\mathbf{x}} - \mathbf{x}}{\sigma^2}$. For a given $\sigma$, the denoising score matching objective is
+$$
+\ell(\mathbf{\theta; \sigma}) \triangleq \frac{1}{2} \mathbb{E}_{p_\text{data}(\mathbf{x})} \mathbb{E}_{\tilde{\mathbf{x}} \sim \mathcal{N}(\mathbf{x}, \sigma^2\mathbf{I})} \left [ \left \| \mathbf{s}_\mathbf{\theta}(\tilde{\mathbf{x}}, \sigma) + \frac{\tilde{\mathbf{x}} - \mathbf{x}}{\sigma^2} \right \|^2_2 \right ] \tag{5}
+$$
+Then, author combine Eq. (5) for all $\sigma \in \{ \sigma_i \}_{i=1}^L$ to get one unified objective
+$$
+\mathcal{L}(\mathbf{\theta}; \{ \sigma_i \}_{i=1}^L) \triangleq \frac{1}{L} \sum_{i=1}^L \lambda(\sigma_i) \ell(\mathbf{\theta; \sigma_i}) \tag{6}
+$$
+where $\lambda(\sigma_i) &gt; 0$ is a coefficient function depending on $\sigma_i$. Assuming $\mathbf{s}_\mathbf{\theta}(\mathbf{x}, \sigma)$ has enough capacity, $\mathbf{s}_\mathbf{\theta}^*(\mathbf{x}, \sigma)$ minimizes Eq. (6) iff $\mathbf{s}_\mathbf{\theta}(\mathbf{x}, \sigma_i) = \nabla_\mathbf{x} \log q_{\sigma_i}(\mathbf{x})$ a.s. for all $i \in \{ 1, 2, \cdots, L \}$, because Eq. (6) is a conical combination of $L$ denoising score matching objectives.</p>
+<ul>
+<li><em>iff</em>: if and only if</li>
+<li><em>a.s.</em>: almost surely</li>
+</ul>
+<p>There can be many possible choices of $\lambda(\cdot)$. Ideally, authors hope that the values of $\lambda(\sigma_i)\ell(\mathbf{\theta};\sigma_i)$ for all $\{ \sigma_i \}_{i=1}^L$ are roughly of the same order of magnitude. Empirically, we observe that when the score networks are trained to optimality, authors approximately have $\| \mathbf{s}_\mathbf{\theta}(\mathbf{x}, \sigma) \|_2 \propto \frac{1}{\sigma}$. This inspires authors to choose $\lambda(\sigma) = \sigma^2$. Because under this choice, there is $\lambda(\sigma)\ell(\mathbf{\theta};\sigma) = \sigma^2 \ell(\mathbf{\theta}; \sigma) = \frac{1}{2} \mathbb{E} [ \| \sigma \mathbf{s}_\mathbf{\theta}(\tilde{\mathbf{x}}, \sigma) + \frac{\tilde{\mathbf{x}} - \mathbf{x}}{\sigma} \|_2^2 ]$. Since $\frac{\tilde{\mathbf{x}} - \mathbf{x}}{\sigma} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$ and $\| \sigma \mathbf{s}_\mathbf{\theta}(\mathbf{x}, \sigma) \|_2 \propto 1$, authors conclude that the order of magnitude of $\lambda(\sigma)\ell(\mathbf{\theta};\sigma)$ does not depend on $\sigma$.</p>
+<p>What specific benefit this has it not stated by the authors in the original article, but I think it should be to standardize the magnitude for different levels of noise, so that a single loss function (Eq. (5)) after perturbation of the data by different levels of noise will have the same weight in the overall loss function (Eq. (6)), <em>i.e.</em>, <strong>the supervisory weights for matching scores to the data after perturbation of all levels of noise at training time are equal.</strong></p>
+<h4 id="ncsn-inference-via-annealed-langevin-dynamics">NCSN inference via annealed Langevin dynamics</h4>
+<p>After the NCSN $\mathbf{s}_\mathbf{\theta}(\mathbf{x}, \sigma)$ is trained, authors proposed a sampling approach&mdash;annealed Langevin dynamics (Fig. 3).</p>
+<div align="center">
+<img src="03.jpg" style="zoom:90%" alt=""/>
+Fig. 3. Algorithm of annealed Langevin dynamics. <br>(Algorithm source: <a href="https://papers.neurips.cc/paper_files/paper/2019/hash/3001ef257407d5a371a96dcd947c7d93-Abstract.html">Song & Ermon, 2019</a> as a screenshot)
+</div>
+<p>This algorithm is inspired by simulated annealing and annealed importance sampling. This algorithm start annealed Langevin dynamics by initializing the samples from some fixed prior distribution, <em>e.g.</em>, uniform noise. Then run Langevin dynamics to sample from $q_{\sigma_1}(\mathbf{x})$ with step size $\alpha_1$. Next run Langevin dynamics to sample $q_{\sigma_2}(\mathbf{x})$, starting from the final samples of the previous simulation and using a reduced step size $\alpha_2$. Authors continue in this fashion, using the final samples of Langevin dynamics for $q_{\sigma_{i-1}}(\mathbf{x})$ as the initial samples of Lnagevin dynamic for $q_{\sigma_i}(\mathbf{x})$, and tuning down the step size $\alpha_i$ gradually with $\alpha_i = \epsilon \cdot \sigma_i^2 / \sigma_L^2$. Finnaly, run Langevin dynamics to sample from $q_{\sigma_L}(\mathbf{x})$, which is close to $p_\text{data}(\mathbf{x})$ when $\sigma_L \approx 0$.</p>
+<h3 id="result-and-conclusion">Result and Conclusion</h3>
+<p>The authors conducted quantitative tests with excellent results, <strong>but of more interest in this article is the theoretical foundation of the Score-Based Generative Model, and much of the knowledge and assumptions in this article were utilized in Yang Songs subsequent diffusion work.</strong></p>
+<blockquote>
+<p>As an unconditional model, we achieve the state-of-the-art inception score of 8.87, which is even better than most reported values for class-conditional generative models.</p>
+</blockquote>
+<div align="center">
+Table. 1. Inception and FID scores for CIFAR-10. <br>(Table source: <a href="https://papers.neurips.cc/paper_files/paper/2019/hash/3001ef257407d5a371a96dcd947c7d93-Abstract.html">Song & Ermon, 2019</a> as a screenshot)
+<img src="04.jpg" style="zoom:90%" alt=""/>
+</div>
+<h2 id="references">References</h2>
+<p>[1] Yang Song &amp; Stefano Ermon. <a href="https://papers.neurips.cc/paper_files/paper/2019/hash/3001ef257407d5a371a96dcd947c7d93-Abstract.html">&ldquo;Generative Modeling by Estimating Gradients of the Data Distribution.&rdquo;</a> NeurIPS 2019.</p>
+<p>[2] Aapo Hyvärinen. <a href="https://jmlr.org/papers/v6/hyvarinen05a.html">&ldquo;Estimation of Non-Normalized Statistical Models by Score Matching.&rdquo;</a> JMLR 2005.</p>
+<p>[3] Yang Song <em>et al</em>. <a href="http://auai.org/uai2019/proceedings/papers/204.pdf">&ldquo;Sliced Score Matching: A Scalable Approach to Density and Score Estimation.&rdquo;</a> Uncertainty in Artificial Intelligence 2019.</p>
+<p>[4] Pascal Vincent. <a href="https://ieeexplore.ieee.org/document/6795935">&ldquo;A Connection Between Score Matching and Denoising Autoencoders.&rdquo;</a> Neural Computation 2011.</p>
+
+</article>
+
+
+      
+        <div class="my-4">
+    
+    <a href="https://gavinsun0921.github.io/tags/diffusion/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 me-2 hover:text-eureka">#Diffusion</a>
+    
+    <a href="https://gavinsun0921.github.io/tags/dpm/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 me-2 hover:text-eureka">#DPM</a>
+    
+    <a href="https://gavinsun0921.github.io/tags/computer-vision/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 me-2 hover:text-eureka">#Computer Vision</a>
+    
+    <a href="https://gavinsun0921.github.io/tags/image-generation/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 me-2 hover:text-eureka">#Image Generation</a>
+    
+    <a href="https://gavinsun0921.github.io/tags/deep-learning/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 me-2 hover:text-eureka">#Deep Learning</a>
+    
+</div>
+      
+
+      
+
+
+
+      
+
+      
+  <div
+    class="-mx-2 mt-4 flex flex-col border-t px-2 pt-4 md:flex-row md:justify-between"
+  >
+    <div>
+      
+    </div>
+    <div class="mt-4 md:mt-0 md:text-right">
+      
+        <span class="text-primary-text block font-bold">Next</span>
+        <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-02/" class="block">[Skim-read] Image Super-Resolution via Iterative Refinement</a>
+      
+    </div>
+  </div>
+
+
+      
+
+
+
+  <script id="utterances" src="https://utteranc.es/client.js"
+            issue-term=pathname
+            repo=GavinSun0921/gavinsun0921.github.io
+              theme=preferred-color-scheme
+        crossorigin="anonymous"
+        async>
+</script>
+<script>
+    if (storageColorScheme == "Light") {
+      document.getElementById('utterances').setAttribute('theme', 'github-light')
+    } else if (storageColorScheme == "Dark") {
+      document.getElementById('utterances').setAttribute('theme', 'github-dark')
+    }
+</script>
+
+    </div>
+    
+      <div class="col-span-2">
+        
+          
+<div class="bg-secondary-bg prose max-w-none rounded p-6">
+  <h3>Series of Posts</h3>
+  
+    
+      <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-03/" class="no-underline">[Skim-read] Generative Modeling by Estimating Gradients of the Data Distribution</a>
+      <br />
+    
+      <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-02/" class="no-underline">[Skim-read] Image Super-Resolution via Iterative Refinement</a>
+      <br />
+    
+      <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-01/" class="no-underline">[Skim-read] Deblurring via Stochastic Refinement</a>
+      <br />
+    
+      <a href="https://gavinsun0921.github.io/posts/paper-reading-01/" class="no-underline">A Breif Exploration to Diffusion Probabilistic Models with Code Implementation</a>
+      <br />
+    
+  
+</div>
+
+        
+        
+          <div
+  class="
+    bg-primary-bg
+   prose sticky top-16 z-10 hidden px-6 py-4 lg:block"
+>
+  <h3>On This Page</h3>
+</div>
+<div
+  class="sticky-toc  hidden px-6 pb-6 lg:block"
+>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#score-based-generative-modeling">Score-based Generative Modeling</a>
+      <ul>
+        <li><a href="#defination-of-score">Defination of Score</a></li>
+        <li><a href="#score-matching-for-score-estimation">Score Matching for Score Estimation</a>
+          <ul>
+            <li><a href="#denoising-score-mathcing">Denoising Score Mathcing</a></li>
+            <li><a href="#sliced-score-matching">Sliced Score Matching</a></li>
+          </ul>
+        </li>
+        <li><a href="#sampling-with-langevin-dynamics">Sampling with Langevin Dynamics</a></li>
+        <li><a href="#challenges-of-low-data-density-regions">Challenges of Low Data Density Regions</a></li>
+        <li><a href="#noise-conditional-score-networks">Noise Conditional Score Networks</a>
+          <ul>
+            <li><a href="#define-noise-condtional-score-networks">Define Noise Condtional Score Networks</a></li>
+            <li><a href="#training-ncsns-via-score-matching">Training NCSNs via score matching</a></li>
+            <li><a href="#ncsn-inference-via-annealed-langevin-dynamics">NCSN inference via annealed Langevin dynamics</a></li>
+          </ul>
+        </li>
+        <li><a href="#result-and-conclusion">Result and Conclusion</a></li>
+      </ul>
+    </li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav>
+</div>
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    enableStickyToc();
+  });
+</script>
+
+        
+      </div>
+    
+
+    
+    
+      <div
+        class=" bg-secondary-bg prose col-span-2 rounded p-6 lg:col-span-6"
+      >
+        <h3>See Also</h3>
+        
+          <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-02/" class="no-underline">[Skim-read] Image Super-Resolution via Iterative Refinement</a>
+          <br />
+        
+          <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-01/" class="no-underline">[Skim-read] Deblurring via Stochastic Refinement</a>
+          <br />
+        
+          <a href="https://gavinsun0921.github.io/posts/paper-reading-01/" class="no-underline">A Breif Exploration to Diffusion Probabilistic Models with Code Implementation</a>
+          <br />
+        
+      </div>
+    
+  </div>
+
+  
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        hljs.highlightAll();
+      });
+    </script>
+
+          </div>
+        </div>
+      
+    </main>
+    <footer class="pl-scrollbar">
+      <div class="mx-auto w-full max-w-screen-xl"><div class="text-center p-6 pin-b">
+    <p class="text-sm text-tertiary-text">&copy; 2023 <a href="https://github.com/GavinSun0921">Gavin Sun</a>
+ &middot;  Powered by the <a href="https://github.com/wangchucheng/hugo-eureka" class="hover:text-eureka">Eureka</a> theme for <a href="https://gohugo.io" class="hover:text-eureka">Hugo</a></p>
+</div></div>
+    </footer>
+  </body>
+</html>

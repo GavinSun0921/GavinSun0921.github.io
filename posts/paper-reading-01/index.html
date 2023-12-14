@@ -170,6 +170,10 @@
 
 
 
+<meta property="og:see_also" content="https://gavinsun0921.github.io/posts/fast-paper-reading-03/" />
+
+
+
 <meta property="og:see_also" content="https://gavinsun0921.github.io/posts/fast-paper-reading-02/" />
 
 
@@ -674,7 +678,7 @@ $$
 \tag{41}
 $$</p>
 <h4 id="simplification">Simplification</h4>
-<p>Empirically, <a href="https://arxiv.org/abs/2006.11239">Ho et al. (2020)</a> found that training the diffusion model works better with a simplified objective that ignores the weighting term (<strong>the green part in Eq. (41)</strong>):
+<p>Empirically, <a href="https://arxiv.org/abs/2006.11239">Ho <em>et al.</em> (2020)</a> found that training the diffusion model works better with a simplified objective that ignores the weighting term (<strong>the green part in Eq. (41)</strong>):
 $$
 \mathcal{L}_t^{\text{simple}} = {\Large \mathbb{E}}_{\small \mathbf{x}_0 \sim q(\mathbf{x}_0), \bm{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})} \left [ \left \| \bm{\epsilon}_t - \bm{\epsilon}_\theta(\sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \bm{\epsilon}_t, t) \right \| ^2 \right ]
 \tag{42}
@@ -776,6 +780,9 @@ $$</p>
 <div class="bg-secondary-bg prose max-w-none rounded p-6">
   <h3>Series of Posts</h3>
   
+    
+      <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-03/" class="no-underline">[Skim-read] Generative Modeling by Estimating Gradients of the Data Distribution</a>
+      <br />
     
       <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-02/" class="no-underline">[Skim-read] Image Super-Resolution via Iterative Refinement</a>
       <br />

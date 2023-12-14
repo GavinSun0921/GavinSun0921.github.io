@@ -172,6 +172,10 @@
 
 
 
+<meta property="og:see_also" content="https://gavinsun0921.github.io/posts/fast-paper-reading-03/" />
+
+
+
 <meta property="og:see_also" content="https://gavinsun0921.github.io/posts/fast-paper-reading-02/" />
 
 
@@ -338,19 +342,19 @@
 <h3 id="the-perception-distortion-tradeoff">The Perception-Distortion Tradeoff</h3>
 <div align="center">
 <img src="P-D-tradeoff.png" style="zoom:40%" alt=""/>
-Fig. 1. The perception-distortion tradeoff. (Image source: <br><a href="https://openaccess.thecvf.com/content_cvpr_2018/html/Blau_The_Perception-Distortion_Tradeoff_CVPR_2018_paper.html">Blau et al., 2018</a> with a few additional annotations)
+Fig. 1. The perception-distortion tradeoff. (Image source: <br><a href="https://openaccess.thecvf.com/content_cvpr_2018/html/Blau_The_Perception-Distortion_Tradeoff_CVPR_2018_paper.html">Blau <i>et al.</i> 2018</a> with a few additional annotations)
 </div>
 <p>The ability of a model on a curve is the same. When perceptual metrics get better (smaller y-axis), distortion metrics get worse (bigger x-axis), and vice versa. Usually non-GAN models will tend to be more towards the upper left corner, while GAN models will tend to be more towards the lower right corner.</p>
 <h2 id="method">Method</h2>
 <p>This paper introduce a <strong>&ldquo;predict-and-refine&rdquo; conditional diffusion model</strong>, where a deterministic data-adaptive predictor is jointly trained with a stochastic sampler that refines the output of the said predictor (see Fig. 2).</p>
 <div align="center">
 <img src="diagram.png" style="zoom:30%" alt=""/>
-Fig. 2. Diagram of dual-network architechture. (Image source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay et al., 2022</a>)
+Fig. 2. Diagram of dual-network architechture. (Image source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay <i>et al.</i> 2022</a>)
 </div>
 The method in this paper is to use an initial predictor $g_\theta$ to process the blurry image to get the initial prediction, and then models the residual of ground truth and initial prediction using a conditional diffusion model.
 <div align="center">
 <img src="unet.png" style="zoom:70%" alt=""/>
-Fig. 3. Diagram of U-Net architechture used for both the denoiser network and <br>the initial predictor. Note that the input and output depicted here are for the <br>denoiser network. (Image source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay et al., 2022</a>)
+Fig. 3. Diagram of U-Net architechture used for both the denoiser network and <br>the initial predictor. Note that the input and output depicted here are for the <br>denoiser network. (Image source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay <i>et al.</i> 2022</a>)
 </div>
 <p>The loss function of <strong>predict-and-refine diffusion model</strong> in paper is Eq. (6).
 $$
@@ -361,11 +365,11 @@ $$
 <h3 id="quantitative-results">Quantitative Results</h3>
 <p>The &ldquo;SA&rdquo; suffix in the table stands for Sample Averaging, i.e. averaging over multiple samples. This operation can significantly improve the distortion metrics at the expense of the perception metrics.</p>
 <div align="center">
-Table 1. Image deblurring results on the GoPro dataset (<a href="https://openaccess.thecvf.com/content_cvpr_2017/papers/Nah_Deep_Multi-Scale_Convolutional_CVPR_2017_paper.pdf">Nah et al., 2017</a>). <br><span style="background-color:#D9D9FF;">Best values</span> and <span style="background-color:#D9FFD9;">second-best values</span> for each metric are color-coded. <br>(Table source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay et al., 2022</a> as a screenshot)
+Table 1. Image deblurring results on the GoPro dataset (<a href="https://openaccess.thecvf.com/content_cvpr_2017/papers/Nah_Deep_Multi-Scale_Convolutional_CVPR_2017_paper.pdf">Nah <i>et al.</i> 2017</a>). <br><span style="background-color:#D9D9FF;">Best values</span> and <span style="background-color:#D9FFD9;">second-best values</span> for each metric are color-coded. <br>(Table source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay <i>et al.</i> 2022</a> as a screenshot)
 <img src="table1.png" style="zoom:50%" alt=""/>
 </div>
 <div align="center">
-Table 2. Image deblurring results on the HIDE dataset (<a href="https://openaccess.thecvf.com/content_ICCV_2019/papers/Shen_Human-Aware_Motion_Deblurring_ICCV_2019_paper.pdf">Shen et al., 2019</a>). <br><span style="background-color:#D9D9FF;">Best values</span> and <span style="background-color:#D9FFD9;">second-best values</span> for each metric are color-coded. <br>(Table source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay et al., 2022</a> as a screenshot)
+Table 2. Image deblurring results on the HIDE dataset (<a href="https://openaccess.thecvf.com/content_ICCV_2019/papers/Shen_Human-Aware_Motion_Deblurring_ICCV_2019_paper.pdf">Shen <i>et al.</i> 2019</a>). <br><span style="background-color:#D9D9FF;">Best values</span> and <span style="background-color:#D9FFD9;">second-best values</span> for each metric are color-coded. <br>(Table source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay <i>et al.</i> 2022</a> as a screenshot)
 <img src="table2.png" style="zoom:50%" alt=""/>
 </div>
 <p>The model in this paper achieves state-of-the-art performance across <strong>all perceptual metrics</strong> while maintaining competitive PSNR and SSIM to existing methods.</p>
@@ -375,22 +379,22 @@ Table 2. Image deblurring results on the HIDE dataset (<a href="https://openacce
 </ul>
 <div align="center">
 <img src="trade-off.png" style="zoom:80%" alt=""/>
-Fig. 4. Additional Perception-Distortion plots with respect to different metrics. <br>Left column contains perceptual metrics vs. PSNR, and the right column <br>contains SSIM comparisons.(Image source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay et al., 2022</a>)
+Fig. 4. Additional Perception-Distortion plots with respect to different metrics. <br>Left column contains perceptual metrics vs. PSNR, and the right column <br>contains SSIM comparisons.(Image source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay <i>et al.</i> 2022</a>)
 </div>
 <p>Traversing the Perception-Distortion curve: The more steps sampled, the better the subjective quality, and vice versa for the objective quality.</p>
 <h3 id="network-architecture-ablation-study">Network Architecture Ablation Study</h3>
 <div align="center">
-Table 3. Ablation study on the effects of various hyperparameters. <br>(Table source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay et al., 2022</a> as a screenshot)
+Table 3. Ablation study on the effects of various hyperparameters. <br>(Table source: <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">Jay <i>et al.</i> 2022</a> as a screenshot)
 <img src="table3.png" style="zoom:50%" alt=""/>
 </div>
 <p>As the results show, all three hyperparameters were critical to the model&rsquo;s performance.</p>
 <h2 id="summary">Summary</h2>
 <p>The diffusion model is successfully applied to the deblurring task, enhancing the stochastic process of generating clear images. Good results were achieved in the quality of reconstruction observed by the human, and the metrics, such as PSNR, are comparable. The biggest highlight is that the idea of residual is proposed in the model, which makes the inference faster, and together with the initial inference achieved good results.</p>
 <h2 id="references">References</h2>
-<p>[1] Whang Jay et al. <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">&ldquo;Deblurring via Stochastic Refinement.&rdquo;</a> CVPR 2022.</p>
+<p>[1] Whang Jay <em>et al</em>. <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Whang_Deblurring_via_Stochastic_Refinement_CVPR_2022_paper.html">&ldquo;Deblurring via Stochastic Refinement.&rdquo;</a> CVPR 2022.</p>
 <p>[2] Yochai Blau &amp; Tomer Michaeli. <a href="https://openaccess.thecvf.com/content_cvpr_2018/html/Blau_The_Perception-Distortion_Tradeoff_CVPR_2018_paper.html">&ldquo;The Perception-Distortion Tradeoff.&rdquo;</a> CVPR 2018.</p>
-<p>[3] Seungjun Nah et al. <a href="https://openaccess.thecvf.com/content_cvpr_2017/html/Nah_Deep_Multi-Scale_Convolutional_CVPR_2017_paper.html">&ldquo;Deep Multi-Scale Convolutional Neural Network for Dynamic Scene Deblurring.&rdquo;</a> CVPR 2017.</p>
-<p>[4] Ziyi Shen et al. <a href="https://openaccess.thecvf.com/content_ICCV_2019/html/Shen_Human-Aware_Motion_Deblurring_ICCV_2019_paper.html">&ldquo;Human-Aware Motion Deblurring.&rdquo;</a> ICCV 2019.</p>
+<p>[3] Seungjun Nah <em>et al</em>. <a href="https://openaccess.thecvf.com/content_cvpr_2017/html/Nah_Deep_Multi-Scale_Convolutional_CVPR_2017_paper.html">&ldquo;Deep Multi-Scale Convolutional Neural Network for Dynamic Scene Deblurring.&rdquo;</a> CVPR 2017.</p>
+<p>[4] Ziyi Shen <em>et al</em>. <a href="https://openaccess.thecvf.com/content_ICCV_2019/html/Shen_Human-Aware_Motion_Deblurring_ICCV_2019_paper.html">&ldquo;Human-Aware Motion Deblurring.&rdquo;</a> ICCV 2019.</p>
 
 </article>
 
@@ -465,6 +469,9 @@ Table 3. Ablation study on the effects of various hyperparameters. <br>(Table so
 <div class="bg-secondary-bg prose max-w-none rounded p-6">
   <h3>Series of Posts</h3>
   
+    
+      <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-03/" class="no-underline">[Skim-read] Generative Modeling by Estimating Gradients of the Data Distribution</a>
+      <br />
     
       <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-02/" class="no-underline">[Skim-read] Image Super-Resolution via Iterative Refinement</a>
       <br />
