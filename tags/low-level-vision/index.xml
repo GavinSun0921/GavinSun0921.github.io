@@ -21,7 +21,7 @@
     <item>
       <title>[Skim-read] Deblurring via Stochastic Refinement</title>
       <link>https://gavinsun0921.github.io/posts/fast-paper-reading-01/</link>
-      <pubDate>Sat, 29 Jul 2023 13:53:33 +0800</pubDate>
+      <pubDate>Sat, 22 Jul 2023 13:53:33 +0800</pubDate>
       
       <guid>https://gavinsun0921.github.io/posts/fast-paper-reading-01/</guid>
       <description>This paper is published in CVPR 2022. Overview Problem Image deblurring is an ill-posed problem, and most existing mothods are ineffective because they produce a deterministic estimate of the clean image. Point-estimators that directly minimize a distortion loss suffers from the problem of &amp;ldquo;regression to the mean&amp;rdquo;. Solution Present a new framework for blind deblurring based on conditional diffusion models. Porducing a diverse set of plausible reconstructions for a given input. Results A significant improvement in perceptual qulity over existing state-of-the-art methods across multiple standard benchmarks.</description>
