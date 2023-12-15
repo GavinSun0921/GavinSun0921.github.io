@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Paper Reading on Gavin&#39;s Blog</title>
-    <link>https://gavinsun0921.github.io/series/paper-reading/</link>
-    <description>Recent content in Paper Reading on Gavin&#39;s Blog</description>
+    <title>Diffusion on Gavin&#39;s Blog</title>
+    <link>https://gavinsun0921.github.io/categories/diffusion/</link>
+    <description>Recent content in Diffusion on Gavin&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; 2023 &lt;a href=&#34;https://github.com/GavinSun0921&#34;&gt;Gavin Sun&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Fri, 25 Aug 2023 13:53:33 +0800</lastBuildDate><atom:link href="https://gavinsun0921.github.io/series/paper-reading/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 25 Aug 2023 13:53:33 +0800</lastBuildDate><atom:link href="https://gavinsun0921.github.io/categories/diffusion/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[Skim-read] Generative Modeling by Estimating Gradients of the Data Distribution</title>
       <link>https://gavinsun0921.github.io/posts/fast-paper-reading-03/</link>
@@ -42,7 +42,7 @@
       <pubDate>Wed, 14 Jun 2023 13:53:33 +0800</pubDate>
       
       <guid>https://gavinsun0921.github.io/posts/paper-reading-01/</guid>
-      <description>This is the first post in the Paper Reading series. In this series I will continue to update some personal study notes on reading papers. This post will introduce the basic work of diffusion probabilistic models (DPM), including the derivation of formulas and simple code verification. The content is mainly from [1,2]. If you have any suggestions on this post or would like to communicate with me, please leave comments below.
+      <description>This is the first post in the Paper Research series. In this series I will continue to update some personal study notes on reading papers. This post will introduce the basic work of diffusion probabilistic models (DPM), including the derivation of formulas and simple code verification. The content is mainly from [1,2]. If you have any suggestions on this post or would like to communicate with me, please leave comments below.
 Diffusion Models What are Diffusion Models?</description>
     </item>
     

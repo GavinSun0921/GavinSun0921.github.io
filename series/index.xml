@@ -10,11 +10,20 @@
 </copyright>
     <lastBuildDate>Fri, 25 Aug 2023 13:53:33 +0800</lastBuildDate><atom:link href="https://gavinsun0921.github.io/series/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Paper Reading</title>
-      <link>https://gavinsun0921.github.io/series/paper-reading/</link>
+      <title>Paper Skim-read</title>
+      <link>https://gavinsun0921.github.io/series/paper-skim-read/</link>
       <pubDate>Fri, 25 Aug 2023 13:53:33 +0800</pubDate>
       
-      <guid>https://gavinsun0921.github.io/series/paper-reading/</guid>
+      <guid>https://gavinsun0921.github.io/series/paper-skim-read/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Paper Research</title>
+      <link>https://gavinsun0921.github.io/series/paper-research/</link>
+      <pubDate>Wed, 14 Jun 2023 13:53:33 +0800</pubDate>
+      
+      <guid>https://gavinsun0921.github.io/series/paper-research/</guid>
       <description></description>
     </item>
     
