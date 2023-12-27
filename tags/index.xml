@@ -8,69 +8,56 @@
     <language>en</language>
     <copyright>&amp;copy; 2023 &lt;a href=&#34;https://github.com/GavinSun0921&#34;&gt;Gavin Sun&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Tue, 26 Sep 2023 13:53:33 +0800</lastBuildDate><atom:link href="https://gavinsun0921.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Sep 2023 13:53:33 +0800</lastBuildDate>
+    <atom:link href="https://gavinsun0921.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Computer Vision</title>
       <link>https://gavinsun0921.github.io/tags/computer-vision/</link>
       <pubDate>Tue, 26 Sep 2023 13:53:33 +0800</pubDate>
-      
       <guid>https://gavinsun0921.github.io/tags/computer-vision/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Deep Learning</title>
       <link>https://gavinsun0921.github.io/tags/deep-learning/</link>
       <pubDate>Tue, 26 Sep 2023 13:53:33 +0800</pubDate>
-      
       <guid>https://gavinsun0921.github.io/tags/deep-learning/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Diffusion</title>
       <link>https://gavinsun0921.github.io/tags/diffusion/</link>
       <pubDate>Tue, 26 Sep 2023 13:53:33 +0800</pubDate>
-      
       <guid>https://gavinsun0921.github.io/tags/diffusion/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>DPM</title>
       <link>https://gavinsun0921.github.io/tags/dpm/</link>
       <pubDate>Tue, 26 Sep 2023 13:53:33 +0800</pubDate>
-      
       <guid>https://gavinsun0921.github.io/tags/dpm/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Image Generation</title>
       <link>https://gavinsun0921.github.io/tags/image-generation/</link>
       <pubDate>Fri, 25 Aug 2023 13:53:33 +0800</pubDate>
-      
       <guid>https://gavinsun0921.github.io/tags/image-generation/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Low-level Vision</title>
       <link>https://gavinsun0921.github.io/tags/low-level-vision/</link>
       <pubDate>Sat, 05 Aug 2023 13:53:33 +0800</pubDate>
-      
       <guid>https://gavinsun0921.github.io/tags/low-level-vision/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Paper Writing</title>
       <link>https://gavinsun0921.github.io/tags/paper-writing/</link>
       <pubDate>Fri, 12 May 2023 12:34:01 +0800</pubDate>
-      
       <guid>https://gavinsun0921.github.io/tags/paper-writing/</guid>
       <description></description>
     </item>
-    
   </channel>
 </rss>

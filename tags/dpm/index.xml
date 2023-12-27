@@ -8,51 +8,42 @@
     <language>en</language>
     <copyright>&amp;copy; 2023 &lt;a href=&#34;https://github.com/GavinSun0921&#34;&gt;Gavin Sun&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Tue, 26 Sep 2023 13:53:33 +0800</lastBuildDate><atom:link href="https://gavinsun0921.github.io/tags/dpm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Sep 2023 13:53:33 +0800</lastBuildDate>
+    <atom:link href="https://gavinsun0921.github.io/tags/dpm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation</title>
       <link>https://gavinsun0921.github.io/posts/paper-research-02/</link>
       <pubDate>Tue, 26 Sep 2023 13:53:33 +0800</pubDate>
-      
       <guid>https://gavinsun0921.github.io/posts/paper-research-02/</guid>
       <description>This is the second post in the Paper Research series. In this series I will continue to update some personal study notes on reading papers. This post will introduce the basic work of variational autoencoder (VAE), including the derivation of formulas and simple code verification. Autoencoder Autoencoder is a neural network designed to learn an identity function in an unsupervised way to reconstruct the original input while compressing the data in the process so as</description>
     </item>
-    
     <item>
       <title>[Skim-read] Generative Modeling by Estimating Gradients of the Data Distribution</title>
       <link>https://gavinsun0921.github.io/posts/fast-paper-reading-03/</link>
       <pubDate>Fri, 25 Aug 2023 13:53:33 +0800</pubDate>
-      
       <guid>https://gavinsun0921.github.io/posts/fast-paper-reading-03/</guid>
       <description>Overview This paper introduce a new generative model where samples are produced via Langevin dynamics using gradients of the data distribution estimated with score matching. And it is important to learn Score-Based generative network and Ito diffusion SDE. In this paper, the training and inference phases are analyzed separately and solutions are proposed for different problems. Different levels of noise are used during training to overcome the problem that gradients can be ill-defined and hard to estimate when the data resides on low-dimensional manifolds.</description>
     </item>
-    
     <item>
       <title>[Skim-read] Image Super-Resolution via Iterative Refinement</title>
       <link>https://gavinsun0921.github.io/posts/fast-paper-reading-02/</link>
       <pubDate>Sat, 05 Aug 2023 13:53:33 +0800</pubDate>
-      
       <guid>https://gavinsun0921.github.io/posts/fast-paper-reading-02/</guid>
       <description>This paper is published in TPAMI 2023. Overview Problem In the field of image super-resolution, existing approaches often suffer from various limitations; e.g., autoregressive models are prohibitively expensive for high-resolution image generation, Normalizing Flows (NFs) and variational autoencoders (VAEs) often yield sub-optimal sample quality, and GANs require carefully designed regularization and optimization tricks to tame optimization instability and model collapse. Solution Present SR3, an approach to image super-resolution via repeated refinement based on DDPM. Results The high-frequency information of the image can be well resored compared to other methods.</description>
     </item>
-    
     <item>
       <title>[Skim-read] Deblurring via Stochastic Refinement</title>
       <link>https://gavinsun0921.github.io/posts/fast-paper-reading-01/</link>
       <pubDate>Sat, 22 Jul 2023 13:53:33 +0800</pubDate>
-      
       <guid>https://gavinsun0921.github.io/posts/fast-paper-reading-01/</guid>
       <description>This paper is published in CVPR 2022. Overview Problem Image deblurring is an ill-posed problem, and most existing mothods are ineffective because they produce a deterministic estimate of the clean image. Point-estimators that directly minimize a distortion loss suffers from the problem of &amp;ldquo;regression to the mean&amp;rdquo;. Solution Present a new framework for blind deblurring based on conditional diffusion models. Porducing a diverse set of plausible reconstructions for a given input. Results A significant improvement in perceptual qulity over existing state-of-the-art methods across multiple standard benchmarks.</description>
     </item>
-    
     <item>
       <title>A Breif Exploration to Diffusion Probabilistic Models with Code Implementation</title>
       <link>https://gavinsun0921.github.io/posts/paper-research-01/</link>
       <pubDate>Wed, 14 Jun 2023 13:53:33 +0800</pubDate>
-      
       <guid>https://gavinsun0921.github.io/posts/paper-research-01/</guid>
       <description>This is the first post in the Paper Research series. In this series I will continue to update some personal study notes on reading papers. This post will introduce the basic work of diffusion probabilistic models (DPM), including the derivation of formulas and simple code verification. The content is mainly from Sohl-Dickstein et al. (2015) and Ho et al. (2020). If you have any suggestions on this post or would like to communicate with me, please leave comments below.</description>
     </item>
-    
   </channel>
 </rss>
