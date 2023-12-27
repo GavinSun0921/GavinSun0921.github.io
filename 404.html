@@ -67,8 +67,6 @@
 </script>
 
 
-<script defer src="https://cdn.jsdelivr.net/npm/mermaid@8.14.0/dist/mermaid.min.js" 
-  integrity="sha384-atOyb0FxAgN9LyAc6PEf9BjgwLISyansgdH8/VXQH8p2o5vfrRgmGIJ2Sg22L0A0"  crossorigin></script>
 
 
 <link rel="icon" type="image/png" sizes="32x32" href="https://gavinsun0921.github.io/images/profile_hucaa8c691112995772162609a17edd22e_212855_32x32_fill_box_center_3.png">
@@ -139,7 +137,7 @@
     >
       <div class="mx-auto w-full max-w-screen-xl"><script>
     let storageColorScheme = localStorage.getItem("lightDarkMode")
-    if (((storageColorScheme == 'Auto' || storageColorScheme == null) && window.matchMedia("(prefers-color-scheme: dark)").matches) || storageColorScheme == "Dark") {
+    if ((storageColorScheme == 'Auto' && window.matchMedia("(prefers-color-scheme: dark)").matches) || storageColorScheme == "Dark") {
         document.getElementsByTagName('html')[0].classList.add('dark')
     }
 </script>
@@ -160,7 +158,7 @@
         <div class="flex">
             <div class="relative pt-4 md:pt-0">
                 <div class="cursor-pointer hover:text-eureka" id="lightDarkMode">
-                    <i class="fas fa-adjust"></i>
+                    <i class="fas fa-sun"></i>
                 </div>
                 <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-30" id="is-open">
                 </div>
@@ -181,16 +179,15 @@
 <script>
     
     let element = document.getElementById('lightDarkMode')
-    if (storageColorScheme == null || storageColorScheme == 'Auto') {
+    if (storageColorScheme == 'Auto') {
+        element.firstElementChild.classList.remove('fa-sun')
+        element.firstElementChild.setAttribute("data-icon", 'adjust')
+        element.firstElementChild.classList.add('fa-adjust')
         document.addEventListener('DOMContentLoaded', () => {
             window.matchMedia("(prefers-color-scheme: dark)").addEventListener('change', switchDarkMode)
         })
-    } else if (storageColorScheme == "Light") {
-        element.firstElementChild.classList.remove('fa-adjust')
-        element.firstElementChild.setAttribute("data-icon", 'sun')
-        element.firstElementChild.classList.add('fa-sun')
     } else if (storageColorScheme == "Dark") {
-        element.firstElementChild.classList.remove('fa-adjust')
+        element.firstElementChild.classList.remove('fa-sun')
         element.firstElementChild.setAttribute("data-icon", 'moon')
         element.firstElementChild.classList.add('fa-moon')
     }

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  dir="ltr"
+  
+><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation | Gavin&#39;s Blog</title>
+
+<meta name="generator" content="Hugo Eureka 0.9.3" />
+<link rel="stylesheet" href="https://gavinsun0921.github.io/css/eureka.min.9cec6350e37e534b0338fa9a085bf06855de3b0f2dcf857e792e5e97b07ea905d4d5513db554cbc26a9c3da622bae92d.css">
+<script defer src="https://gavinsun0921.github.io/js/eureka.min.e8043b71b627e3cfd9b2a5de56adf007f5af83dee672ca0c186aa2e29a10d6f648632064d0c00b2fa4d1b11e0f196af3.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload"
+  href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&amp;family=Noto&#43;Serif&#43;SC:wght@400;600;700&amp;display=swap"
+  as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.4.0/build/styles/base16/solarized-light.min.css"
+   media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.4.0/build/highlight.min.js"
+   crossorigin></script>
+  <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.4.0/build/languages/dart.min.js"
+     crossorigin></script>
+<link rel="stylesheet" href="https://gavinsun0921.github.io/css/highlightjs.min.2958991528e43eb6fc9b8c4f2b8e052f79c4010718e1d1e888a777620e9ee63021c2c57ec7417a3108019bb8c41943e6.css" media="print" onload="this.media='all';this.onload=null">
+
+
+<script defer type="text/javascript" src="https://gavinsun0921.github.io/js/fontawesome.min.8c77c7521b1f95ec2031c2a79f5c6a698aa4a0dba5ba649dfbc7f73994cddf3f494be6aac7e5724f35cbf72cfde09703.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+   integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"  media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" 
+  integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY"  crossorigin></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js"
+   integrity="sha384-&#43;XBljXPPiv&#43;OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"  crossorigin></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\\[", right: "\\]", display: true }
+      ],
+    });
+  });
+</script>
+
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="https://gavinsun0921.github.io/images/profile_hucaa8c691112995772162609a17edd22e_212855_32x32_fill_box_center_3.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://gavinsun0921.github.io/images/profile_hucaa8c691112995772162609a17edd22e_212855_180x180_fill_box_center_3.png">
+
+<meta name="description"
+  content="Learn variational autoencoder (VAE) by reading and analyzing the paper: &#34;Auto-Encoding Variational Bayes&#34;. This post will introduce the basic work of VAE, including the derivation of formulas and simple code verification.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1 ,
+      "name":"Posts",
+      "item":"https://gavinsun0921.github.io/posts/"},{
+      "@type": "ListItem",
+      "position": 2 ,
+      "name":"A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation",
+      "item":"https://gavinsun0921.github.io/posts/paper-research-02/"}]
+}
+</script>
+
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://gavinsun0921.github.io/posts/paper-research-02/"
+    },
+    "headline": "A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation | Gavin\u0027s Blog",
+    "image": "https://gavinsun0921.github.io/images/paper-research/02.png",
+    "datePublished": "2023-09-26T13:53:33+08:00",
+    "dateModified": "2023-09-26T13:53:33+08:00",
+    "wordCount":  2188 ,
+    "publisher": {
+        "@type": "Person",
+        "name": "Gavin Sun",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://gavinsun0921.github.io/images/profile.png"
+        }
+        },
+    "description": "Learn variational autoencoder (VAE) by reading and analyzing the paper: \u0022Auto-Encoding Variational Bayes\u0022. This post will introduce the basic work of VAE, including the derivation of formulas and simple code verification."
+}
+</script><meta property="og:title" content="A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation | Gavin&#39;s Blog" />
+<meta property="og:type" content="article" />
+
+
+<meta property="og:image" content="https://gavinsun0921.github.io/images/profile.png">
+
+
+<meta property="og:url" content="https://gavinsun0921.github.io/posts/paper-research-02/" />
+
+
+
+<meta property="og:description" content="Learn variational autoencoder (VAE) by reading and analyzing the paper: &#34;Auto-Encoding Variational Bayes&#34;. This post will introduce the basic work of VAE, including the derivation of formulas and simple code verification." />
+
+
+
+<meta property="og:locale" content="en" />
+
+
+
+
+<meta property="og:site_name" content="Gavin&#39;s Blog" />
+
+
+
+
+
+
+<meta property="article:published_time" content="2023-09-26T13:53:33&#43;08:00" />
+
+
+<meta property="article:modified_time" content="2023-09-26T13:53:33&#43;08:00" />
+
+
+
+<meta property="article:section" content="posts" />
+
+
+<meta property="article:tag" content="Diffusion" />
+
+<meta property="article:tag" content="DPM" />
+
+<meta property="article:tag" content="Computer Vision" />
+
+<meta property="article:tag" content="Deep Learning" />
+
+
+
+
+
+
+
+
+
+
+
+<meta property="og:see_also" content="https://gavinsun0921.github.io/posts/paper-research-01/" />
+
+
+
+
+
+
+  <body class="flex min-h-screen flex-col">
+    <header
+      class="min-h-16 pl-scrollbar bg-secondary-bg fixed z-50 flex w-full items-center shadow-sm"
+    >
+      <div class="mx-auto w-full max-w-screen-xl"><script>
+    let storageColorScheme = localStorage.getItem("lightDarkMode")
+    if ((storageColorScheme == 'Auto' && window.matchMedia("(prefers-color-scheme: dark)").matches) || storageColorScheme == "Dark") {
+        document.getElementsByTagName('html')[0].classList.add('dark')
+    }
+</script>
+<nav class="flex items-center justify-between flex-wrap px-4 py-4 md:py-0">
+    <a href="/" class="me-6 text-primary-text text-xl font-bold">Gavin&#39;s Blog</a>
+    <button id="navbar-btn" class="md:hidden flex items-center px-3 py-2" aria-label="Open Navbar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div id="target"
+        class="hidden block md:flex md:grow md:justify-between md:items-center w-full md:w-auto text-primary-text z-20">
+        <div class="md:flex md:h-16 text-sm md:grow pb-4 md:pb-0 border-b md:border-b-0">
+            <a href="/posts/" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  selected-menu-item  me-4">Posts</a>
+            <a href="/categories" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  border-transparent  me-4">Categories</a>
+            <a href="/series" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  border-transparent  me-4">Series</a>
+        </div>
+
+        <div class="flex">
+            <div class="relative pt-4 md:pt-0">
+                <div class="cursor-pointer hover:text-eureka" id="lightDarkMode">
+                    <i class="fas fa-sun"></i>
+                </div>
+                <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-30" id="is-open">
+                </div>
+                <div class="absolute flex flex-col start-0 md:start-auto end-auto md:end-0 hidden bg-secondary-bg w-48 rounded py-2 border border-tertiary-bg cursor-pointer z-40"
+                    id='lightDarkOptions'>
+                    <span class="px-4 py-1 hover:text-eureka" name="Light">Light</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Dark">Dark</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Auto">Auto</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-0" id="is-open-mobile">
+    </div>
+
+</nav>
+<script>
+    
+    let element = document.getElementById('lightDarkMode')
+    if (storageColorScheme == 'Auto') {
+        element.firstElementChild.classList.remove('fa-sun')
+        element.firstElementChild.setAttribute("data-icon", 'adjust')
+        element.firstElementChild.classList.add('fa-adjust')
+        document.addEventListener('DOMContentLoaded', () => {
+            window.matchMedia("(prefers-color-scheme: dark)").addEventListener('change', switchDarkMode)
+        })
+    } else if (storageColorScheme == "Dark") {
+        element.firstElementChild.classList.remove('fa-sun')
+        element.firstElementChild.setAttribute("data-icon", 'moon')
+        element.firstElementChild.classList.add('fa-moon')
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        getcolorscheme();
+        switchBurger();
+    });
+</script>
+</div>
+    </header>
+    <main class="grow pt-16">
+        <div class="pl-scrollbar">
+          <div class="mx-auto w-full max-w-screen-xl lg:px-4 xl:px-8">
+  
+  
+  <div class="grid grid-cols-2 gap-4 lg:grid-cols-8 lg:pt-12">
+    <div
+      class=" bg-secondary-bg col-span-2 rounded px-6 py-8 lg:col-span-6"
+    >
+      <article class="prose">
+  <h1 class="mb-4">A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation</h1>
+
+  <div
+  class="text-tertiary-text not-prose mt-2 flex flex-row flex-wrap items-center"
+>
+  <div class="me-6 my-2">
+    <i class="fas fa-calendar me-1"></i>
+    <span
+      >2023-09-26</span
+    >
+  </div>
+  <div class="me-6 my-2">
+    <i class="fas fa-clock me-1"></i>
+    <span>5 min read</span>
+  </div>
+
+  
+    <div class="me-6 my-2">
+      <i class="fas fa-folder me-1"></i>
+      
+        <a href="https://gavinsun0921.github.io/categories/computer-vision/" class="hover:text-eureka"
+          >Computer Vision</a
+        >
+      
+        
+          <span>, </span>
+        <a href="https://gavinsun0921.github.io/categories/diffusion/" class="hover:text-eureka"
+          >Diffusion</a
+        >
+      
+    </div>
+  
+
+  
+    <div class="me-6 my-2">
+      <i class="fas fa-th-list me-1"></i>
+      
+        <a href="https://gavinsun0921.github.io/series/paper-research/" class="hover:text-eureka"
+          >Paper Research</a
+        >
+      
+    </div>
+  
+</div>
+
+
+  
+  
+    <img src="https://gavinsun0921.github.io/images/paper-research/02.png" class="w-full" alt="Featured Image">
+  
+
+  <p>This is the second post in the <a href="https://gavinsun0921.github.io/series/paper-research/">Paper Research</a> series. In this series I will continue to update some personal study notes on reading papers. <strong>This post will introduce the basic work of variational autoencoder (VAE), including the derivation of formulas and simple code verification.</strong></p>
+<h2 id="autoencoder">Autoencoder</h2>
+<p>Autoencoder is a neural network designed to learn an identity function in an unsupervised way to reconstruct the original input while compressing the data in the process so as to discover a more efficient and compressed representation. The autoencoder was first proposed as a nonlinear generalization of principal components analysis (PCA) in <a href="https://people.engr.tamu.edu/rgutier/web_courses/cpsc636_s10/kramer1991nonlinearPCA.pdf">Kramer, (1991)</a>. And later promoted by the seminal paper by <a href="https://www.science.org/doi/10.1126/science.1127647">Hinton &amp; Salakhutdinov, (2006)</a>.</p>
+<p>It consists of two networks:</p>
+<ul>
+<li><strong>Encoder network</strong> $g_\phi$: It translates the original high-dimension input into the latent low-dimensional code. The input size is larger than the output size.</li>
+<li><strong>Decoder network</strong> $f_\theta$: The decoder network recovers the high-dimension data from the latent low-dimensional code. The input size is smaller than the output size.</li>
+</ul>
+<div align="center">
+<img src="autoencoder-architecture.png" alt="" width="90%"/>
+Fig. 1. Illustration of autoencoder model architecture. (Image source: <a href="https://lilianweng.github.io/posts/2018-08-12-vae/" target="_blank" title="From Autoencoder to Beta-VAE">Weng, 2018</a>)
+</div>
+<p>The encoder network essentially accomplishes the dimensionality reduction, just like how we would use <a href="https://en.wikipedia.org/wiki/Principal_component_analysis">Principal Component Analysis (PCA)</a> or <a href="https://en.wikipedia.org/wiki/Matrix_decomposition">Matrix Factorization (MF)</a> for. In addition, the autoencoder is explicitly optimized for the data reconstruction from the code. A good intermediate representation not only can capture latent variables, but also benefits a full decompression process.</p>
+<p>The model contains an encoder function $g_\phi(\cdot)$ parameterized by $\phi$ and a decoder function $f_\theta(\cdot)$ parameterized by $\theta$. The latent low-dimensional code learned for input $\mathbf{x}$ in the bottleneck layer is $\mathbf{z} = g_\phi(\mathbf{x})$ and reconstructed input is $\mathbf{x}' = f_\theta(\mathbf{z}) = f_\theta(g_\phi(\mathbf{x}))$. The parameters $(\phi, \theta)$ are learned together to output a reconstructed data sample same as the original input $\mathbf{x} \approx f_\theta(g_\phi(\mathbf{x}))$.</p>
+<h2 id="vae-variational-autoencoder">VAE: Variational Autoencoder</h2>
+<p>The idea of Variational Autoencoder (<a href="https://arxiv.org/pdf/1312.6114.pdf">Kingma &amp; Welling, 2014</a>), short for VAE, is actually less similar to the autoencoder model above, but deeply rooted in the methods of variational bayesian and graphical model.</p>
+<div align="center">
+<img src="graphical model.png" alt="" width="20%"/>
+Fig. 2. The type of directed graphical model under consideration. (Image source: <a href="https://arxiv.org/pdf/1312.6114.pdf" target="_blank" title="Auto-Encoding Variational Bayes">Kingma & Welling, 2014</a>)
+</div>
+<p>Instead of mapping the input into a fixed vector, we want to map it into a distribution. In Fig. 2, solid lines denote the <strong>generative model</strong> $p_\theta(\mathbf{x} \mid \mathbf{z})$ with the <strong>analytically tractable prior distribution</strong> $p_\theta(\mathbf{z})$， dashed lines denote the <strong>variational approximation</strong> $q_\phi(\mathbf{z} \mid \mathbf{x})$ to the <strong>intractable posterior distribution</strong> $p_\text{data}(\mathbf{z} \mid \mathbf{x})$. The variational parameters $\phi$ are learned jointly with the generative model parameters $\theta$.</p>
+<h3 id="problem-scenario">Problem Scenario</h3>
+<p>Suppose our dataset consists of i.i.d. samples $\{ \mathbf{x}_i \in \mathbb{R}^D \} _ {i=1} ^N$ from an unknown data distribution $p_\text{data}(\mathbf{x})$. We wish to represent the distribution $p_\text{data}(\mathbf{x})$ of $\mathbf{x}$ with the help of the latent variable $\mathbf{z}$.</p>
+<p>$$
+p_\theta(\mathbf{x}) = \int p_\theta(\mathbf{x} \mid \mathbf{z}) p_\theta(\mathbf{z}) \mathrm{d} \mathbf{z} \tag{1}
+$$</p>
+<p>We want $p_\theta(\mathbf{x})$ to approximate $p_\text{data}(\mathbf{x})$, so that (theoretically) we both represent $p_\text{data}(\mathbf{x})$ in terms of latent variable $\mathbf{z}$ and get the generative model $p_\theta(\mathbf{x} \mid \mathbf{z})$, killing two birds with one stone.</p>
+<h3 id="loss-function-elbo">Loss Function: ELBO</h3>
+<p>Assuming that we know the real parameter $\theta^*$ for this distribution. In order to generate a sample that looks like a real data point $\mathbf{x}^{(i)}$, we follow these steps:</p>
+<ol>
+<li>Sample a $\mathbf{z}^{(i)}$ from the prior distribution $p_{\theta^*}(\mathbf{z})$.</li>
+<li>Generate the $\mathbf{x}^{(i)}$ from the condition distribution (generative model) $p_{\theta^*}(\mathbf{x} \mid \mathbf{z} = \mathbf{z}^{(i)})$.</li>
+</ol>
+<p>The optimal parameter $\theta^{*}$ is the one that maximizes the probability of generating real data samples:</p>
+<p>$$
+\theta^* = \argmax_\theta \prod_{i=1}^n p_\theta(\mathbf{x}^{(i)}) \tag{2}
+$$</p>
+<p>Commonly we use the log probability to convert the product on RHS to a sum:</p>
+<p>$$
+\theta^* = \argmax_\theta \sum_{i=1}^n \log p_\theta(\mathbf{x}^{(i)}) \tag{3}
+$$</p>
+<p>Unfortunately, the integral of $p_\theta(\mathbf{x})$ in Eq. (1) is not well calculated. <a href="https://arxiv.org/pdf/1312.6114.pdf">Kingma &amp; Welling, (2014)</a> chose to use $q_\phi(\mathbf{z} \mid \mathbf{x})$ to approxiamte $p_\text{data}(\mathbf{z} \mid \mathbf{x})$. They focused primarily on describing the posterior $p_\text{data}(\mathbf{z} \mid \mathbf{x})$, which is difficult to compute so the <a href="https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">EM algorithm</a> could not be applied to this problem. But <a href="https://spaces.ac.cn/archives/5343">Su. (2018)</a> gives another idea for approaching: a straightforward joint distribution. First we write out the joint probability distribution of the prior distribution $p_\theta(\mathbf{z})$ and the conditional distribution (generative model) $p_\theta(\mathbf{x} \mid \mathbf{z})$:</p>
+<p>$$
+p_\theta(\mathbf{x}, \mathbf{z}) = p_\theta(\mathbf{x} \mid \mathbf{z}) p_\theta(\mathbf{z}) \tag{4}
+$$</p>
+<p>We define the joint probability distribution $q_\phi(\mathbf{x}, \mathbf{z})$ based on the data distribution $p_\text{data}(\mathbf{x})$ and the variational approximation $q_\phi(\mathbf{z} \mid \mathbf{x})$ of the posterior distribution.</p>
+<p>$$
+q_\phi(\mathbf{x}, \mathbf{z}) = p_\phi(\mathbf{z} \mid \mathbf{x}) p_\text{data}(\mathbf{x}) \tag{5}
+$$</p>
+<p>We want these two joint probability distributions to be as close together as possible, so we use KL divergence to measure the distance between these two distributions, and we want their KL divergence to be as small as possible.</p>
+<p>$$
+\begin{align}
+D_\text{KL}(q_\phi(\mathbf{x},\mathbf{z}) \| p_\theta(\mathbf{x}, \mathbf{z})) &amp; = \int\int q_\phi(\mathbf{x}, \mathbf{z}) \ln \frac{q_\phi(\mathbf{x}, \mathbf{z})}{p_\theta(\mathbf{x}, \mathbf{z})} \mathrm{d}\mathbf{z} \mathrm{d}\mathbf{x} \\
+&amp;= \int\int p_\text{data}(\mathbf{x})q_\phi(\mathbf{z} \mid \mathbf{x}) \ln \frac{p_\text{data}(\mathbf{x})q_\phi(\mathbf{z} \mid \mathbf{x})}{p_\theta(\mathbf{x},\mathbf{z})} \mathrm{d} \mathbf{z} \mathrm{d} \mathbf{x} \\
+&amp;= \int p_\text{data}(\mathbf{x}) \left [ \int q_\phi(\mathbf{z} \mid \mathbf{x}) \ln \frac{p_\text{data}(\mathbf{x})q_\phi(\mathbf{z} \mid \mathbf{x})}{p_\theta(\mathbf{x},\mathbf{z})} \mathrm{d}\mathbf{z} \right ] \mathrm{d} \mathbf{x} \\
+&amp;= \mathbb{E}_{\mathbf{x} \sim p_\text{data}(\mathbf{x})} \left [ \int q_\phi(\mathbf{z} \mid \mathbf{x}) \ln \frac{p_\text{data}(\mathbf{x})q_\phi(\mathbf{z} \mid \mathbf{x})}{p_\theta(\mathbf{x},\mathbf{z})} \mathrm{d}\mathbf{z} \right ] \\
+&amp;= \mathbb{E}_{\mathbf{x} \sim p_\text{data}(\mathbf{x})} \left [ \int q_\phi(\mathbf{z}) \ln p_\text{data}(\mathbf{x}) \mathrm{d} \mathbf{z} + \int q_\phi(\mathbf{z} \mid \mathbf{x}) \ln \frac{q_\phi(\mathbf{z} \mid \mathbf{x})}{p_\theta(\mathbf{x},\mathbf{z})} \mathrm{d}\mathbf{z} \right ] \\
+&amp;= \mathbb{E}_{\mathbf{x} \sim p_\text{data}(\mathbf{x})} \left [ \ln p_\text{data}(\mathbf{x}) {\color{blue} \int q_\phi(\mathbf{z} \mid \mathbf{x}) \mathrm{d} \mathbf{z}} \right ] + \mathbb{E}_{\mathbf{x} \sim p_\text{data}(\mathbf{x})} \left [ \int q_\phi(\mathbf{z} \mid \mathbf{x}) \ln \frac{q_\phi(\mathbf{z} \mid \mathbf{x})}{p_\theta(\mathbf{x},\mathbf{z})} \mathrm{d} \mathbf{z} \right ] \\
+&amp;= {\color{red} \mathbb{E}_{\mathbf{x} \sim p_\text{data}(\mathbf{x})} \left [ \ln p_\text{data}(\mathbf{x}) \right ]} + \mathbb{E}_{\mathbf{x} \sim p_\text{data}(\mathbf{x})} \left [ \int q_\phi(\mathbf{z} \mid \mathbf{x}) \ln \frac{q_\phi(\mathbf{z} \mid \mathbf{x})}{p_\theta(\mathbf{x},\mathbf{z})} \mathrm{d} \mathbf{z} \right ]
+\end{align}
+\tag{6}
+$$
+where the integral of the blue part is equal to 1.</p>
+<p>$p_\text{data}(\mathbf{x})$ is the prior over $\mathbf{x}$ determined from the samples $\mathbf{x}_1, \mathbf{x}_2, \cdots, \mathbf{x}_n$. Although we cannot write its expression explicitly, it does exist. So for any particular dataset, <strong>the red part in Eq. (6) is a constant</strong>.</p>
+<p>So the loss function can be written as:</p>
+<p>$$
+\mathcal{L} = D_\text{KL}(q_\phi(\mathbf{x},\mathbf{z}) \| p_\theta(\mathbf{x}, \mathbf{z})) - {\color{red} C_\text{data}} = \mathbb{E}_{\mathbf{x} \sim p_\text{data}(\mathbf{x})} \left [ \int q_\phi(\mathbf{z} \mid \mathbf{x}) \ln \frac{q_\phi(\mathbf{z} \mid \mathbf{x})}{\color{blue} p_\theta(\mathbf{x},\mathbf{z})} \mathrm{d} \mathbf{z} \right ] \tag{7}
+$$</p>
+<p>Because of the nonnegativity of the KL divergence, our loss function possesses a lower bound $-\mathbb{E}_{\mathbf{x} \sim p_\text{data}(\mathbf{x})} \left [ \ln p_\text{data}(\mathbf{x}) \right ]$.</p>
+<p>To obtain the generative model $p_\theta(\mathbf{x} \mid \mathbf{z})$, we write $p_\theta(\mathbf{x} \mid \mathbf{z}) p_\theta(\mathbf{z})$ for the joint probability distribution $p_\theta(\mathbf{x},\mathbf{z})$ of <strong>the blue part in Eq. (7)</strong>:</p>
+<p>$$
+\begin{align}
+\mathcal{L} &amp;= \mathbb{E}_{\mathbf{x} \sim p_\text{data}(\mathbf{x})} \left [ \int q_\phi(\mathbf{z} \mid \mathbf{x}) \ln \frac{q_\phi(\mathbf{z} \mid \mathbf{x})}{p_\theta(\mathbf{x} \mid \mathbf{z}) p_\theta(\mathbf{z})} \mathrm{d} \mathbf{z} \right ] \\
+&amp;= \mathbb{E}_{\mathbf{x} \sim p_\text{data}(\mathbf{x})} \left [ \int q_\phi(\mathbf{z} \mid \mathbf{x}) \left ( \ln \frac{q_\phi(\mathbf{z} \mid \mathbf{x})}{p_\theta(\mathbf{z})} - \ln p_\theta(\mathbf{x} \mid \mathbf{z}) \right ) \mathrm{d} \mathbf{z} \right ] \\
+&amp;= \mathbb{E}_{\mathbf{x} \sim p_\text{data}(\mathbf{x})} \left [ \int q_\phi(\mathbf{z} \mid \mathbf{x}) \ln \frac{q_\phi(\mathbf{z} \mid \mathbf{x})}{p_\theta(\mathbf{z})} \mathrm{d} \mathbf{z} - \int q_\phi(\mathbf{z} \mid \mathbf{x}) \ln p_\theta(\mathbf{x} \mid \mathbf{z}) \mathrm{d} \mathbf{z} \right ] \\
+&amp;= \mathbb{E}_{\mathbf{x} \sim p_\text{data}(\mathbf{x})} \left [ D_\text{KL}(q_\phi(\mathbf{z} \mid \mathbf{x}) \| p_\theta(\mathbf{z})) - \mathbb{E}_{\mathbf{z} \sim q_\phi(\mathbf{z} \mid \mathbf{x})} [\ln p_\theta(\mathbf{x} \mid \mathbf{z})] \right ]
+\end{align}
+\tag{8}
+$$</p>
+<p>The center bracket of Eq. (8) is the loss function of the VAE. Note that although the loss function in Eq. (8) are composed of two parts, the cannot be viewed as optimization problems in which the two parts are minimized separately.</p>
+<ul>
+<li>When $D_\text{KL}(q_\phi(\mathbf{z} \mid \mathbf{x}) \| p_\theta(\mathbf{z}))$ is 0, it shows that there is no difference between the two distributions $q_\phi(\mathbf{z} \mid \mathbf{x})$ and $p_\theta(\mathbf{z})$, i.e., $\mathbf{x}$ and $\mathbf{z}$ they two are both independent of each other, then the process of predicting $\mathbf{x}$ using $\mathbf{z}$ at this point must be inaccurate, i.e., $-\mathbb{E}_{\mathbf{z} \sim q_\phi(\mathbf{z} \mid \mathbf{x})} [\ln p_\theta(\mathbf{x} \mid \mathbf{z})]$ cannot be small.</li>
+<li>When $-\mathbb{E}_{\mathbf{z} \sim q_\phi(\mathbf{z} \mid \mathbf{x})} [\ln p_\theta(\mathbf{x} \mid \mathbf{z})]$ is small, it implies that $\mathbb{E}_{\mathbf{z} \sim q_\phi(\mathbf{z} \mid \mathbf{x})} \left [ p_\theta(\mathbf{x} \mid \mathbf{z}) \right ]$ is large, i.e., predicting $\mathbf{x}$ using $\mathbf{z}$ is very accurate, and the relationship between $\mathbf{x}$ and $\mathbf{z}$ will be very strong at this time, i.e., $q_\phi(\mathbf{z} \mid \mathbf{x})$ will not be too random, so $D_\text{KL}(q_\phi(\mathbf{z} \mid \mathbf{x}) \| p_\theta(\mathbf{z}))$ will not be small.</li>
+</ul>
+<p>So these two parts of the loss are actually antagonistic to each other, and the loss function cannot be viewed separately, but as a whole. In fact, this is exactly what GANs dream of: having a total metric that can indicate the training process of the generative model. This capability is naturally available in VAE models, and GANs can&rsquo;t do it until WGAN.</p>
+<h3 id="build-the-network">Build the Network</h3>
+<p>So far, there are three distributions in the loss function in Eq. (8) that we don&rsquo;t know: $q_\phi(\mathbf{z} \mid \mathbf{x})$, $p_\theta(\mathbf{x} \mid \mathbf{z})$, and $p_\theta(\mathbf{z})$. As for $p_\text{data}(\mathbf{x})$, while we can&rsquo;t write its expression explicitly, sampling from it is easy to do (samples from the dataset). In order to solve the problem practically, we need to identify the three unkonwn distributions mentioned above or determin their form.</p>
+<p><strong>1) latent variable distribution</strong></p>
+<p>To facilitate the generative model in sampling the latent variable $\mathbf{z}$ when generating samples, we assume that $\mathbf{z} \sim p_\theta(\mathbf{z}) = \mathcal{N}(\mathbf{0}, \mathbf{I})$.</p>
+<p><strong>2) posterior distribution approximation</strong></p>
+<p>We assume that $q_\phi(\mathbf{z} \mid \mathbf{x})$ is also multivariate normally distributed (with independent components), with its mean and variance determined by $\mathbf{x}$. The &ldquo;determination&rdquo; process is in fact a neural network with parameter $\phi$.
+$$
+\begin{align}
+q_\phi(\mathbf{z} \mid \mathbf{x}) = \frac{1}{\prod\limits_{i=1}\limits^n \sqrt{2\pi[\pmb{\sigma}_\phi(\mathbf{x}_i)]^2}} \exp ( - \frac{1}{2} \| \frac{\mathbf{z} - \pmb{\mu}_\phi(\mathbf{x}_i)}{\pmb{\sigma}_\phi(\mathbf{x}_i)} \|^2)
+\end{align}
+\tag{9}
+$$</p>
+<p>Therefore, the KL divergence part of the loss function in Eq. (8) can be pre-written as a concrete expression by referring to Appendix B in <a href="https://arxiv.org/pdf/1312.6114.pdf">Kingma &amp; Welling, (2014)</a>:</p>
+<p>$$
+\begin{align}
+D_\text{KL}(q_\phi(\mathbf{z} \mid \mathbf{x}) \| p_\theta(\mathbf{x})) &amp;= \int q_\phi(\mathbf{z} \mid \mathbf{x}) \ln \frac{q_\phi(\mathbf{z} \mid \mathbf{x})}{p_\theta(\mathbf{z})} \mathrm{d} \mathbf{z} \\
+&amp;= \int q_\phi(\mathbf{z} \mid \mathbf{x}) (\ln q_\phi(\mathbf{z} \mid \mathbf{x}) - \ln p_\theta(\mathbf{z})) \mathrm{d} \mathbf{z} \\
+&amp;= {\color{blue} \int q_\phi(\mathbf{z} \mid \mathbf{x}) \ln q_\phi(\mathbf{z} \mid \mathbf{x}) \mathrm{d} \mathbf{z}} - {\color{red} \int q_\phi(\mathbf{z} \mid \mathbf{x}) \ln p_\theta(\mathbf{z})) \mathrm{d} \mathbf{z}}
+\end{align}
+\tag{10}
+$$</p>
+<p>Let $\mathcal{J}$ be the dimensionality of $\mathbf{z}$, and let $\mu_j$ and $\sigma_j$ denote the $j\text{-th}$ element of $\pmb{\mu}_\phi(\mathbf{x})$ and $\pmb{\sigma}_\phi(\mathbf{x})$. <strong>The blue part of Eq. (10)</strong>:
+$$
+\begin{align}
+{\color{blue} \int q_\phi(\mathbf{z} \mid \mathbf{x}) \ln q_\phi(\mathbf{z} \mid \mathbf{x}) \mathrm{d} \mathbf{z}} &amp;= \int \mathcal{N}(\mathbf{z}; \pmb{\mu}_\phi(\mathbf{x}), \pmb{\sigma}_\phi^2(\mathbf{x})) \ln \mathcal{N}(\mathbf{z}; \pmb{\mu}_\phi(\mathbf{x}), \pmb{\sigma}_\phi^2(\mathbf{x})) \mathrm{d} \mathbf{z} \\
+&amp;= - \frac{\mathcal{J}}{2} \ln(2\pi) - \frac{1}{2} \sum_{j=1}^{\mathcal{J}} (\mu_j^2 + \sigma_j^2)
+\end{align}
+\tag{11}
+$$</p>
+<p><strong>The red part of Eq. (10)</strong>:
+$$
+\begin{align}
+{\color{red} \int q_\phi(\mathbf{z} \mid \mathbf{x}) \ln p_\theta(\mathbf{z})) \mathrm{d} \mathbf{z}} &amp;= \int \mathcal{N}(\mathbf{z}; \pmb{\mu}_\phi(\mathbf{x}), \pmb{\sigma}_\phi^2(\mathbf{x})) \ln \mathcal{N}(\mathbf{z}; \mathbf{0}, \mathbf{I}) \mathrm{d} \mathbf{z} \\
+&amp;= \frac{1}{2} \sum_{j=1}^{\mathcal{J}} (1 + \ln \sigma_j^2)
+\end{align}
+\tag{12}
+$$</p>
+<p>Thus, Eq. (10) can be written as</p>
+<p>$$
+D_\text{KL}(q_\phi(\mathbf{z} \mid \mathbf{x}) \| p_\theta(\mathbf{x})) = \frac{1}{2} \sum_{j=1}^{\mathcal{J}} (\mu_j^2 + \sigma_j^2 - \ln \sigma_j^2 - 1) \tag{13}
+$$</p>
+<p><strong>3) generative model approximation</strong></p>
+<p>For the distributional assumptions of generative model $p_\theta(\mathbf{x} \mid \mathbf{z})$, <a href="https://arxiv.org/pdf/1312.6114.pdf">Kingma &amp; Welling, (2014)</a> gives two options: <strong>Bernoulli distribution</strong> or <strong>Normal distribution</strong>.</p>
+<p><em>3.1) Bernoulli distribution</em></p>
+<p>The Bernoulli distribution is the discrete probability distribution of a random variable which takes the value 1 with probability $p$ and the value 0 with probability $q=1−p$.
+The probability mass function $\operatorname{f}$ of this distribution, over possible outcomes $\xi$, is</p>
+<p>$$
+\begin{cases}
+p &amp;\text{if } \xi = 1 \\
+1 - p &amp;\text{if } \xi = 0
+\end{cases}
+$$</p>
+<p>So when the generating model $p_\theta(\mathbf{x} \mid \mathbf{z})$ is a Bernoulli distribution, it is only appropriate for the case where $\mathbf{x}$ is a multivariate binary vector, since the binary distribution can only produce 0s and 1s. The mnist dataset we&rsquo;ll be working on later for a simple code demonstration can be viewed as this case.</p>
+<p><em>3.2) Normal distribution / Gaussian distribution</em></p>
+<p>In statistics, a normal distribution or Gaussian distribution is a type of continuous probability distribution for a real-valued random variable. The general form of its probability density function is</p>
+<p>$$
+\operatorname{f}(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp \left \{ -\frac{1}{2}(\frac{x-\mu}{\sigma})^2 \right \}
+$$</p>
+<p>So when the generating model $p_\theta(\mathbf{x} \mid \mathbf{z})$ is a Normal distribution</p>
+<div align="center">
+<img src="vae-gaussian.png" alt="" width="90%"/>
+Fig. 3. Illustration of variational autoencoder model with the multivariate Gaussian assumption.<br>(Image source: <a href="https://lilianweng.github.io/posts/2018-08-12-vae/" target="_blank" title="From Autoencoder to Beta-VAE">Weng, 2018</a>)
+</div>
+<h2 id="references">References</h2>
+<p>[1] Diederik P. Kingma &amp; Max Welling. <a href="https://arxiv.org/pdf/1312.6114.pdf">“Auto-Encoding Variational Bayes.”</a> ICLR 2014.</p>
+<p>[2] Mark A. Kramer. <a href="https://people.engr.tamu.edu/rgutier/web_courses/cpsc636_s10/kramer1991nonlinearPCA.pdf">“Nonlinear Principal Component Analysis Using Autoassociative Neural Networks.”</a> AIChE Journal 1991.</p>
+<p>[3] Geoffrey E. Hinton &amp; Ruslan R. Salakhutdinov. <a href="https://www.science.org/doi/10.1126/science.1127647">“Reducing the Dimensionality of Data with Neural Networks.”</a> Science 2006.</p>
+<p>[4] Lilian Weng. <a href="https://lilianweng.github.io/posts/2018-08-12-vae/">“From Autoencoder to Beta-VAE.”</a> [Blog post] <a href="https://lilianweng.github.io/">Lil&rsquo;Log</a> 2018.</p>
+<p>[5] Jianlin Su. <a href="https://spaces.ac.cn/archives/5343">“变分自编码器（二）：从贝叶斯观点出发.”</a> [Blog post] <a href="https://spaces.ac.cn/">Scientific Spaces</a> 2018.</p>
+
+</article>
+
+
+      
+        <div class="my-4">
+    
+    <a href="https://gavinsun0921.github.io/tags/diffusion/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 me-2 hover:text-eureka">#Diffusion</a>
+    
+    <a href="https://gavinsun0921.github.io/tags/dpm/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 me-2 hover:text-eureka">#DPM</a>
+    
+    <a href="https://gavinsun0921.github.io/tags/computer-vision/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 me-2 hover:text-eureka">#Computer Vision</a>
+    
+    <a href="https://gavinsun0921.github.io/tags/deep-learning/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 me-2 hover:text-eureka">#Deep Learning</a>
+    
+</div>
+      
+
+      
+
+
+
+      
+
+      
+  <div
+    class="-mx-2 mt-4 flex flex-col border-t px-2 pt-4 md:flex-row md:justify-between"
+  >
+    <div>
+      
+    </div>
+    <div class="mt-4 md:mt-0 md:text-right">
+      
+        <span class="text-primary-text block font-bold">Next</span>
+        <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-03/" class="block">[Skim-read] Generative Modeling by Estimating Gradients of the Data Distribution</a>
+      
+    </div>
+  </div>
+
+
+      
+
+
+
+  <script id="utterances" src="https://utteranc.es/client.js"
+            issue-term=pathname
+            repo=GavinSun0921/gavinsun0921.github.io
+              theme=github-light
+        crossorigin="anonymous"
+        async>
+</script>
+<script>
+    if (storageColorScheme == "Auto") {
+      document.getElementById('utterances').setAttribute('theme', 'preferred-color-scheme')
+    } else if (storageColorScheme == "Dark") {
+      document.getElementById('utterances').setAttribute('theme', 'github-dark')
+    }
+</script>
+
+    </div>
+    
+      <div class="col-span-2">
+        
+          
+<div class="bg-secondary-bg prose max-w-none rounded p-6">
+  <h3>Series of Posts</h3>
+  
+    
+      <a href="https://gavinsun0921.github.io/posts/paper-research-02/" class="no-underline">A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation</a>
+      <br />
+    
+      <a href="https://gavinsun0921.github.io/posts/paper-research-01/" class="no-underline">A Breif Exploration to Diffusion Probabilistic Models with Code Implementation</a>
+      <br />
+    
+  
+</div>
+
+        
+        
+          <div
+  class="
+    bg-primary-bg
+   prose sticky top-16 z-10 hidden px-6 py-4 lg:block"
+>
+  <h3>On This Page</h3>
+</div>
+<div
+  class="sticky-toc  hidden px-6 pb-6 lg:block"
+>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#autoencoder">Autoencoder</a></li>
+    <li><a href="#vae-variational-autoencoder">VAE: Variational Autoencoder</a>
+      <ul>
+        <li><a href="#problem-scenario">Problem Scenario</a></li>
+        <li><a href="#loss-function-elbo">Loss Function: ELBO</a></li>
+        <li><a href="#build-the-network">Build the Network</a></li>
+      </ul>
+    </li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav>
+</div>
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    enableStickyToc();
+  });
+</script>
+
+        
+      </div>
+    
+
+    
+    
+      <div
+        class=" bg-secondary-bg prose col-span-2 rounded p-6 lg:col-span-6"
+      >
+        <h3>See Also</h3>
+        
+          <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-03/" class="no-underline">[Skim-read] Generative Modeling by Estimating Gradients of the Data Distribution</a>
+          <br />
+        
+          <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-02/" class="no-underline">[Skim-read] Image Super-Resolution via Iterative Refinement</a>
+          <br />
+        
+          <a href="https://gavinsun0921.github.io/posts/fast-paper-reading-01/" class="no-underline">[Skim-read] Deblurring via Stochastic Refinement</a>
+          <br />
+        
+          <a href="https://gavinsun0921.github.io/posts/paper-research-01/" class="no-underline">A Breif Exploration to Diffusion Probabilistic Models with Code Implementation</a>
+          <br />
+        
+      </div>
+    
+  </div>
+
+  
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        hljs.highlightAll();
+      });
+    </script>
+
+          </div>
+        </div>
+      
+    </main>
+    <footer class="pl-scrollbar">
+      <div class="mx-auto w-full max-w-screen-xl"><div class="text-center p-6 pin-b">
+    <p class="text-sm text-tertiary-text">&copy; 2023 <a href="https://github.com/GavinSun0921">Gavin Sun</a>
+ &middot;  Powered by the <a href="https://github.com/wangchucheng/hugo-eureka" class="hover:text-eureka">Eureka</a> theme for <a href="https://gohugo.io" class="hover:text-eureka">Hugo</a></p>
+</div></div>
+    </footer>
+  </body>
+</html>

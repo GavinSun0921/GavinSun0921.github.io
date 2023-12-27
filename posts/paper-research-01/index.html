@@ -67,15 +67,13 @@
 </script>
 
 
-<script defer src="https://cdn.jsdelivr.net/npm/mermaid@8.14.0/dist/mermaid.min.js" 
-  integrity="sha384-atOyb0FxAgN9LyAc6PEf9BjgwLISyansgdH8/VXQH8p2o5vfrRgmGIJ2Sg22L0A0"  crossorigin></script>
 
 
 <link rel="icon" type="image/png" sizes="32x32" href="https://gavinsun0921.github.io/images/profile_hucaa8c691112995772162609a17edd22e_212855_32x32_fill_box_center_3.png">
 <link rel="apple-touch-icon" sizes="180x180" href="https://gavinsun0921.github.io/images/profile_hucaa8c691112995772162609a17edd22e_212855_180x180_fill_box_center_3.png">
 
 <meta name="description"
-  content="Learn diffusion probabilistic models (DPM) by reading and analyzing the paper: &#34;Deep Unsupervised Learning using Nonequilibrium Thermodynamics.&#34;">
+  content="Learn diffusion probabilistic models (DPM) by reading and analyzing the papers: &#34;Deep Unsupervised Learning using Nonequilibrium Thermodynamics&#34; and &#34;Denoising Diffusion Probabilistic Models&#34;. This post will introduce the basic work of DPM, including the derivation of formulas and simple code verification.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -88,7 +86,7 @@
       "@type": "ListItem",
       "position": 2 ,
       "name":"A Breif Exploration to Diffusion Probabilistic Models with Code Implementation",
-      "item":"https://gavinsun0921.github.io/posts/paper-reading-01/"}]
+      "item":"https://gavinsun0921.github.io/posts/paper-research-01/"}]
 }
 </script>
 
@@ -100,13 +98,13 @@
     "@type": "Article",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://gavinsun0921.github.io/posts/paper-reading-01/"
+        "@id": "https://gavinsun0921.github.io/posts/paper-research-01/"
     },
     "headline": "A Breif Exploration to Diffusion Probabilistic Models with Code Implementation | Gavin\u0027s Blog",
-    "image": "https://gavinsun0921.github.io/images/paper-reading/01.png",
+    "image": "https://gavinsun0921.github.io/images/paper-research/01.png",
     "datePublished": "2023-06-14T13:53:33+08:00",
     "dateModified": "2023-06-14T13:53:33+08:00",
-    "wordCount":  3826 ,
+    "wordCount":  3833 ,
     "publisher": {
         "@type": "Person",
         "name": "Gavin Sun",
@@ -115,7 +113,7 @@
             "url": "https://gavinsun0921.github.io/images/profile.png"
         }
         },
-    "description": "Learn diffusion probabilistic models (DPM) by reading and analyzing the paper: \u0022Deep Unsupervised Learning using Nonequilibrium Thermodynamics.\u0022"
+    "description": "Learn diffusion probabilistic models (DPM) by reading and analyzing the papers: \u0022Deep Unsupervised Learning using Nonequilibrium Thermodynamics\u0022 and \u0022Denoising Diffusion Probabilistic Models\u0022. This post will introduce the basic work of DPM, including the derivation of formulas and simple code verification."
 }
 </script><meta property="og:title" content="A Breif Exploration to Diffusion Probabilistic Models with Code Implementation | Gavin&#39;s Blog" />
 <meta property="og:type" content="article" />
@@ -124,11 +122,11 @@
 <meta property="og:image" content="https://gavinsun0921.github.io/images/profile.png">
 
 
-<meta property="og:url" content="https://gavinsun0921.github.io/posts/paper-reading-01/" />
+<meta property="og:url" content="https://gavinsun0921.github.io/posts/paper-research-01/" />
 
 
 
-<meta property="og:description" content="Learn diffusion probabilistic models (DPM) by reading and analyzing the paper: &#34;Deep Unsupervised Learning using Nonequilibrium Thermodynamics.&#34;" />
+<meta property="og:description" content="Learn diffusion probabilistic models (DPM) by reading and analyzing the papers: &#34;Deep Unsupervised Learning using Nonequilibrium Thermodynamics&#34; and &#34;Denoising Diffusion Probabilistic Models&#34;. This post will introduce the basic work of DPM, including the derivation of formulas and simple code verification." />
 
 
 
@@ -170,6 +168,10 @@
 
 
 
+<meta property="og:see_also" content="https://gavinsun0921.github.io/posts/paper-research-02/" />
+
+
+
 
 
 
@@ -181,7 +183,7 @@
     >
       <div class="mx-auto w-full max-w-screen-xl"><script>
     let storageColorScheme = localStorage.getItem("lightDarkMode")
-    if (((storageColorScheme == 'Auto' || storageColorScheme == null) && window.matchMedia("(prefers-color-scheme: dark)").matches) || storageColorScheme == "Dark") {
+    if ((storageColorScheme == 'Auto' && window.matchMedia("(prefers-color-scheme: dark)").matches) || storageColorScheme == "Dark") {
         document.getElementsByTagName('html')[0].classList.add('dark')
     }
 </script>
@@ -202,7 +204,7 @@
         <div class="flex">
             <div class="relative pt-4 md:pt-0">
                 <div class="cursor-pointer hover:text-eureka" id="lightDarkMode">
-                    <i class="fas fa-adjust"></i>
+                    <i class="fas fa-sun"></i>
                 </div>
                 <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-30" id="is-open">
                 </div>
@@ -223,16 +225,15 @@
 <script>
     
     let element = document.getElementById('lightDarkMode')
-    if (storageColorScheme == null || storageColorScheme == 'Auto') {
+    if (storageColorScheme == 'Auto') {
+        element.firstElementChild.classList.remove('fa-sun')
+        element.firstElementChild.setAttribute("data-icon", 'adjust')
+        element.firstElementChild.classList.add('fa-adjust')
         document.addEventListener('DOMContentLoaded', () => {
             window.matchMedia("(prefers-color-scheme: dark)").addEventListener('change', switchDarkMode)
         })
-    } else if (storageColorScheme == "Light") {
-        element.firstElementChild.classList.remove('fa-adjust')
-        element.firstElementChild.setAttribute("data-icon", 'sun')
-        element.firstElementChild.classList.add('fa-sun')
     } else if (storageColorScheme == "Dark") {
-        element.firstElementChild.classList.remove('fa-adjust')
+        element.firstElementChild.classList.remove('fa-sun')
         element.firstElementChild.setAttribute("data-icon", 'moon')
         element.firstElementChild.classList.add('fa-moon')
     }
@@ -302,13 +303,13 @@
 
   
   
-    <img src="https://gavinsun0921.github.io/images/paper-reading/01.png" class="w-full" alt="Featured Image">
+    <img src="https://gavinsun0921.github.io/images/paper-research/01.png" class="w-full" alt="Featured Image">
   
 
   <p>This is the first post in the <a href="https://gavinsun0921.github.io/series/paper-research/">Paper Research</a> series. In this series I will continue to update some personal study notes on reading papers. <strong>This post will introduce the basic work of diffusion probabilistic models (DPM), including the derivation of formulas and simple code verification.</strong>
-The content is mainly from <a href="#references">[1,2]</a>. If you have any suggestions on this post or would like to communicate with me, please leave comments below.</p>
+The content is mainly from <a href="https://arxiv.org/abs/1503.03585">Sohl-Dickstein <em>et al.</em> (2015)</a> and <a href="https://arxiv.org/abs/2006.11239">Ho <em>et al.</em> (2020)</a>. If you have any suggestions on this post or would like to communicate with me, please leave comments below.</p>
 <h2 id="diffusion-models">Diffusion Models</h2>
-<p>What are Diffusion Models? Refer to <a href="https://lilianweng.github.io/posts/2021-07-11-diffusion-models/#:~:text=Diffusion%20models%20are%20inspired%20by%20non%2Dequilibrium%20thermodynamics.%20They%20define%20a%20Markov%20chain%20of%20diffusion%20steps%20to%20slowly%20add%20random%20noise%20to%20data%20and%20then%20learn%20to%20reverse%20the%20diffusion%20process%20to%20construct%20desired%20data%20samples%20from%20the%20noise.">Lil&rsquo;Log</a> post:</p>
+<p>What are Diffusion Models? Refer to <a href="https://lilianweng.github.io/posts/2021-07-11-diffusion-models/#:~:text=Diffusion%20models%20are%20inspired%20by%20non%2Dequilibrium%20thermodynamics.%20They%20define%20a%20Markov%20chain%20of%20diffusion%20steps%20to%20slowly%20add%20random%20noise%20to%20data%20and%20then%20learn%20to%20reverse%20the%20diffusion%20process%20to%20construct%20desired%20data%20samples%20from%20the%20noise.">Weng, (2021)</a>:</p>
 <blockquote>
 <p>Diffusion models are inspired by non-equilibrium thermodynamics. They define a Markov chain of diffusion steps to slowly add random noise to data and then learn to reverse the diffusion process to construct desired data samples from the noise.</p>
 </blockquote>
@@ -319,12 +320,12 @@ Fig. 1. Framework Diagram of Diffusion Models.
 <p>My personal understanding of Diffusion Models is a framework (Fig. 1) where there are no trainable parameters in the forward process and there are training parameters in the reverse process. And there is no restriction on what type of neural network to use in terms of the distribution that needs to be expressed implicitly in the reverse process.</p>
 <div align="center">
 <img src="diffusion_pgm.png" alt="" width="70%"/>
-Fig. 2. Flowchart of Diffusion Models. (Image source: <a href="https://ayandas.me/blog-tut/2021/12/04/diffusion-prob-models.html" target="_blank" title="An introduction to Diffusion Probabilistic Models">Ayan Das, 2021</a>)
+Fig. 2. Flowchart of Diffusion Models. (Image source: <a href="https://ayandas.me/blog-tut/2021/12/04/diffusion-prob-models.html" target="_blank" title="An introduction to Diffusion Probabilistic Models">Das, 2021</a>)
 </div>
 <h3 id="forward-process">Forward Process</h3>
 <p>The forward process is a <strong>Markov process</strong>. According to <a href="https://en.wikipedia.org/wiki/Markov_chain#:~:text=A%20Markov%20chain%20or%20Markov,the%20state%20of%20affairs%20now.%22">Wikipedia</a>, a Markov chain or Markov process is a stochastic model describing a sequence of possible events in which the probability of each event depends only on the state attained in the previous event. Informally, this may be thought of as, &ldquo;What happens next depends only on the state of affairs now.&rdquo;</p>
-<p>The main goal of the forward process is to gradually convert <strong>the data distribution</strong> $q(\mathbf{x}_0)$ into <strong>an analytically tractable distribution</strong> $\pi(\mathbf{y})$ by repeated application of a <strong>Markov diffusion kernel</strong> $T_\pi(\mathbf{y}|\mathbf{y}&rsquo;; \beta)$ for $\pi(\mathbf{y})$, where $\beta$ is the diffusion rate,
-$$\pi(\mathbf{y}) = \int  T_\pi(\mathbf{y}|\mathbf{y}&rsquo;; \beta) \mathrm{d}\mathbf{y}&rsquo; \tag{1}$$
+<p>The main goal of the forward process is to gradually convert <strong>the data distribution</strong> $q(\mathbf{x}_0)$ into <strong>an analytically tractable distribution</strong> $\pi(\mathbf{y})$ by repeated application of a <strong>Markov diffusion kernel</strong> $T_\pi(\mathbf{y}|\mathbf{y}'; \beta)$ for $\pi(\mathbf{y})$, where $\beta$ is the diffusion rate,
+$$\pi(\mathbf{y}) = \int  T_\pi(\mathbf{y}|\mathbf{y}'; \beta) \mathrm{d}\mathbf{y}' \tag{1}$$
 $$q(\mathbf{x}_t|\mathbf{x}_{t-1}) = T_\pi(\mathbf{x}_t|\mathbf{x}_{t-1}; \beta_t) \tag{2}$$</p>
 <p>The forward trajectory (<strong>joint distribution</strong>), corresponding to starting at the data distribution and performing T steps of diffusion, is thus
 $$q(\mathbf{x}_0, \mathbf{x}_1, \cdots, \mathbf{x}_T) = q(\mathbf{x}_{(0\cdots T)}) = q(\mathbf{x}_0)\prod_{t=1}^T q(\mathbf{x}_t | \mathbf{x}_{t-1}) \tag{3}$$</p>
@@ -369,8 +370,8 @@ $$
 \begin{split}
 \mathcal{L} &amp;= \int \mathrm{d}\mathbf{x}_0 \ q(\mathbf{x}_0) \log p_\theta (\mathbf{x}_0) \\
 &amp;= \int \mathrm{d}\mathbf{x}_0 \ q(\mathbf{x}_0) { \log \left [ \int \mathrm{d}\mathbf{x}_{(1\cdots T)} q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0) p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ]} \\
-&amp;= \int \mathrm{d}\mathbf{x}_0 \ q(\mathbf{x}_0) {\color{blue} \log \left \{{\LARGE \mathbb{E}}_{\mathbf{x}_{(1\cdots T)} \sim q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0)} \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \right \}} \\
-&amp;\geq \int \mathrm{d}\mathbf{x}_0 \ q(\mathbf{x}_0) {\color{blue} {\LARGE \mathbb{E}}_{\mathbf{x}_{(1\cdots T)} \sim q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0)} \left \{ \log \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \right \}} \\
+&amp;= \int \mathrm{d}\mathbf{x}_0 \ q(\mathbf{x}_0) {\color{blue} \log \left \{\mathbb{E}_{\mathbf{x}_{(1\cdots T)} \sim q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0)} \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \right \}} \\
+&amp;\geq \int \mathrm{d}\mathbf{x}_0 \ q(\mathbf{x}_0) {\color{blue} \mathbb{E}_{\mathbf{x}_{(1\cdots T)} \sim q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0)} \left \{ \log \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \right \}} \\
 &amp;= \int \mathrm{d}\mathbf{x}_0 \ q(\mathbf{x}_0) \int \mathbb{d}\mathbf{x}_{(1\cdots T)} \  q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0) \log \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \\
 &amp;= \int \mathbb{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_0) q(\mathbf{x}_{(1\cdots T)} | \mathbf{x}_0) \log \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \\
 &amp;= \int \mathbb{d}\mathbf{x}_{(0\cdots T)} \ q(\mathbf{x}_{(0\cdots T)}) \log \left [ p_\theta(\mathbf{x}_T) \prod_{t=1}^T \frac{p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})}{q(\mathbf{x}_t | \mathbf{x}_{t-1})} \right ] \\
@@ -532,7 +533,7 @@ $$
 q(\mathbf{x}_t | \mathbf{x}_{t-1}) = T_\pi(\mathbf{x}_t | \mathbf{x}_{t-1}; \beta_t) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \beta_t} \mathbf{x}_{t-1}, \beta_t \mathbf{I})
 \tag{26}
 $$</p>
-<p>A nice property of the above process is that we can sample $\mathbf{x}_t$ at any arbitrary time step $t$ in a closed form using <a href="https://lilianweng.github.io/posts/2018-08-12-vae/#reparameterization-trick">reparameterization trick (Lil&rsquo;Log)</a>. Let $\alpha_t = 1 - \beta_t$ and $\bar{\alpha}_t = \prod_{i=1}^t \alpha_i$ :
+<p>A nice property of the above process is that we can sample $\mathbf{x}_t$ at any arbitrary time step $t$ in a closed form using reparameterization trick. Let $\alpha_t = 1 - \beta_t$ and $\bar{\alpha}_t = \prod_{i=1}^t \alpha_i$ :
 $$
 \begin{equation*}
 \begin{split}
@@ -700,8 +701,8 @@ $$</p>
 <p>[2] Jonathan Ho <em>et al</em>. <a href="https://arxiv.org/abs/2006.11239">&ldquo;Denoising Diffusion Probabilistic Models.&rdquo;</a> NeurIPS 2020.</p>
 <p>[3] Jiaming Song <em>et al.</em> <a href="https://arxiv.org/abs/2010.02502">&ldquo;Denoising Diffusion Implicit Models.&rdquo;</a> ICLR 2021.</p>
 <p>[4] Alex Nichol &amp; Prafulla Dhariwal. <a href="https://arxiv.org/abs/2102.09672">&ldquo;Improved Denoising Diffusion Probabilistic Models.&rdquo;</a> ICML 2021.</p>
-<p>[5] Weng, Lilian. (Jul 2021). <a href="(https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)">&ldquo;What are Diffusion Models? Lil’Log.&rdquo;</a> <a href="https://lilianweng.github.io/">https://lilianweng.github.io/</a>.</p>
-<p>[6] Ayan Das. (Dec 2021). <a href="https://ayandas.me/blog-tut/2021/12/04/diffusion-prob-models.html">&ldquo;An Introduction to Diffusion Probabilistic Models.&rdquo;</a> <a href="https://ayandas.me/blogs.html">https://ayandas.me/blogs.html</a>.</p>
+<p>[5] Lilian Weng. <a href="(https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)">&ldquo;What are Diffusion Models? Lil’Log.&rdquo;</a> [Blog post] <a href="https://lilianweng.github.io/">Lil&rsquo;Log</a> 2021.</p>
+<p>[6] Ayan Das. <a href="https://ayandas.me/blog-tut/2021/12/04/diffusion-prob-models.html">&ldquo;An Introduction to Diffusion Probabilistic Models.&rdquo;</a> [Blog post] <a href="https://ayandas.me/blogs.html">Ayan&rsquo;s Blog</a> 2021.</p>
 
 </article>
 
@@ -754,13 +755,13 @@ $$</p>
   <script id="utterances" src="https://utteranc.es/client.js"
             issue-term=pathname
             repo=GavinSun0921/gavinsun0921.github.io
-              theme=preferred-color-scheme
+              theme=github-light
         crossorigin="anonymous"
         async>
 </script>
 <script>
-    if (storageColorScheme == "Light") {
-      document.getElementById('utterances').setAttribute('theme', 'github-light')
+    if (storageColorScheme == "Auto") {
+      document.getElementById('utterances').setAttribute('theme', 'preferred-color-scheme')
     } else if (storageColorScheme == "Dark") {
       document.getElementById('utterances').setAttribute('theme', 'github-dark')
     }
@@ -775,7 +776,10 @@ $$</p>
   <h3>Series of Posts</h3>
   
     
-      <a href="https://gavinsun0921.github.io/posts/paper-reading-01/" class="no-underline">A Breif Exploration to Diffusion Probabilistic Models with Code Implementation</a>
+      <a href="https://gavinsun0921.github.io/posts/paper-research-02/" class="no-underline">A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation</a>
+      <br />
+    
+      <a href="https://gavinsun0921.github.io/posts/paper-research-01/" class="no-underline">A Breif Exploration to Diffusion Probabilistic Models with Code Implementation</a>
       <br />
     
   
