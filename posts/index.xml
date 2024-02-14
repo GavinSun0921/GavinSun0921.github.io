@@ -8,12 +8,12 @@
     <language>en</language>
     <copyright>&amp;copy; 2023 &lt;a href=&#34;https://github.com/GavinSun0921&#34;&gt;Gavin Sun&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Tue, 26 Sep 2023 13:53:33 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 12 Feb 2024 13:53:33 +0800</lastBuildDate>
     <atom:link href="https://gavinsun0921.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation</title>
       <link>https://gavinsun0921.github.io/posts/paper-research-02/</link>
-      <pubDate>Tue, 26 Sep 2023 13:53:33 +0800</pubDate>
+      <pubDate>Mon, 12 Feb 2024 13:53:33 +0800</pubDate>
       <guid>https://gavinsun0921.github.io/posts/paper-research-02/</guid>
       <description>This is the second post in the Paper Research series. In this series I will continue to update some personal study notes on reading papers. This post will introduce the basic work of variational autoencoder (VAE), including the derivation of formulas and simple code verification. Autoencoder Autoencoder is a neural network designed to learn an identity function in an unsupervised way to reconstruct the original input while compressing the data in the process so as</description>
     </item>
@@ -50,7 +50,7 @@
       <link>https://gavinsun0921.github.io/posts/difference-between-introduction-and-related-work/</link>
       <pubDate>Fri, 12 May 2023 12:34:01 +0800</pubDate>
       <guid>https://gavinsun0921.github.io/posts/difference-between-introduction-and-related-work/</guid>
-      <description>Question on Academia Stack Exchange&#xD;Description In the writing of scientific papers, there are basically two chapters: Introduction and Related Work. This is a common issue, that many people get confused how to organize introduction and related work chapters. Because both are related to the literature review.&#xA;This post is my personal view on the issue. If you have any suggestions on this post, please leave comments below.&#xA;What is Introduction and Related Work? This document, How to Write a Scientific Paper, is based on resources from the Université de Rennes 1 and Western Kentucky University.</description>
+      <description>Question on Academia Stack Exchange Description In the writing of scientific papers, there are basically two chapters: Introduction and Related Work. This is a common issue, that many people get confused how to organize introduction and related work chapters. Because both are related to the literature review.&#xA;This post is my personal view on the issue. If you have any suggestions on this post, please leave comments below.&#xA;What is Introduction and Related Work? This document, How to Write a Scientific Paper, is based on resources from the Université de Rennes 1 and Western Kentucky University.</description>
     </item>
   </channel>
 </rss>

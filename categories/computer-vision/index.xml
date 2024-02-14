@@ -8,12 +8,12 @@
     <language>en</language>
     <copyright>&amp;copy; 2023 &lt;a href=&#34;https://github.com/GavinSun0921&#34;&gt;Gavin Sun&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Tue, 26 Sep 2023 13:53:33 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 12 Feb 2024 13:53:33 +0800</lastBuildDate>
     <atom:link href="https://gavinsun0921.github.io/categories/computer-vision/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation</title>
       <link>https://gavinsun0921.github.io/posts/paper-research-02/</link>
-      <pubDate>Tue, 26 Sep 2023 13:53:33 +0800</pubDate>
+      <pubDate>Mon, 12 Feb 2024 13:53:33 +0800</pubDate>
       <guid>https://gavinsun0921.github.io/posts/paper-research-02/</guid>
       <description>This is the second post in the Paper Research series. In this series I will continue to update some personal study notes on reading papers. This post will introduce the basic work of variational autoencoder (VAE), including the derivation of formulas and simple code verification. Autoencoder Autoencoder is a neural network designed to learn an identity function in an unsupervised way to reconstruct the original input while compressing the data in the process so as</description>
     </item>
