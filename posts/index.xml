@@ -39,7 +39,7 @@
       <description>This paper is published in CVPR 2022. Overview Problem Image deblurring is an ill-posed problem, and most existing mothods are ineffective because they produce a deterministic estimate of the clean image. Point-estimators that directly minimize a distortion loss suffers from the problem of &amp;ldquo;regression to the mean&amp;rdquo;. Solution Present a new framework for blind deblurring based on conditional diffusion models. Porducing a diverse set of plausible reconstructions for a given input. Results A significant improvement in perceptual qulity over existing state-of-the-art methods across multiple standard benchmarks.</description>
     </item>
     <item>
-      <title>A Breif Exploration to Diffusion Probabilistic Models with Code Implementation</title>
+      <title>A Brief Exploration to Diffusion Probabilistic Models with Code Implementation</title>
       <link>https://gavinsun0921.github.io/posts/paper-research-01/</link>
       <pubDate>Wed, 14 Jun 2023 13:53:33 +0800</pubDate>
       <guid>https://gavinsun0921.github.io/posts/paper-research-01/</guid>
