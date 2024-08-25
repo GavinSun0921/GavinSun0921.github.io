@@ -322,7 +322,7 @@ $$q(\mathbf{x}_0, \mathbf{x}_1, \cdots, \mathbf{x}_T) = q(\mathbf{x}_{(0\cdots T
 Fig. 3. Illustration of forward (diffusion) trajectory.
 </div>
 <h3 id="reverse-process">Reverse Process</h3>
-<p>The reverse process also is a <strong>Markov process</strong>. If we can reverse the above process and sample from $q(\mathbf{x}_{t-1} | \mathbf{x}_t)$, we will be able to recreate the true sample from a Gaussian noise input, $\mathbf{x}_T \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$. Unfortunately, we cannot easily estimate $q(\mathbf{x}_{t-1} | \mathbf{x}_t)$ and there fore we need to learn a model $p_\theta$ to approximate these conditional probabilites in order to run the reverse process. We want $p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t)$ to approximate $q(\mathbf{x}_{t-1} | \mathbf{x}_t)$ as closely as possible for all t.</p>
+<p>The reverse process also is a <strong>Markov process</strong>. If we can reverse the above process and sample from $q(\mathbf{x}_{t-1} | \mathbf{x}_t)$, we will be able to recreate the true sample from a Gaussian noise input, $\mathbf{x}_T \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$. Unfortunately, we cannot easily estimate $q(\mathbf{x}_{t-1} | \mathbf{x}_t)$ and there fore we need to learn a model $p_\theta$ to approximate these conditional probabilities in order to run the reverse process. We want $p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t)$ to approximate $q(\mathbf{x}_{t-1} | \mathbf{x}_t)$ as closely as possible for all t.</p>
 <p>The generative distribution $p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t)$ will be trained to describe the same trajectory (also a <strong>joint distribution</strong>), but in reverse,</p>
 <p>$$p_\theta (\mathbf{x}_T) = \pi(\mathbf{x}_T) \tag{4}$$
 $$ p_\theta(\mathbf{x}_0, \mathbf{x}_1, \cdots, \mathbf{x}_T) = p_\theta(\mathbf{x}_{(0\cdots T)}) = p_\theta(\mathbf{x}_T)\prod_{t=1}^T p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t}) \tag{5}$$</p>
@@ -352,7 +352,7 @@ p_\theta(\mathbf{x}_0) &amp;= \int \mathrm{d}\mathbf{x}_{(1\cdots T)} \ p_\theta
 $$</p>
 <h3 id="model-log-likelihood">Model Log Likelihood</h3>
 <p>We want the estimated data distribution ($p_\theta(\mathbf{x}_0)$) to be as close as possible to the actual data distribution ($q(\mathbf{x}_0)$).
-So trainning amounts to maximizing the model log likelihood,
+So training amounts to maximizing the model log likelihood,
 $$
 \begin{equation*}
 \begin{split}
@@ -673,11 +673,11 @@ $$</p>
 <h2 id="citation">Citation</h2>
 <p>Cited as:</p>
 <ul>
-<li>Gavin, Sun. (May 2023). A Breif Exploration to Diffusion Probabilistic Models [Blog post]. Retrieved from <a href="https://gavinsun0921.github.io/posts/paper-reading-01/">https://gavinsun0921.github.io/posts/paper-reading-01/</a>.</li>
+<li>Gavin, Sun. (May 2023). A Brief Exploration to Diffusion Probabilistic Models [Blog post]. Retrieved from <a href="https://gavinsun0921.github.io/posts/paper-reading-01/">https://gavinsun0921.github.io/posts/paper-reading-01/</a>.</li>
 </ul>
 <p>Or</p>
 <pre><code class="language-bibtex">@online{gavin2023diffusion,
-  title   = {A Breif Exploration to Diffusion Probabilistic Models},
+  title   = {A Brief Exploration to Diffusion Probabilistic Models},
   author  = {Gavin, Sun},
   year    = {2023},
   month   = {May},
@@ -764,7 +764,7 @@ $$</p>
   <h3>Series of Posts</h3>
   
     
-      <a href="https://gavinsun0921.github.io/posts/paper-research-02/" class="no-underline">A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation</a>
+      <a href="https://gavinsun0921.github.io/posts/paper-research-02/" class="no-underline">A Brief Exploration to Variational Autoencoder (VAE) with Code Implementation</a>
       <br />
     
       <a href="https://gavinsun0921.github.io/posts/paper-research-01/" class="no-underline">A Brief Exploration to Diffusion Probabilistic Models with Code Implementation</a>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<title>A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation | Gavin&#39;s Blog</title>
+<title>A Brief Exploration to Variational Autoencoder (VAE) with Code Implementation | Gavin&#39;s Blog</title>
 
 <meta name="generator" content="Hugo Eureka 0.9.3" />
 <link rel="stylesheet" href="https://gavinsun0921.github.io/css/eureka.min.9cec6350e37e534b0338fa9a085bf06855de3b0f2dcf857e792e5e97b07ea905d4d5513db554cbc26a9c3da622bae92d.css">
@@ -85,7 +85,7 @@
       "item":"https://gavinsun0921.github.io/posts/"},{
       "@type": "ListItem",
       "position": 2 ,
-      "name":"A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation",
+      "name":"A Brief Exploration to Variational Autoencoder (VAE) with Code Implementation",
       "item":"https://gavinsun0921.github.io/posts/paper-research-02/"}]
 }
 </script>
@@ -100,7 +100,7 @@
         "@type": "WebPage",
         "@id": "https://gavinsun0921.github.io/posts/paper-research-02/"
     },
-    "headline": "A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation | Gavin\u0027s Blog",
+    "headline": "A Brief Exploration to Variational Autoencoder (VAE) with Code Implementation | Gavin\u0027s Blog",
     "image": "https://gavinsun0921.github.io/images/paper-research/02.png",
     "datePublished": "2024-02-12T13:53:33+08:00",
     "dateModified": "2024-02-12T13:53:33+08:00",
@@ -115,7 +115,7 @@
         },
     "description": "Learn variational autoencoder (VAE) by reading and analyzing the paper: \u0022Auto-Encoding Variational Bayes\u0022. This post will introduce the basic work of VAE, including the derivation of formulas and simple code verification."
 }
-</script><meta property="og:title" content="A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation | Gavin&#39;s Blog" />
+</script><meta property="og:title" content="A Brief Exploration to Variational Autoencoder (VAE) with Code Implementation | Gavin&#39;s Blog" />
 <meta property="og:type" content="article" />
 
 
@@ -255,7 +255,7 @@
       class=" bg-secondary-bg col-span-2 rounded px-6 py-8 lg:col-span-6"
     >
       <article class="prose">
-  <h1 class="mb-4">A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation</h1>
+  <h1 class="mb-4">A Brief Exploration to Variational Autoencoder (VAE) with Code Implementation</h1>
 
   <div class="text-tertiary-text not-prose mt-2 flex flex-row flex-wrap items-center">
   <div class="me-6 my-2">
@@ -335,7 +335,7 @@ $$</p>
 <p>$$
 \theta^* = \argmax_\theta \sum_{i=1}^n \log p_\theta(\mathbf{x}^{(i)}) \tag{3}
 $$</p>
-<p>Unfortunately, the integral of $p_\theta(\mathbf{x})$ in Eq. (1) is not well calculated. <a href="https://arxiv.org/pdf/1312.6114.pdf">Kingma &amp; Welling, (2014)</a> chose to use $q_\phi(\mathbf{z} \mid \mathbf{x})$ to approxiamte $p_\text{data}(\mathbf{z} \mid \mathbf{x})$. They focused primarily on describing the posterior $p_\text{data}(\mathbf{z} \mid \mathbf{x})$, which is difficult to compute so the <a href="https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">EM algorithm</a> could not be applied to this problem. But <a href="https://spaces.ac.cn/archives/5343">Su. (2018)</a> gives another idea for approaching: a straightforward joint distribution. First we write out the joint probability distribution of the prior distribution $p_\theta(\mathbf{z})$ and the conditional distribution (generative model) $p_\theta(\mathbf{x} \mid \mathbf{z})$:</p>
+<p>Unfortunately, the integral of $p_\theta(\mathbf{x})$ in Eq. (1) is not well calculated. <a href="https://arxiv.org/pdf/1312.6114.pdf">Kingma &amp; Welling, (2014)</a> chose to use $q_\phi(\mathbf{z} \mid \mathbf{x})$ to approximate $p_\text{data}(\mathbf{z} \mid \mathbf{x})$. They focused primarily on describing the posterior $p_\text{data}(\mathbf{z} \mid \mathbf{x})$, which is difficult to compute so the <a href="https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">EM algorithm</a> could not be applied to this problem. But <a href="https://spaces.ac.cn/archives/5343">Su. (2018)</a> gives another idea for approaching: a straightforward joint distribution. First we write out the joint probability distribution of the prior distribution $p_\theta(\mathbf{z})$ and the conditional distribution (generative model) $p_\theta(\mathbf{x} \mid \mathbf{z})$:</p>
 <p>$$
 p_\theta(\mathbf{x}, \mathbf{z}) = p_\theta(\mathbf{x} \mid \mathbf{z}) p_\theta(\mathbf{z}) \tag{4}
 $$</p>
@@ -380,7 +380,7 @@ $$</p>
 </ul>
 <p>So these two parts of the loss are actually antagonistic to each other, and the loss function cannot be viewed separately, but as a whole. In fact, this is exactly what GANs dream of: having a total metric that can indicate the training process of the generative model. This capability is naturally available in VAE models, and GANs can&rsquo;t do it until WGAN.</p>
 <h3 id="build-the-network">Build the Network</h3>
-<p>So far, there are three distributions in the loss function in Eq. (8) that we don&rsquo;t know: $q_\phi(\mathbf{z} \mid \mathbf{x})$, $p_\theta(\mathbf{x} \mid \mathbf{z})$, and $p_\theta(\mathbf{z})$. As for $p_\text{data}(\mathbf{x})$, while we can&rsquo;t write its expression explicitly, sampling from it is easy to do (samples from the dataset). In order to solve the problem practically, we need to identify the three unkonwn distributions mentioned above or determin their form.</p>
+<p>So far, there are three distributions in the loss function in Eq. (8) that we don&rsquo;t know: $q_\phi(\mathbf{z} \mid \mathbf{x})$, $p_\theta(\mathbf{x} \mid \mathbf{z})$, and $p_\theta(\mathbf{z})$. As for $p_\text{data}(\mathbf{x})$, while we can&rsquo;t write its expression explicitly, sampling from it is easy to do (samples from the dataset). In order to solve the problem practically, we need to identify the three unknown distributions mentioned above or determine their form.</p>
 <div align="center">
 <img src="vae-gaussian.png" alt="" width="90%"/>
 Fig. 3. Illustration of variational autoencoder model with the multivariate Gaussian assumption.<br>(Image source: <a href="https://lilianweng.github.io/posts/2018-08-12-vae/" target="_blank" title="From Autoencoder to Beta-VAE">Weng, 2018</a>)
@@ -544,7 +544,7 @@ $$</p>
   <h3>Series of Posts</h3>
   
     
-      <a href="https://gavinsun0921.github.io/posts/paper-research-02/" class="no-underline">A Breif Exploration to Variational Autoencoder (VAE) with Code Implementation</a>
+      <a href="https://gavinsun0921.github.io/posts/paper-research-02/" class="no-underline">A Brief Exploration to Variational Autoencoder (VAE) with Code Implementation</a>
       <br />
     
       <a href="https://gavinsun0921.github.io/posts/paper-research-01/" class="no-underline">A Brief Exploration to Diffusion Probabilistic Models with Code Implementation</a>
